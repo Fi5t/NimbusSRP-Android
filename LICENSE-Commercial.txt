@@ -1,0 +1,19 @@
+NIMBUS SRP SOFTWARE LICENSE AGREEMENT
+
+Nimbus SRP-6a library, Copyright (c) Vladimir Dzhuvinov, 2011
+
+
+By purchasing this license in full and downloading the Nimbus SRP-6a library 
+(Software) you agree to the following terms:
+
+1. You may use and distribute the Software as part of your software application.
+
+2. You may modify the Software in order to adapt it to the needs of your
+   application, provided all original copyright notices are retained.
+
+3. The Software is provided "as is", without any express or implied warranties.
+   In no event shall the author be held liable for any damages arising from the
+   use of the Software.
+
+
+13 November 2011
