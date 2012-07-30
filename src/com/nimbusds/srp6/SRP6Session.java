@@ -13,7 +13,7 @@ import java.util.Map;
  * (SRP-6a) authentication sessions.
  *
  * @author <a href="http://dzhuvinov.com">Vladimir Dzhuvinov</a>
- * @version 1.3 (2010-11-18)
+ * @version 1.3 (2012-07-30)
  */
 public abstract class SRP6Session {
 	
@@ -185,7 +185,7 @@ public abstract class SRP6Session {
 	
 		final long now = System.currentTimeMillis();
 		
-		if (now > lastActivity * 1000)
+		if (now > lastActivity + (timeout * 1000))
 			return true;
 		else
 			return false;
