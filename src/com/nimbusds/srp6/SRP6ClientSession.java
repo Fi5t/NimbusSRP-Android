@@ -32,8 +32,8 @@ import java.util.Map;
  *         message 'M2'.
  * </ul>
  *
- * @author <a href="http://dzhuvinov.com">Vladimir Dzhuvinov</a>
- * @version 1.3 (2010-11-18)
+ * @author Vladimir Dzhuvinov
+ * @version $version$ (2011-11-18)
  */
 public class SRP6ClientSession extends SRP6Session {
 	

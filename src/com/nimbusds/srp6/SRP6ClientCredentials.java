@@ -9,8 +9,8 @@ import java.math.BigInteger;
  * {@link SRP6ClientSession.State#STEP_2 step two}. These consist of the public 
  * client value 'A' and the client evidence message 'M1'.
  *
- * @author <a href="http://dzhuvinov.com">Vladimir Dzhuvinov</a>
- * @version 1.3 (2010-10-28)
+ * @author Vladimir Dzhuvinov
+ * @version $version$ (2011-10-28)
  */
 public final class SRP6ClientCredentials {
 

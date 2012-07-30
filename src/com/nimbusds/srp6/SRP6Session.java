@@ -12,8 +12,9 @@ import java.util.Map;
  * The base abstract class for client and server-side Secure Remote Password 
  * (SRP-6a) authentication sessions.
  *
- * @author <a href="http://dzhuvinov.com">Vladimir Dzhuvinov</a>
- * @version 1.3 (2012-07-30)
+ * @author Vladimir Dzhuvinov
+ * @author John Kim
+ * @version $version$ (2012-07-30)
  */
 public abstract class SRP6Session {
 	

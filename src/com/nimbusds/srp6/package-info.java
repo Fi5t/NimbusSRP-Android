@@ -24,6 +24,6 @@
  * authentication system developed by Tom Wu (tjw@CS.Stanford.EDU).
  *
  * @author <a href="http://dzhuvinov.com">Vladimir Dzhuvinov</a>
- * @version 1.3 (2011-11-18)
+ * @version $version$ ($version-date$)
  */
 package com.nimbusds.srp6;

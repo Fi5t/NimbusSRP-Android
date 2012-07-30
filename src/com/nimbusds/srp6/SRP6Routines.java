@@ -25,8 +25,8 @@ import java.security.SecureRandom;
  * <p>This class contains portions of code from Bouncy Castle's SRP6 
  * implementation.
  *
- * @author <a href="http://dzhuvinov.com">Vladimir Dzhuvinov</a>
- * @version 1.3 (2010-11-08)
+ * @author Vladimir Dzhuvinov
+ * @version $version$ (2011-11-08)
  */
 public class SRP6Routines {
 

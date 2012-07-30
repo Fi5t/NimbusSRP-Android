@@ -13,8 +13,8 @@ import java.math.BigInteger;
  * make sure that exactly the same routine is used by both client and server
  * session, else authentication will fail.
  *
- * @author <a href="http://dzhuvinov.com">Vladimir Dzhuvinov</a>
- * @version 1.3 (2010-11-07)
+ * @author Vladimir Dzhuvinov
+ * @version $version$ (2011-11-07)
  */
 public interface ClientEvidenceRoutine {
 

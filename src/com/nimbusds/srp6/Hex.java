@@ -9,8 +9,10 @@ import java.math.BigInteger;
  *
  * <p>Obtained from Apache Xerces and Aduna Software code on java2s.com.
  *
- * @author <a href="http://dzhuvinov.com">Vladimir Dzhuvinov</a>
- * @version 1.3 (2012-07-30)
+ * @author Vladimir Dzhuvinov
+ * @author John Kim
+ * @author others
+ * @version $version$ (2012-07-30)
  */
 public class Hex {
 

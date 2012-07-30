@@ -84,7 +84,7 @@ version 1.3 (2011-11-28)
 	* Adds command-line SRP-6a verifier generator, server and client.
 
 version 1.4 (2012-07-30)
-	* 
-	* 
+	* Removes unused lookUpHexAlphabet field and LOOKUPLENGTH constant.
+	* Fixes SRP6Session.hasTimedOut() bug.
 
 [EOF]

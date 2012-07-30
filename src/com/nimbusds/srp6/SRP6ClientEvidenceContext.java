@@ -8,8 +8,8 @@ import java.math.BigInteger;
  * Immutable snapshot of SRP-6a client session variables to be used in a
  * {@link ClientEvidenceRoutine}.
  *
- * @author <a href="http://dzhuvinov.com">Vladimir Dzhuvinov</a>
- * @version 1.3 (2010-11-07)
+ * @author Vladimir Dzhuvinov
+ * @version $version$ (2011-11-07)
  */
 public class SRP6ClientEvidenceContext {
 

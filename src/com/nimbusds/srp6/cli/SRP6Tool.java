@@ -14,8 +14,8 @@ import com.nimbusds.srp6.SRP6CryptoParams;
 /**
  * The base abstract class for the interactive command-line SRP-6a tools.
  *
- * @author <a href="http://dzhuvinov.com">Vladimir Dzhuvinov</a>
- * @version 1.3 (2011-11-28)
+ * @author Vladimir Dzhuvinov
+ * @version $version$ (2011-11-28)
  */
 public abstract class SRP6Tool {
 

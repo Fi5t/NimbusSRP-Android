@@ -10,7 +10,7 @@
  *         Secure Remote Password (SRP-6a) authentication.
  * </ul>
  *
- * @author <a href="http://dzhuvinov.com">Vladimir Dzhuvinov</a>
- * @version 1.3 (2011-11-28)
+ * @author Vladimir Dzhuvinov
+ * @version $version$ ($version-date$)
  */
 package com.nimbusds.srp6.cli;

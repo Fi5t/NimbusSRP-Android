@@ -20,8 +20,8 @@ import java.security.NoSuchAlgorithmException;
  * <p>For convenience this class includes a set of precomputed parameters,
  * obtained from the SRP-6a demo at http://srp.stanford.edu/demo/demo.html.
  *
- * @author <a href="http://dzhuvinov.com">Vladimir Dzhuvinov</a>
- * @version 1.3 (2011-10-29)
+ * @author Vladimir Dzhuvinov
+ * @version $version$ (2011-10-29)
  */
 public class SRP6CryptoParams {
 

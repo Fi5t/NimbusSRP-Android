@@ -10,8 +10,8 @@ import junit.framework.*;
 /**
  * Test the alternative 'x' routine interface handling.
  *
- * @author <a href="http://dzhuvinov.com">Vladimir Dzhuvinov</a>
- * @version 1.3 (2011-11-09)
+ * @author Vladimir Dzhuvinov
+ * @version $version$ (2011-11-09)
  */
 public class XRoutineWithUserIdentityTest extends TestCase {
 

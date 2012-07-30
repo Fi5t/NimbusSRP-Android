@@ -34,8 +34,8 @@ import java.util.Map;
  *         authentication failure to the client.
  * </ul>
  *
- * @author <a href="http://dzhuvinov.com">Vladimir Dzhuvinov</a>
- * @version 1.3 (2010-11-18)
+ * @author Vladimir Dzhuvinov
+ * @version $version$ (2011-11-18)
  */
 public class SRP6ServerSession extends SRP6Session {
 	

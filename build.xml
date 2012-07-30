@@ -1,6 +1,7 @@
 <project name="Nimbus SRP" default="dist" basedir=".">
 
 	<property name="version" value="1.4"/>
+	<property name="version-date" value="2012-07-30"/>
 	<property name="jar-lib-file" value="nimbus-srp-${version}.jar"/>
 	<property name="jar-client-file" value="srp-client.jar"/>
 	<property name="jar-server-file" value="srp-server.jar"/>
@@ -24,14 +25,30 @@
 		<delete file="${jar-lib-file}"/>
 		<delete file="${jar-client-file}"/>
 		<delete file="${jar-server-file}"/>
+		<delete file="Nimbus-SRP.zip"/>
 		<delete>
 			<fileset dir="." includes="**/TEST-*"/>
 		</delete>
 	</target>
 	
-	<target name="compile">
+	<target name="src">
+		<mkdir dir="procsrc"/>
+		<copy todir="procsrc">
+    			<fileset dir="src"/>
+  		</copy>
+		
+		<!-- Indicate version number and version date -->
+		<replace dir="procsrc" token="$version$" value="${version}">
+			<include name="**/*.java"/>
+		</replace>
+		<replace dir="procsrc" token="$version-date$" value="${version-date}">
+			<include name="**/*.java"/>
+		</replace>
+	</target>
+	
+	<target name="compile" depends="src">
 		<mkdir dir="build"/>
-		<javac srcdir="src" 
+		<javac srcdir="procsrc" 
 		       destdir="build" 
 		       classpathref="classpath.compile"
 		       includeantruntime="false">
@@ -40,7 +57,7 @@
 		</javac>
 	</target>
 	
-	<target name="compile-tests">
+	<target name="compile-tests" depends="compile">
 		<mkdir dir="build"/>
 		<javac srcdir="test" 
 		       destdir="build" 
@@ -59,16 +76,16 @@
 		</junit>
 	</target>
 	
-	<target name="javadoc">
+	<target name="javadoc" depends="src">
 		<mkdir dir="javadoc"/>
 		<javadoc packagenames="com.nimbusds.srp6.*"
-	        	 sourcepath="src"
+	        	 sourcepath="procsrc"
 			 classpathref="classpath.compile"
 			 destdir="javadoc"
 			 author="true"
 			 version="true"
-			 use="false"
-			 linksource="false"
+			 use="true"
+			 linksource="true"
 			 windowtitle="Nimbus SRP"
 			 doctitle="Nimbus SRP">
 		</javadoc>
@@ -96,9 +113,13 @@
 	
 	<target name="dist" depends="clean,compile,compile-tests,junit,javadoc,jar-lib,jar-client,jar-server">
 		<delete dir="build"/>
+		<delete dir="procsrc"/>
 		<delete>
 			<fileset dir="." includes="**/TEST-*"/>
 		</delete>
+		<zip destfile="Nimbus-SRP.zip">
+			<zipfileset dir="." prefix="Nimbus-SRP-${version}"/>
+		</zip>
 	</target>
 
 </project>

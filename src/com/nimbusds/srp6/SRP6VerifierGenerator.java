@@ -11,8 +11,8 @@ import java.nio.charset.Charset;
  * <p>{@link SRP6Routines#generateRandomSalt} may be used to create a random salt 
  * 's' of a specified byte size.
  *
- * @author <a href="http://dzhuvinov.com">Vladimir Dzhuvinov</a>
- * @version 1.3 (2010-11-07)
+ * @author Vladimir Dzhuvinov
+ * @version $version$ (2011-11-07)
  */
 public class SRP6VerifierGenerator {
 
