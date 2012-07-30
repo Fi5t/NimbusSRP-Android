@@ -10,7 +10,7 @@ import java.math.BigInteger;
  * <p>Obtained from Apache Xerces and Aduna Software code on java2s.com.
  *
  * @author <a href="http://dzhuvinov.com">Vladimir Dzhuvinov</a>
- * @version 1.3 (2011-10-29)
+ * @version 1.3 (2012-07-30)
  */
 public class Hex {
 
@@ -19,8 +19,6 @@ public class Hex {
 	static private final int  LOOKUPLENGTH = 16;
 	
 	static final private byte [] hexNumberTable    = new byte[BASELENGTH];
-	
-	static final private char [] lookUpHexAlphabet = new char[LOOKUPLENGTH];
 
 
 	static {
@@ -35,13 +33,6 @@ public class Hex {
 		}
 		for ( int i = 'f'; i>= 'a'; i--) {
 			hexNumberTable[i] = (byte) ( i-'a' + 10 );
-		}
-
-		for(int i = 0; i<10; i++ ) {
-			lookUpHexAlphabet[i] = (char)('0'+i);
-		}
-		for(int i = 10; i<=15; i++ ) {
-			lookUpHexAlphabet[i] = (char)('A'+i -10);
 		}
 	}
 	
