@@ -1,6 +1,6 @@
 Nimbus SRP : Secure Remote Password (SRP-6a) protocol implementation for Java. 
 
-Copyright (c) Vladimir Dzhuvinov, 2011
+Copyright (c) Vladimir Dzhuvinov, 2011 - 2012
 
 
 README
@@ -82,5 +82,9 @@ version 1.2 (2011-11-18)
 
 version 1.3 (2011-11-28)
 	* Adds command-line SRP-6a verifier generator, server and client.
+
+version 1.4 (2012-07-30)
+	* 
+	* 
 
 [EOF]
