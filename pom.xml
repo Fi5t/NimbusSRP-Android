@@ -11,7 +11,7 @@
 	
 	<groupId>com.nimbusds</groupId>
 	<artifactId>srp6a</artifactId>
-	<version>1.4.1-SNAPSHOT</version>
+	<version>1.4.1</version>
 	<packaging>jar</packaging>
 	
 	<name>Nimbus SRP6a</name>
@@ -38,7 +38,7 @@
 		<connection>scm:git:https://bitbucket.org/nimbusds/nimbus-srp.git</connection>
 		<developerConnection>scm:git:git@bitbucket.org:nimbusds/nimbus-srp.git</developerConnection>
 		<url>https://bitbucket.org/nimbusds/nimbus-srp.git</url>
-		<tag>HEAD</tag>
+		<tag>1.4.1</tag>
 	</scm>
     
 	<developers>
