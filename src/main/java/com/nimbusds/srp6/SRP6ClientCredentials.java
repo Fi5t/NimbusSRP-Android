@@ -10,7 +10,6 @@ import java.math.BigInteger;
  * client value 'A' and the client evidence message 'M1'.
  *
  * @author Vladimir Dzhuvinov
- * @version $version$ (2011-10-28)
  */
 public final class SRP6ClientCredentials {
 

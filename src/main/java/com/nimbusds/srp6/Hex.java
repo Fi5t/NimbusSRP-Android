@@ -12,7 +12,6 @@ import java.math.BigInteger;
  * @author Vladimir Dzhuvinov
  * @author John Kim
  * @author others
- * @version $version$ (2012-07-30)
  */
 public class Hex {
 

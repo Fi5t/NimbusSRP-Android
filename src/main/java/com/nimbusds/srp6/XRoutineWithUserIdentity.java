@@ -15,7 +15,6 @@ import java.security.MessageDigest;
  * {@link SRP6Routines#computeX default routine} x = H(s | H(P)).
  *
  * @author Vladimir Dzhuvinov
- * @version $version$ (2011-11-08)
  */
 public class XRoutineWithUserIdentity implements XRoutine {
 

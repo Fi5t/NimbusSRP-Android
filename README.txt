@@ -1,6 +1,6 @@
-Nimbus SRP : Secure Remote Password (SRP-6a) protocol implementation for Java. 
+Nimbus SRP: Secure Remote Password (SRP-6a) protocol implementation for Java
 
-Copyright (c) Vladimir Dzhuvinov, 2011 - 2012
+Copyright (c) Vladimir Dzhuvinov, 2011 - 2013
 
 
 README
@@ -54,15 +54,9 @@ Content of this package:
 	srp-server.jar            Interactive command-line server for Secure 
 	                          Remote Password (SRP-6a) authentication.
 	
-	build.xml                 Apache Ant build file.
-	
-	javadoc/                  JavaDoc files.
-	
-	lib/                      Build and test dependencies.
+	pom.xml                   Apache Maven build file.
 	
 	src/                      The source code.
-	
-	test/                     JUnit tests.
 
 
 Change log:
@@ -86,5 +80,9 @@ version 1.3 (2011-11-28)
 version 1.4 (2012-07-30)
 	* Removes unused lookUpHexAlphabet field and LOOKUPLENGTH constant.
 	* Fixes SRP6Session.hasTimedOut() bug.
+
+version 1.4.1 (2013-04-05)
+	* Switches build to Apache Maven.
+	* Publishes library to Maven Central.
 
 [EOF]

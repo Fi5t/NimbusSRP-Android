@@ -9,7 +9,6 @@ import java.math.BigInteger;
  * {@link ServerEvidenceRoutine}.
  *
  * @author Vladimir Dzhuvinov
- * @version $version$ (2011-11-07)
  */
 public class SRP6ServerEvidenceContext {
 

@@ -5,7 +5,6 @@ package com.nimbusds.srp6;
  * Secure Remote Password (SRP-6a) exception.
  *
  * @author Vladimir Dzhuvinov
- * @version $version$ (2011-10-26)
  */
 public class SRP6Exception extends Exception {
 

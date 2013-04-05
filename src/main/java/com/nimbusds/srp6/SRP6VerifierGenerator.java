@@ -12,7 +12,6 @@ import java.nio.charset.Charset;
  * 's' of a specified byte size.
  *
  * @author Vladimir Dzhuvinov
- * @version $version$ (2011-11-07)
  */
 public class SRP6VerifierGenerator {
 

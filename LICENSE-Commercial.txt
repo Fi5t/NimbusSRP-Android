@@ -1,6 +1,6 @@
 NIMBUS SRP SOFTWARE LICENSE AGREEMENT
 
-Nimbus SRP-6a library, Copyright (c) Vladimir Dzhuvinov, 2011
+Nimbus SRP-6a library, Copyright (c) Vladimir Dzhuvinov, 2011 - 2013
 
 
 By purchasing this license in full and downloading the Nimbus SRP-6a library 
@@ -15,5 +15,3 @@ By purchasing this license in full and downloading the Nimbus SRP-6a library
    In no event shall the author be held liable for any damages arising from the
    use of the Software.
 
-
-13 November 2011

@@ -14,7 +14,6 @@ import java.util.Map;
  *
  * @author Vladimir Dzhuvinov
  * @author John Kim
- * @version $version$ (2012-07-30)
  */
 public abstract class SRP6Session {
 	

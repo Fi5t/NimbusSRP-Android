@@ -14,7 +14,6 @@ import java.math.BigInteger;
  * session, else authentication will fail.
  *
  * @author Vladimir Dzhuvinov
- * @version $version$ (2011-11-07)
  */
 public interface ClientEvidenceRoutine {
 

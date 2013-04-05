@@ -19,7 +19,6 @@ import java.security.MessageDigest;
  * computes x = H(s | H(I | ":" | P))
  *
  * @author Vladimir Dzhuvinov
- * @version $version$ (2011-11-07)
  */
 public interface XRoutine {
 

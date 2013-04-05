@@ -21,7 +21,6 @@ import java.security.NoSuchAlgorithmException;
  * obtained from the SRP-6a demo at http://srp.stanford.edu/demo/demo.html.
  *
  * @author Vladimir Dzhuvinov
- * @version $version$ (2011-10-29)
  */
 public class SRP6CryptoParams {
 

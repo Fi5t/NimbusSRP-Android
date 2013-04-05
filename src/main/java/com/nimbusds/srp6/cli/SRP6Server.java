@@ -20,7 +20,6 @@ import com.nimbusds.srp6.SRP6ServerSession;
  * ('M1' and 'M2').
  *
  * @author Vladimir Dzhuvinov
- * @version $version$ (2011-11-28)
  */
 public class SRP6Server extends SRP6Tool {
 

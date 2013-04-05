@@ -33,7 +33,6 @@ import java.util.Map;
  * </ul>
  *
  * @author Vladimir Dzhuvinov
- * @version $version$ (2011-11-18)
  */
 public class SRP6ClientSession extends SRP6Session {
 	

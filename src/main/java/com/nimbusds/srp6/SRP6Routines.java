@@ -26,7 +26,6 @@ import java.security.SecureRandom;
  * implementation.
  *
  * @author Vladimir Dzhuvinov
- * @version $version$ (2011-11-08)
  */
 public class SRP6Routines {
 
