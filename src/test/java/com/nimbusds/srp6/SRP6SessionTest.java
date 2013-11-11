@@ -45,6 +45,7 @@ public class SRP6SessionTest extends TestCase {
 		byte[] s = SRP6VerifierGenerator.generateRandomSalt();
 		BigInteger v = verifierGen.generateVerifier(new BigInteger(s), username, password);
 		
+		System.out.println("Salt 's': " + new BigInteger(s).toString(16));
 		System.out.println("Verifier 'v': " + v.toString(16));
 		
 		
@@ -65,6 +66,7 @@ public class SRP6SessionTest extends TestCase {
 		
 		System.out.println("Client -> Server: Username: " + username);
 		System.out.println("Server -> Client: B: " + B.toString(16));
+		System.out.println("Server -> Client: salt: " + new BigInteger(s).toString(16));
 		
 		
 		// Step TWO
