@@ -17,8 +17,6 @@ public class Hex {
 
 	static private final int  BASELENGTH   = 128;
 	
-	static private final int  LOOKUPLENGTH = 16;
-	
 	static final private byte [] hexNumberTable    = new byte[BASELENGTH];
 
 

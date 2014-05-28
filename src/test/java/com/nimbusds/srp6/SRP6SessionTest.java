@@ -2,11 +2,8 @@ package com.nimbusds.srp6;
 
 
 import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 
-import junit.framework.*;
+import junit.framework.TestCase;
 
 
 /**

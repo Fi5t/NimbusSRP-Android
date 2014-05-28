@@ -2,9 +2,8 @@ package com.nimbusds.srp6;
 
 
 import java.math.BigInteger;
-import java.security.MessageDigest;
 
-import junit.framework.*;
+import junit.framework.TestCase;
 
 
 /**

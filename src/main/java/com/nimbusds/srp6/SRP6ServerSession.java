@@ -2,10 +2,6 @@ package com.nimbusds.srp6;
 
 
 import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.SecureRandom;
-import java.util.HashMap;
-import java.util.Map;
 
 
 /**

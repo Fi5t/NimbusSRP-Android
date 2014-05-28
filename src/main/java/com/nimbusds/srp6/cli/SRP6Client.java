@@ -1,9 +1,7 @@
 package com.nimbusds.srp6.cli;
 
 
-import java.io.BufferedReader;
 import java.io.IOException;
-
 import java.math.BigInteger;
 
 import com.nimbusds.srp6.Hex;

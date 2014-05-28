@@ -6,7 +6,6 @@ import java.math.BigInteger;
 
 import com.nimbusds.srp6.Hex;
 import com.nimbusds.srp6.SRP6CryptoParams;
-import com.nimbusds.srp6.SRP6Exception;
 import com.nimbusds.srp6.SRP6ServerSession;
 
 

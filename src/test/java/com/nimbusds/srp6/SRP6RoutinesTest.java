@@ -117,7 +117,6 @@ public class SRP6RoutinesTest extends TestCase {
 	public void testComputeSessionKeyFromServerParams() {
 	
 		BigInteger N = new BigInteger("11144252439149533417835749556168991736939157778924947037200268358613863350040339017097790259154750906072491181606044774215413467851989724116331597513345603");
-		BigInteger g = new BigInteger("2");
 		BigInteger v = new BigInteger("7474502944304737201933065391525517979626350323656683177706520871363411502343933100270074963363249763705942958154733367887987540769816195164179972652012309");
 		BigInteger u = new BigInteger("1058795856907579501448181236341287514343869634531");
 		BigInteger A = new BigInteger("5851783883133110801737748616944168062144125592645124739670882600504491688868508507620920981803278916068202671958283061912270679717280194420389126894561611");
@@ -137,9 +136,6 @@ public class SRP6RoutinesTest extends TestCase {
 		BigInteger N = SRP6CryptoParams.N_256;
 		BigInteger g = SRP6CryptoParams.g_common;
 	
-		// username
-		byte[] I = "username".getBytes();
-		
 		// password
 		byte[] P = "secret".getBytes();
 		
@@ -191,9 +187,6 @@ public class SRP6RoutinesTest extends TestCase {
 		BigInteger N = SRP6CryptoParams.N_256;
 		BigInteger g = SRP6CryptoParams.g_common;
 	
-		// username
-		byte[] I = "username".getBytes();
-		
 		// good + bad password
 		byte[] P = "secret".getBytes();
 		byte[] Pbad = "s3cr3t".getBytes();
