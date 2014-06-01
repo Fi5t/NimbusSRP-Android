@@ -30,15 +30,15 @@ public class XRoutineWithUserIdentityTest extends TestCase {
 	
 		// Use http://srp.stanford.edu/demo/demo.html as benchmark and
 		// for test vectors
-		BigInteger N = Hex.decodeToBigInteger("115b8b692e0e045692cf280b436735c77a5a9e8a9e7ed56c965f87db5b2a2ece3");
-		BigInteger g = Hex.decodeToBigInteger("2");
+		BigInteger N = BigIntegerUtils.fromHex("115b8b692e0e045692cf280b436735c77a5a9e8a9e7ed56c965f87db5b2a2ece3");
+		BigInteger g = BigIntegerUtils.fromHex("2");
 		String H = "SHA-1";
 		
 		SRP6CryptoParams config = new SRP6CryptoParams(N, g, H);
 	
 		
 		// Credentials
-		final BigInteger salt = Hex.decodeToBigInteger("1e97da52cbdcd653f85b");
+		final BigInteger salt = BigIntegerUtils.fromHex("1e97da52cbdcd653f85b");
 		final String userID = "alice";
 		final String password = "secret";
 		
@@ -55,7 +55,7 @@ public class XRoutineWithUserIdentityTest extends TestCase {
 		System.out.println("computed v: " + v);
 		
 		// From demo
-		BigInteger targetV = Hex.decodeToBigInteger("100e0c40a5c281dbfb046911634f8e69d3469964863c01eb4683d8d182926da72");
+		BigInteger targetV = BigIntegerUtils.fromHex("100e0c40a5c281dbfb046911634f8e69d3469964863c01eb4683d8d182926da72");
 		System.out.println("target   v: " + targetV);
 		
 		assertEquals(targetV, v);

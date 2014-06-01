@@ -332,7 +332,7 @@ public class SRP6Routines {
 	                                                  final BigInteger S) {
 	
 		digest.update(A.toByteArray());
-        	digest.update(M1.toByteArray());
+		digest.update(M1.toByteArray());
 		digest.update(S.toByteArray());
 		
 		return new BigInteger(1, digest.digest());
@@ -464,12 +464,8 @@ public class SRP6Routines {
 		// fall back to a faster (restricted) method
 		return new BigInteger(max.subtract(min).bitLength() - 1, random).add(min);
 	}
-       
-       
-	/**
-         * Prevents instantiation.
-         */
-	private SRP6Routines() {
+
+	protected SRP6Routines() {
 
 		// empty
 	}

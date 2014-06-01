@@ -28,6 +28,7 @@ key 'a'. On the server use the matching java class:
 	com.nimbusds.srp6.js.SRP6JavascriptServerSession_N1024_SHA256 
 */
 var SRP6JavascriptClientSession_N1024_SHA256 = (function(){
+	//  constants for 1024 strength
 	var N_1024 = new BigInteger("167609434410335061345139523764350090260135525329813904557420930309800865859473551531551523800013916573891864789934747039010546328480848979516637673776605610374669426214776197828492691384519453218253702788022233205683635831626913357154941914129985489522629902540768368409482248290641036967659389658897350067939", 10);
 	var g_common = new BigInteger("2", 10);
 	
@@ -35,7 +36,7 @@ var SRP6JavascriptClientSession_N1024_SHA256 = (function(){
 	var N = N_1024;
 	var g = g_common; 
 	var H = function (x) {
-		return SHA256(x).toLowerCase();
+		return CryptoJS.SHA256(x).toString().toLowerCase();
 	}
   
 	/**
@@ -106,12 +107,12 @@ var SRP6JavascriptClientSession_N1024_SHA256 = (function(){
 	/** private<p>
 	 * 
 	 * Computes x = H(s | H(I | ":" | P))
-	 * <p>Specification is RFC 5054  
+	 * <p> Uses string concatination before hashing. 
 	 *
 	 * @param salt     The salt 's'. Must not be null or empty.
 	 * @param identity The user identity/email 'I'. Must not be null or empty.
 	 * @param password The user password 'P'. Must not be null or empty
-	 * @return The resulting 'x' value.
+	 * @return The resulting 'x' value as BigInteger.
 	 */
 	function generateX(salt, identity, password) {
 		check(salt, "salt");
@@ -165,7 +166,47 @@ var SRP6JavascriptClientSession_N1024_SHA256 = (function(){
 		state = STEP_1;
 	}
 	
-	var s, B, A, a, k;
+	var B, A, a, k, u, S, M1str;
+	
+	/**
+	 * Computes the random scrambling parameter u = H(A | B)
+	 *
+	 * @param A      The public client value 'A'. Must not be {@code null}.
+	 * @param B      The public server value 'B'. Must not be {@code null}.
+	 *
+	 * @return The resulting 'u' value.
+	 */
+	 function computeU(Astr, Bstr) {
+	 	check(Astr);
+	 	check(Bstr);
+		var output = CryptoJS.SHA256(Astr+Bstr);
+		//console.log("jshashAB:"+output);
+		return new BigInteger(""+output,16);
+	}
+	
+	/**
+	 * Computes the session key S = (B - k * g^x) ^ (a + u * x) (mod N)
+	 * from client-side parameters.
+	 * 
+	 * <p>Specification: RFC 5054
+	 *
+	 * @param N The prime parameter 'N'. Must not be {@code null}.
+	 * @param g The generator parameter 'g'. Must not be {@code null}.
+	 * @param k The SRP-6a multiplier 'k'. Must not be {@code null}.
+	 * @param x The 'x' value, see {@link #computeX}. Must not be 
+	 *          {@code null}.
+	 * @param u The random scrambling parameter 'u'. Must not be 
+	 *          {@code null}.
+	 * @param a The private client value 'a'. Must not be {@code null}.
+	 * @param B The public server value 'B'. Must note be {@code null}.
+	 *
+	 * @return The resulting session key 'S'.
+	 */
+	function computeSessionKey(k, x, u, a, B) {
+		var exp = u.multiply(x).add(a);
+		var tmp = g.modPow(x, N).multiply(k);
+		return B.subtract(tmp).modPow(exp, N);
+	}
 	
 	/**
 	 * Receives the password salt 's' and public value 'B' from the server.
@@ -177,8 +218,8 @@ var SRP6JavascriptClientSession_N1024_SHA256 = (function(){
 	 *     <li>Pre-agreed: crypto parameters prime 'N', 
 	 *         generator 'g' and hash function 'H'.
 	 * </ul>
-	 * @param s      The password salt 's'. Must not be {@code null}.
-	 * @param B      The public server value 'B'. Must not be {@code null}.
+	 * @param s      The password salt 's' as a hex string. Must not be {@code null}.
+	 * @param B      The public server value 'B' as a hex string. Must not be {@code null}.
 	 * @param k      k is H(N,g) with padding by the server. Must not be {@code null}.
 	 * @return The client credentials consisting of the client public key 
 	 *         'A' and the client evidence message 'M1'.
@@ -186,84 +227,72 @@ var SRP6JavascriptClientSession_N1024_SHA256 = (function(){
 	 *                               other than {@link State#STEP_1}.
 	 * @throws SRP6Exception         If the public server value 'B' is invalid.
 	 */
-	function step2(ss, BB, kk) {
-		check(ss);
+	function step2(s, BB, kk) {
+		check(s);
 		check(BB);
 		check(kk);
-		s = ss;
-		B = BB;
-		k = kk;
+		B = fromHex(BB);
+		k = fromHex(kk);
 		var x = generateX(s, I, P);
 		// 1024 bit N implies 512 bit key implies 2 x 16byte random implies twice salt generation
 		var aStr = generateRandomSalt() + generateRandomSalt();
 		a = fromHex(aStr);
 		A = g.modPow(a, N);
+		u = computeU(A.toString(16),BB);
+		S = computeSessionKey(k, x, u, a, B);
 		
+		//console.log("jsU:" + toHex(u));
+		//console.log("jsS:" + toHex(S));
+		
+		var AA = toHex(A);
+		
+		//console.log("jsABS:" + AA+BB+toHex(S));
+		
+		M1str = H(AA+BB+toHex(S));
+		
+		//console.log("M1str:" + M1str);
+		
+		state = STEP_2;
+		return { A: AA, M1: M1str };
 	}
 	
 	/**
-	 * Pads a big integer with leading zeros up to the specified length.
+	 * Receives the server evidence message 'M1'. The session is incremented
+	 * to {@link State#STEP_3}.
 	 *
-	 * @param n      The big integer to pad. Must not be {@code null}.
-	 * @param length The required length of the padded big integer as a
-	 *               byte array.
-	 *
-	 * @return The padded big integer as a byte array.
+	 * <p>Argument origin:
+	 * <ul>
+	 *     <li>From server: evidence message 'M2'.
+	 * </ul>
+	 * @param serverM2 The server evidence message 'M2' as string. Must not be {@code null}.
+	 * @throws IllegalStateException If the method is invoked in a state 
+	 *                               other than {@link State#STEP_2}.
+	 * @throws SRP6Exception         If the session has timed out or the 
+	 *                               server evidence message 'M2' is 
+	 *                               invalid.
 	 */
-	function getPadded(bi, length) {
-		var bytes = bi.toByteArray();
-		var unsignedBytes = [];
-		var stripLeading = true;
-		for( var i = 0; i < bytes.length; i++ ) {
-			var b = bytes[i];
-			if( stripLeading && b == 0 ) {
-				// to nothing
-			} else {
-				unsignedBytes.push(b);
-				stripLeading = false;
-			}
-		}
-		var padded = unsignedBytes;
-		if( unsignedBytes.length < length ) {
-			// TODO add padding but not actually required for sha256,N_1024,G_2 case
-			
-		} 
-		return padded;
-	} 
-	
-	/**
-	 * Computes the random scrambling parameter u = H(PAD(A) | PAD(B))
-	 *
-	 * <p>Specification: RFC 5054.
-	 *
-	 * @param digest The hash function 'H'. Must not be {@code null}.
-	 * @param N      The prime parameter 'N'. Must not be {@code null}.
-	 * @param A      The public client value 'A'. Must not be {@code null}.
-	 * @param B      The public server value 'B'. Must not be {@code null}.
-	 *
-	 * @return The resulting 'u' value.
-	 */
-	 function computeU(Astr, Bstr) {
-	 	check(Astr);
-	 	check(Bstr);
-		var A = fromHex(Astr);
-		var B = fromHex(Bstr);
-		var Abin = getPadded(A, 128);
-		var Bbin = getPadded(B, 128);
+	function step3(M2) {
+		check(M2);
 		
-		var concat = [];
+		// Check current state
+		if (state != STEP_2)
+			throw new Error("IllegalStateException State violation: Session must be in STEP_2 state");
+
+		//console.log("jsA:" + toHex(A));
+		//console.log("jsM1_2:" + M1str);
+		//console.log("jsS:" + toHex(S));
 		
-		for( var i = 0; i < Abin.length; i++ ) {
-			concat.push(Abin[i]);
+		var computedM2 = H(toHex(A)+M1str+toHex(S));
+		
+		//console.log("jsServerM2:" + M2);
+		//console.log("jsClientM2:" + computedM2);
+		
+		if (! computedM2.equals(M2)) {
+			console.log("server  M2:"+M2+"\ncomputedM2:"+computedM2);
+			throw new Error("SRP6Exception Bad server credentials");
 		}
 
-		for( var i = 0; i < Bbin.length; i++ ) {
-			concat.push(Bbin[i]);
-		}
-
-		var output = moduleSHA256.hashBinaryArray(concat, concat.length);
-
-		return output;
+		state = STEP_3;
 	}
 	
 	// exported api
@@ -276,6 +305,7 @@ var SRP6JavascriptClientSession_N1024_SHA256 = (function(){
 		'generateVerifier': generateVerifier,
 		'computeU': computeU,
 		'step1': step1,
-		'step2': step2
+		'step2': step2,
+		'step3': step3
 	};
 });

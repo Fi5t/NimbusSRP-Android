@@ -13,7 +13,7 @@ import java.math.BigInteger;
  * @author John Kim
  * @author others
  */
-public class Hex {
+public class BigIntegerUtils {
 
 	/**
 	 * Encodes the specified big integer into a hex string.
@@ -21,7 +21,7 @@ public class Hex {
 	 * @return The resulting hex encoded string or {@code null} if the input
 	 *         is undefined.
 	 */
-	public static String encode(final BigInteger bigint) {
+	public static String toHex(final BigInteger bigint) {
 	
 		if (bigint == null)
 			return null;
@@ -36,7 +36,7 @@ public class Hex {
 	 *
 	 * @return The resulting big integer or {@code null} if decoding failed.
 	 */
-	public static BigInteger decodeToBigInteger(final String hex) {
+	public static BigInteger fromHex(final String hex) {
 
 		if (hex == null)
 			return null;
@@ -53,7 +53,7 @@ public class Hex {
 	/**
 	 * Prevents instantiation.
 	 */
-	private Hex() {
+	private BigIntegerUtils() {
 	
 		// do nothing
 	}

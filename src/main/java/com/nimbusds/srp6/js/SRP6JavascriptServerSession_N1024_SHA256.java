@@ -2,10 +2,9 @@ package com.nimbusds.srp6.js;
 
 import java.math.BigInteger;
 
-import com.nimbusds.srp6.Hex;
 import com.nimbusds.srp6.SRP6CryptoParams;
-import com.nimbusds.srp6.SRP6Routines;
-import com.nimbusds.srp6.SRP6ServerSession;
+import static com.nimbusds.srp6.BigIntegerUtils.fromHex;
+import static com.nimbusds.srp6.BigIntegerUtils.toHex;
 
 /**
  * Wrapper of a server session setup to interface with the Javascript client
@@ -17,14 +16,19 @@ import com.nimbusds.srp6.SRP6ServerSession;
 public class SRP6JavascriptServerSession_N1024_SHA256 {
 	public static SRP6CryptoParams config = SRP6CryptoParams.getInstance(1024, "SHA-256");
 	
-	protected SRP6ServerSession session = new SRP6ServerSession(config);
+	protected SRP6JavascriptServerSession session = new SRP6JavascriptServerSession(config);
 
 	public SRP6JavascriptServerSession_N1024_SHA256() {
 	}
 
-	public String step1(String username, String salt, String v) {
-		BigInteger B = session.step1(username, Hex.decodeToBigInteger(salt), Hex.decodeToBigInteger(v));
-		return Hex.encode(B);
+	public String step1(final String username, final String salt, final String v) {
+		BigInteger B = session.step1(username, fromHex(salt), fromHex(v));
+		return toHex(B);
+	}
+
+	public String step2(final String A, final String M1) throws Exception {
+		BigInteger M2 = session.step2(fromHex(A), fromHex(M1));
+		return toHex(M2);
 	}
 
 	/**
@@ -32,5 +36,5 @@ public class SRP6JavascriptServerSession_N1024_SHA256 {
 	 * from the server than recomputed in every javascript client it can be
 	 * cached statically.
 	 */
-	public static String k = Hex.encode(SRP6Routines.computeK(config.getMessageDigestInstance(), config.N, config.g));
+	public static String k = toHex(SRP6JavascriptRoutines.computeK(config.getMessageDigestInstance(), config.N, config.g));
 }

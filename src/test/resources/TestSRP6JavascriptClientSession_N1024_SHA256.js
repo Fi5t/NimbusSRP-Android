@@ -18,11 +18,15 @@ var salt = "132ce4591a29220827c6198169ea4320";
 var username = "tom@arcot.com";
 var password = "password1234";
 
-// we test the javascript client verifier generation against the java logic
+// we test the javascript client verifier generation against work-alike test java
 var javaMockClient = Packages.com.nimbusds.srp6.js.TestDouble_N1024_SHA256;
 
 // we test against a java session which uses the same string concat hashing as the javascript client
 var javaServerSession = Packages.com.nimbusds.srp6.js.SRP6JavascriptServerSession_N1024_SHA256;
+
+function fromHex(h) {
+	return new BigInteger(h, 16);
+}
 
 tests({
 
@@ -84,6 +88,7 @@ tests({
 	/**
 	Here check the js verifier code against a java work-alike and sanity check both 
 	have same size hex output as the original nimbus routine. 
+
 	verifierTest: function() {
 		var javaClientSession = new javaMockClient();
 		var jsClientSession = SRP6JavascriptClientSession_N1024_SHA256();
@@ -106,7 +111,6 @@ tests({
 		// assert that the javascript verifier values is matches the java work-alike 
 		assert.assertEquals(javaV2, jsV);
 	}, 
-	*/
 
 	testComputeU: function() {
 		var javaClientSession = new javaMockClient();
@@ -115,17 +119,17 @@ tests({
 		var Bstr = "8495AF984029EA9E7DAFF6D4D633BE5E3A6A044D25C154E43D60B78E94FCBB8E3E6C16B1AF2E17550ACF845E1FAE005F73837EBD7128CAD080565DD10A8AF6ABC76BDD1D46BFFDFF27897C14CF1C96B9D0147D471BD585A241EEF6D3C3DDD4B189B85D9EB9DD91952CD352C339065D03E9BD583C4D81CFE939D81C322BE24F9C";
 		var javaU = javaClientSession.computeU(Astr, Bstr);
 		
-		console.log("javaU:"+javaU);
+		//console.log("javaU:"+javaU);
 		
 		var jsClientSession = SRP6JavascriptClientSession_N1024_SHA256();
 		
 		var jsU = jsClientSession.computeU(Astr, Bstr);
 		
-		console.log("jsU:"+jsU);
+		//console.log("jsU:"+jsU.toString(16));
 		
-		assert.assertEquals(javaU, jsU);
+		assert.assertEquals(javaU, jsU.toString(16).toUpperCase());
 	},
-
+	*/
 	/**
 	
 	*/
@@ -134,16 +138,19 @@ tests({
 		var client = SRP6JavascriptClientSession_N1024_SHA256();
 		
 		var v = client.generateVerifier(salt, username, password);
-		
 		client.step1(username,password);
 		
 		var server = new javaServerSession();
 		var B = server.step1(username, salt, v);
 		
-		//console.log("B:"+B);
-		//console.log("k:"+javaServerSession.k);
+		var credentials = client.step2(salt, B, javaServerSession.k);
 		
-		var credentialsAandM1 = client.step2(salt, B, javaServerSession.k);
+		console.log("A:"+credentials.A);
+		console.log("M1:"+credentials.M1);
+		
+		var M2 = server.step2(credentials.A, credentials.M1);
+		
+		client.step3(M2);
 	}
 	
 });

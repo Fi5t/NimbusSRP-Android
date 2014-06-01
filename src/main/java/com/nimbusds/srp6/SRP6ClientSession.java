@@ -323,22 +323,25 @@ public class SRP6ClientSession extends SRP6Session {
 	
 	
 	/**
-	 * Receives the server evidence message 'M1'. The session is incremented
-	 * to {@link State#STEP_3}.
-	 *
-	 * <p>Argument origin:
+	 * Receives the server evidence message 'M1'. The session is incremented to
+	 * {@link State#STEP_3}.
+	 * 
+	 * <p>
+	 * Argument origin:
 	 * 
 	 * <ul>
-	 *     <li>From server: evidence message 'M2'.
+	 * <li>From server: evidence message 'M2'.
 	 * </ul>
-	 *
-	 * @param M2 The server evidence message 'M2'. Must not be {@code null}.
-	 *
-	 * @throws IllegalStateException If the mehod is invoked in a state 
-	 *                               other than {@link State#STEP_2}.
-	 * @throws SRP6Exception         If the session has timed out or the 
-	 *                               server evidence message 'M2' is 
-	 *                               invalid.
+	 * 
+	 * @param M2
+	 *            The server evidence message 'M2'. Must not be {@code null}.
+	 * 
+	 * @throws IllegalStateException
+	 *             If the method is invoked in a state other than
+	 *             {@link State#STEP_2}.
+	 * @throws SRP6Exception
+	 *             If the session has timed out or the server evidence message
+	 *             'M2' is invalid.
 	 */
 	public void step3(final BigInteger M2)
 		throws SRP6Exception {
