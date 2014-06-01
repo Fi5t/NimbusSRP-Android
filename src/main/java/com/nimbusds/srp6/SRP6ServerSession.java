@@ -188,7 +188,7 @@ public class SRP6ServerSession extends SRP6Session {
 		k = SRP6Routines.computeK(digest, config.N, config.g);
 		digest.reset();
 		
-		b = SRP6Routines.generatePrivateValue(digest, config.N, random);
+		b = SRP6Routines.generatePrivateValue(config.N, random);
 		digest.reset();
 		
 		B = SRP6Routines.computePublicServerValue(config.N, config.g, k, v, b);

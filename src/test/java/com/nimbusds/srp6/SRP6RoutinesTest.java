@@ -149,12 +149,12 @@ public class SRP6RoutinesTest extends TestCase {
 		System.out.println("Verifier 'v': " + v.toString(16));
 		
 		// generate client A
-		BigInteger a = SRP6Routines.generatePrivateValue(newMessageDigest(), N, random);
+		BigInteger a = SRP6Routines.generatePrivateValue(N, random);
 		BigInteger A = SRP6Routines.computePublicClientValue(N, g, a);
 		System.out.println("Client 'A': " + A.toString(16));
 		
 		// generate server B
-		BigInteger b = SRP6Routines.generatePrivateValue(newMessageDigest(), N, random);
+		BigInteger b = SRP6Routines.generatePrivateValue(N, random);
 		BigInteger k = SRP6Routines.computeK(newMessageDigest(), N, g);
 		BigInteger B = SRP6Routines.computePublicServerValue(N, g, k, v, b);
 		System.out.println("Server 'B': " + B.toString(16));
@@ -202,12 +202,12 @@ public class SRP6RoutinesTest extends TestCase {
 		System.out.println("Verifier 'v': " + v.toString(16));
 		
 		// generate client A
-		BigInteger a = SRP6Routines.generatePrivateValue(newMessageDigest(), N, random);
+		BigInteger a = SRP6Routines.generatePrivateValue(N, random);
 		BigInteger A = SRP6Routines.computePublicClientValue(N, g, a);
 		System.out.println("Client 'A': " + A.toString(16));
 		
 		// generate server B
-		BigInteger b = SRP6Routines.generatePrivateValue(newMessageDigest(), N, random);
+		BigInteger b = SRP6Routines.generatePrivateValue(N, random);
 		BigInteger k = SRP6Routines.computeK(newMessageDigest(), N, g);
 		BigInteger B = SRP6Routines.computePublicServerValue(N, g, k, v, b);
 		System.out.println("Server 'B': " + B.toString(16));

@@ -125,8 +125,7 @@ public class SRP6Routines {
 	 *
 	 * @return The resulting client or server private value ('a' or 'b').
 	 */
-	public static BigInteger generatePrivateValue(final MessageDigest digest, 
-	                                              final BigInteger N,
+	public static BigInteger generatePrivateValue(final BigInteger N,
 	                                              final SecureRandom random) {
 	 
 		final int minBits = Math.min(256, N.bitLength() / 2);
@@ -362,8 +361,9 @@ public class SRP6Routines {
 		final int padLength = (N.bitLength() + 7) / 8;
 		
 		byte[] n1_bytes = getPadded(n1, padLength);
+
 		byte[] n2_bytes = getPadded(n2, padLength);
-		
+
 		digest.update(n1_bytes);
 		digest.update(n2_bytes);
 		
@@ -409,13 +409,13 @@ public class SRP6Routines {
 	
 		byte[] bytes = value.toByteArray();
         
-        	// remove leading zero if any
-        	if (bytes[0] == 0) {
-			
+		// remove leading zero if any
+		if (bytes[0] == 0) {
+
 			byte[] tmp = new byte[bytes.length - 1];
-            
+
 			System.arraycopy(bytes, 1, tmp, 0, tmp.length);
-            
+
 			return tmp;
 		}
         

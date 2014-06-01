@@ -38,26 +38,55 @@ var SRP6JavascriptClientSession_N1024_SHA256 = (function(){
 		return SHA256(x).toLowerCase();
 	}
   
-  	// private helper
+	/**
+	 * The session is initialised and ready to begin authentication
+	 * by proceeding to {@link #STEP_1}.
+	 */
+	var INIT = 0;
+		
+	/**
+	 * The authenticating user has input their identity 'I' 
+	 * (username) and password 'P'. The session is ready to proceed
+	 * to {@link #STEP_2}.
+	 */
+	var STEP_1 = 1;
+		
+	/**
+	 * The user identity 'I' is submitted to the server which has 
+	 * replied with the matching salt 's' and its public value 'B' 
+	 * based on the user's password verifier 'v'. The session is 
+	 * ready to proceed to {@link #STEP_3}.
+	 */
+	var STEP_2 = 2;
+		
+	/**
+	 * The client public key 'A' and evidence message 'M1' are
+	 * submitted and the server has replied with own evidence
+	 * message 'M2'. The session is finished (authentication was 
+	 * successful or failed).
+	 */
+	var STEP_3 = 3;
+  
+  	// public helper
 	function toHex(n) {
 		return n.toString(16);
 	}
 	
-	// private helper
+	// public helper
 	function fromHex(s) {
 		return new BigInteger(s, 16);
 	}
 	
-	var _state = 1;
+	var state = INIT;
 	
 	// public initializer
-	function init(state) {
-		_state = state;
+	function init(_state) {
+		state = _state;
 	}
 	
 	// public getter
 	function getState() {
-		return _state;
+		return state;
 	}
 	
     // public
@@ -65,7 +94,7 @@ var SRP6JavascriptClientSession_N1024_SHA256 = (function(){
 		return random16byteHex.random();
 	}
 	
-	var x, v;
+	var x, v, I, P;
 	
 	// private
 	function check(v, name) {
@@ -111,11 +140,142 @@ var SRP6JavascriptClientSession_N1024_SHA256 = (function(){
 		return toHex(v);
 	}
 	
+	/**
+	 * Records the identity 'I' and password 'P' of the authenticating user.
+	 * The session is incremented to {@link State#STEP_1}.
+	 * <p>Argument origin:
+	 * <ul>
+	 *     <li>From user: user identity 'I' and password 'P'.
+	 * </ul>
+	 * @param userID   The identity 'I' of the authenticating user, UTF-8
+	 *                 encoded. Must not be {@code null} or empty.
+	 * @param password The user password 'P', UTF-8 encoded. Must not be
+	 *                 {@code null}.
+	 * @throws IllegalStateException If the method is invoked in a state 
+	 *                               other than {@link State#INIT}.
+	 */
+	function step1(identity, password) {
+		check(identity, "identity");
+		check(password, "password");
+		I = identity;
+		P = password;
+		if( state != INIT ) {
+		  throw new Error("IllegalStateException not in state INIT");
+		}
+		state = STEP_1;
+	}
+	
+	var s, B, A, a, k;
+	
+	/**
+	 * Receives the password salt 's' and public value 'B' from the server.
+	 * The SRP-6a crypto parameters are also set. The session is incremented
+	 * to {@link State#STEP_2}.
+	 * <p>Argument origin:
+	 * <ul>
+	 *     <li>From server: password salt 's', public value 'B'.
+	 *     <li>Pre-agreed: crypto parameters prime 'N', 
+	 *         generator 'g' and hash function 'H'.
+	 * </ul>
+	 * @param s      The password salt 's'. Must not be {@code null}.
+	 * @param B      The public server value 'B'. Must not be {@code null}.
+	 * @param k      k is H(N,g) with padding by the server. Must not be {@code null}.
+	 * @return The client credentials consisting of the client public key 
+	 *         'A' and the client evidence message 'M1'.
+	 * @throws IllegalStateException If the method is invoked in a state 
+	 *                               other than {@link State#STEP_1}.
+	 * @throws SRP6Exception         If the public server value 'B' is invalid.
+	 */
+	function step2(ss, BB, kk) {
+		check(ss);
+		check(BB);
+		check(kk);
+		s = ss;
+		B = BB;
+		k = kk;
+		var x = generateX(s, I, P);
+		// 1024 bit N implies 512 bit key implies 2 x 16byte random implies twice salt generation
+		var aStr = generateRandomSalt() + generateRandomSalt();
+		a = fromHex(aStr);
+		A = g.modPow(a, N);
+		
+	}
+	
+	/**
+	 * Pads a big integer with leading zeros up to the specified length.
+	 *
+	 * @param n      The big integer to pad. Must not be {@code null}.
+	 * @param length The required length of the padded big integer as a
+	 *               byte array.
+	 *
+	 * @return The padded big integer as a byte array.
+	 */
+	function getPadded(bi, length) {
+		var bytes = bi.toByteArray();
+		var unsignedBytes = [];
+		var stripLeading = true;
+		for( var i = 0; i < bytes.length; i++ ) {
+			var b = bytes[i];
+			if( stripLeading && b == 0 ) {
+				// to nothing
+			} else {
+				unsignedBytes.push(b);
+				stripLeading = false;
+			}
+		}
+		var padded = unsignedBytes;
+		if( unsignedBytes.length < length ) {
+			// TODO add padding but not actually required for sha256,N_1024,G_2 case
+			
+		} 
+		return padded;
+	} 
+	
+	/**
+	 * Computes the random scrambling parameter u = H(PAD(A) | PAD(B))
+	 *
+	 * <p>Specification: RFC 5054.
+	 *
+	 * @param digest The hash function 'H'. Must not be {@code null}.
+	 * @param N      The prime parameter 'N'. Must not be {@code null}.
+	 * @param A      The public client value 'A'. Must not be {@code null}.
+	 * @param B      The public server value 'B'. Must not be {@code null}.
+	 *
+	 * @return The resulting 'u' value.
+	 */
+	 function computeU(Astr, Bstr) {
+	 	check(Astr);
+	 	check(Bstr);
+		var A = fromHex(Astr);
+		var B = fromHex(Bstr);
+		var Abin = getPadded(A, 128);
+		var Bbin = getPadded(B, 128);
+		
+		var concat = [];
+		
+		for( var i = 0; i < Abin.length; i++ ) {
+			concat.push(Abin[i]);
+		}
+
+		for( var i = 0; i < Bbin.length; i++ ) {
+			concat.push(Bbin[i]);
+		}
+
+		var output = moduleSHA256.hashBinaryArray(concat, concat.length);
+
+		return output;
+	}
+	
 	// exported api
 	return {
+		'toHex': toHex,
+		'fromHex': fromHex,
 		'init': init,
 		'getState': getState,
 		'generateRandomSalt': generateRandomSalt,
-		'generateVerifier': generateVerifier
+		'generateVerifier': generateVerifier,
+		'computeU': computeU,
+		'step1': step1,
+		'step2': step2
 	};
 });
