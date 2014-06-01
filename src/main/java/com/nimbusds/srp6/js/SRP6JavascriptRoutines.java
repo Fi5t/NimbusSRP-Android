@@ -77,15 +77,7 @@ public class SRP6JavascriptRoutines extends SRP6Routines {
 	                                                  final BigInteger M1,
 	                                                  final BigInteger S) {
 	
-		String[] values = { toHex(A), toHex(M1), toHex(S) };
-		final StringBuilder builder = new StringBuilder();
-		for (String v : values) {
-			builder.append(v);
-		}
-		System.out.println("jvAM1S:" + builder.toString());
-		final byte[] bytes = builder.toString().getBytes(utf8);
-		digest.update(bytes, 0, bytes.length);
-		return new BigInteger(1, digest.digest());
+		return hashValues(digest, toHex(A), toHex(M1), toHex(S));
 	}
 	
 	/**
