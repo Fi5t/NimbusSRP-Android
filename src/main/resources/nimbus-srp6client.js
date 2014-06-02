@@ -109,6 +109,7 @@ var SRP6JavascriptClientSession_N1024_SHA256 = (function(){
 	 * 
 	 * Computes x = H(s | H(I | ":" | P))
 	 * <p> Uses string concatination before hashing. 
+	 * <p> Specification RFC 2945
 	 *
 	 * @param salt     The salt 's'. Must not be null or empty.
 	 * @param identity The user identity/email 'I'. Must not be null or empty.
@@ -130,6 +131,7 @@ var SRP6JavascriptClientSession_N1024_SHA256 = (function(){
 	 * 
 	 * Generates a new verifier 'v' from the specified parameters.
 	 * <p>The verifier is computed as v = g^x (mod N). 
+	 * <p> Specification RFC 2945
 	 *
 	 * @param salt     The salt 's'. Must not be null or empty.
 	 * @param identity The user identity/email 'I'. Must not be null or empty.
@@ -171,6 +173,7 @@ var SRP6JavascriptClientSession_N1024_SHA256 = (function(){
 	
 	/**
 	 * Computes the random scrambling parameter u = H(A | B)
+	 * <p> Specification RFC 2945
 	 *
 	 * @param A      The public client value 'A'. Must not be {@code null}.
 	 * @param B      The public server value 'B'. Must not be {@code null}.
@@ -235,7 +238,17 @@ var SRP6JavascriptClientSession_N1024_SHA256 = (function(){
 		//console.log("M1 js BB:" + BB);
 		check(kk);
 		//console.log("M1 js kk:" + kk);
+		
+		if( state != STEP_1 ) {
+		  throw new Error("IllegalStateException not in state STEP_1");
+		}
+		
 		B = fromHex(BB); 
+		
+		if (B.mod(N).equals(BigInteger.ZERO)) {
+		  throw new Error("SRP6Exception dad server public value 'B'");
+		}
+		
 		//console.log("M1 js B:" + B);
 		k = fromHex(kk);
 		//console.log("M1 js k:" + k);

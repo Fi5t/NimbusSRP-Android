@@ -116,6 +116,10 @@ public abstract class SRP6Session {
 	 */
 	protected ServerEvidenceRoutine serverEvidenceRoutine = null;
 	
+	/**
+	 * Custom routine for the hashed keys 'u' computation.
+	 */
+	protected HashedKeysRoutine hashedKeysRoutine = null;
 	
 	/**
 	 * Optional storage of arbitrary session attributes.
@@ -281,10 +285,32 @@ public abstract class SRP6Session {
 		return serverEvidenceRoutine;
 	}
 	
-	
+	/**
+	 * Gets the custom routine to compute hashed keys 'u' a 'H(A | B)'.
+	 * 
+	 * @return The routine instance or {@code null} if the default
+	 *         {@link SRP6Routines#computeU} is to be used.
+	 */
+	public HashedKeysRoutine getHashedKeysRoutine() {
+		return hashedKeysRoutine;
+	}
+
+	/**
+	 * Sets a custom routine to compute hashed keys 'u' a 'H(A | B)'. Note that
+	 * the custom routine must be set prior to
+	 * {@link SRP6ServerSession.State#STEP_2}.
+	 * 
+	 * @param routine
+	 *            The hashed kyes 'u' routine or {@code null} to use the default
+	 *            {@link SRP6Routines#computeU}.
+	 */
+	public void setHashedKeysRoutine(HashedKeysRoutine hashedKeysRoutine) {
+		this.hashedKeysRoutine = hashedKeysRoutine;
+	}
+
 	/**
 	 * Gets the password salt 's'.
-	 *
+	 * 
 	 * @return The salt 's' if available, else {@code null}.
 	 */
 	public BigInteger getSalt() {

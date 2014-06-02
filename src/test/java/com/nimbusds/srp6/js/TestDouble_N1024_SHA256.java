@@ -6,6 +6,7 @@ import java.security.MessageDigest;
 
 import com.nimbusds.srp6.BigIntegerUtils;
 import com.nimbusds.srp6.SRP6CryptoParams;
+import com.nimbusds.srp6.SRP6HashedKeysContext;
 import com.nimbusds.srp6.SRP6VerifierGenerator;
 
 /**
@@ -15,6 +16,8 @@ import com.nimbusds.srp6.SRP6VerifierGenerator;
 public class TestDouble_N1024_SHA256 {
 	public static SRP6CryptoParams config = SRP6CryptoParams.getInstance(1024, "SHA-256");
 	private SRP6VerifierGenerator verifierGen = new SRP6VerifierGenerator(config);
+
+	private HexHashedKeysRoutine hexStringHashedKeysRoutine = new HexHashedKeysRoutine();
 
 	public BigInteger fromHex(String hex) {
 		return new BigInteger(hex, 16);
@@ -65,8 +68,7 @@ public class TestDouble_N1024_SHA256 {
 	}
 
 	public String computeU(String Astr, String Bstr) {
-		MessageDigest digest = config.getMessageDigestInstance();
-		BigInteger u = SRP6JavascriptRoutines.computeU(digest, Astr, Bstr);
+		BigInteger u = hexStringHashedKeysRoutine.computeU(config, new SRP6HashedKeysContext(fromHex(Astr), fromHex(Bstr)));
 		return toHex(u);
 	}
 }

@@ -465,8 +465,7 @@ public class SRP6Routines {
 		return new BigInteger(max.subtract(min).bitLength() - 1, random).add(min);
 	}
 
-	protected SRP6Routines() {
-
+	private SRP6Routines() {
 		// empty
 	}
 }
