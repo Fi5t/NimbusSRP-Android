@@ -5,7 +5,7 @@ import java.nio.charset.Charset;
 import java.security.MessageDigest;
 
 /**
- * Secure Remote Password (SRP-6a) hashing routine for a Java compatible with
+ * Secure Remote Password (SRP-6a) hashing routine for Java compatible with
  * browser implementations by using hashing of string concatenated hex strings.
  * 
  * <p>

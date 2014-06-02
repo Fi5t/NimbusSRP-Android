@@ -15,11 +15,11 @@ import static com.nimbusds.srp6.BigIntegerUtils.fromHex;
 import static com.nimbusds.srp6.BigIntegerUtils.toHex;
 
 /**
- * Wrapper of a server session setup to interface with the Javascript client
- * session SRP6JavascriptClientSession_N1024_SHA256. BigInteger values are
- * communicated as hex strings. Hashing is done as string concat of hex numbers.
- * Does not include any session timeout logic on the assumption that can be
- * handled by web server session logic.
+ * Wrapper of a server session matching the Javascript client session
+ * SRP6JavascriptClientSession_N1024_SHA256. BigInteger values are communicated
+ * as hex strings. Hashing is done as string concat of hex numbers. Does not
+ * include any session timeout logic on the assumption that can be handled by
+ * web server session logic.
  * <p>
  * Specification RFC 2945.
  * 

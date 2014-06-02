@@ -10,8 +10,8 @@ import com.nimbusds.srp6.SRP6CryptoParams;
 
 /**
  * Custom routine interface for computing the client evidence message 'M1'.
- * Compatible with browser implementations by using hashing of string
- * concatenated hex strings.
+ * Compatible with browser implementations by using hashing of concatenated hex
+ * strings.
  * 
  * <p>
  * Specification RFC 2945
