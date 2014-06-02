@@ -15,7 +15,7 @@ import java.math.BigInteger;
  * 
  * @author Simon Massey
  */
-public interface HashedKeysRoutine {
+public interface URoutine {
 
 
 	/**
@@ -29,6 +29,6 @@ public interface HashedKeysRoutine {
 	 * 
 	 * @return The resulting 'u' as 'H(A | B)'.
 	 */
-	public BigInteger computeU(final SRP6CryptoParams cryptoParams, final SRP6HashedKeysContext ctx);
+	public BigInteger computeU(final SRP6CryptoParams cryptoParams, final URoutineContext ctx);
 
 }

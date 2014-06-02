@@ -3,7 +3,7 @@ package com.nimbusds.srp6.js;
 import java.math.BigInteger;
 
 import com.nimbusds.srp6.ClientEvidenceRoutine;
-import com.nimbusds.srp6.HashedKeysRoutine;
+import com.nimbusds.srp6.URoutine;
 import com.nimbusds.srp6.SRP6CryptoParams;
 import com.nimbusds.srp6.SRP6Exception;
 import com.nimbusds.srp6.SRP6Routines;
@@ -33,7 +33,7 @@ public class SRP6JavascriptServerSession_N1024_SHA256 {
 
 	protected SRP6ServerSession session = new SRP6ServerSession(config);
 
-	protected final HashedKeysRoutine hexStringHashedKeysRoutine = new HexHashedKeysRoutine();
+	protected final URoutine hexStringHashedKeysRoutine = new HexHashedURoutine();
 	protected final ClientEvidenceRoutine hexStringHashedclientEvidenceRoutine = new HexHashedClientEvidenceRoutine();
 	protected final ServerEvidenceRoutine hexStringHashedServerEvidenceRoutine = new HexHashedServerEvidenceRoutine();
 

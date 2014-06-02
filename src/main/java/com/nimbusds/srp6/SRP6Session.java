@@ -119,7 +119,7 @@ public abstract class SRP6Session {
 	/**
 	 * Custom routine for the hashed keys 'u' computation.
 	 */
-	protected HashedKeysRoutine hashedKeysRoutine = null;
+	protected URoutine hashedKeysRoutine = null;
 	
 	/**
 	 * Optional storage of arbitrary session attributes.
@@ -291,7 +291,7 @@ public abstract class SRP6Session {
 	 * @return The routine instance or {@code null} if the default
 	 *         {@link SRP6Routines#computeU} is to be used.
 	 */
-	public HashedKeysRoutine getHashedKeysRoutine() {
+	public URoutine getHashedKeysRoutine() {
 		return hashedKeysRoutine;
 	}
 
@@ -304,7 +304,7 @@ public abstract class SRP6Session {
 	 *            The hashed kyes 'u' routine or {@code null} to use the default
 	 *            {@link SRP6Routines#computeU}.
 	 */
-	public void setHashedKeysRoutine(HashedKeysRoutine hashedKeysRoutine) {
+	public void setHashedKeysRoutine(URoutine hashedKeysRoutine) {
 		this.hashedKeysRoutine = hashedKeysRoutine;
 	}
 

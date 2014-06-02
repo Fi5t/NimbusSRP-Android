@@ -291,7 +291,7 @@ public class SRP6ServerSession extends SRP6Session {
 			throw new SRP6Exception("Bad client credentials", SRP6Exception.CauseType.BAD_CREDENTIALS);
 		
 		if (hashedKeysRoutine != null) {
-			SRP6HashedKeysContext hashedKeysContext = new SRP6HashedKeysContext(A, B);
+			URoutineContext hashedKeysContext = new URoutineContext(A, B);
 			u = hashedKeysRoutine.computeU(config, hashedKeysContext);
 		} else {
 			u = SRP6Routines.computeU(digest, config.N, A, B);

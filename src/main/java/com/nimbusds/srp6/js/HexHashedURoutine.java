@@ -4,9 +4,9 @@ import static com.nimbusds.srp6.BigIntegerUtils.toHex;
 
 import java.math.BigInteger;
 
-import com.nimbusds.srp6.HashedKeysRoutine;
+import com.nimbusds.srp6.URoutine;
 import com.nimbusds.srp6.SRP6CryptoParams;
-import com.nimbusds.srp6.SRP6HashedKeysContext;
+import com.nimbusds.srp6.URoutineContext;
 
 /**
  * Custom routine interface for computing the hashed keys 'u'. Compatible with
@@ -17,7 +17,7 @@ import com.nimbusds.srp6.SRP6HashedKeysContext;
  * 
  * @author Simon Massey
  */
-final class HexHashedKeysRoutine implements HashedKeysRoutine {
+final class HexHashedURoutine implements URoutine {
 
 	/**
 	 * Computes the random scrambling parameter u = H(A | B)
@@ -32,7 +32,7 @@ final class HexHashedKeysRoutine implements HashedKeysRoutine {
 	 * @return The resulting 'u' value as as 'H( HEX(A) | HEX(B) )'.
 	 */
 	@Override
-	public BigInteger computeU(SRP6CryptoParams cryptoParams, SRP6HashedKeysContext ctx) {
+	public BigInteger computeU(SRP6CryptoParams cryptoParams, URoutineContext ctx) {
 		return HexHashedRoutines.hashValues(cryptoParams.getMessageDigestInstance(), toHex(ctx.A), toHex(ctx.B));
 	}
 }
