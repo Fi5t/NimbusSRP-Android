@@ -1,3 +1,4 @@
+// Copyright 2013 Benji Weber http://benjiweber.co.uk/blog/2013/01/27/javascript-tests-with-junit/
 var assert = Packages.org.junit.Assert;
 var jsAssert = {};
 var TestCase = Packages.uk.co.benjiweber.junitjs.TestCase;
