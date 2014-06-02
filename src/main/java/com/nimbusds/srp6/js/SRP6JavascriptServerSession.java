@@ -292,8 +292,10 @@ public class SRP6JavascriptServerSession extends SRP6JavascriptSession {
 			throw new SRP6Exception("Bad client public value 'A'", SRP6Exception.CauseType.BAD_PUBLIC_VALUE);
 		
 		// Check for previous mock step 1
-		if (noSuchUserIdentity)
+		if (noSuchUserIdentity) {
+			System.err.println("erroring as noSuchUserIdentity");
 			throw new SRP6Exception("Bad client credentials", SRP6Exception.CauseType.BAD_CREDENTIALS);
+		}
 		
 		u = SRP6JavascriptRoutines.computeU(digest, toHex(A), toHex(B));
 		digest.reset();
@@ -319,10 +321,14 @@ public class SRP6JavascriptServerSession extends SRP6JavascriptSession {
 			digest.reset();
 		}
 		
-		// System.out.println("jvM1:" + toHex(computedM1));
-
-		if (! computedM1.equals(M1))
+		// System.out.println("M1 jv A:" + toHex(A));
+		// System.out.println("M1 jv B:" + toHex(B));
+		// System.out.println("M1 jv S:" + toHex(S));
+		// System.out.println("M1 jv computedM1:" + toHex(computedM1));
+		// System.out.println("M1 jv client  M1:" + toHex(M1));
+		if (!computedM1.equals(M1)) {
 			throw new SRP6Exception("Bad client credentials", SRP6Exception.CauseType.BAD_CREDENTIALS);
+		}
 	
 		state = State.STEP_2;
 		
@@ -335,9 +341,9 @@ public class SRP6JavascriptServerSession extends SRP6JavascriptSession {
 			M2 = serverEvidenceRoutine.computeServerEvidence(config, ctx);
 		}
 		else {
-			System.out.println("jvA:" + toHex(A));
-			System.out.println("jvM1:" + toHex(M1));
-			System.out.println("jvS:" + toHex(S));
+			// System.out.println("jvA:" + toHex(A));
+			// System.out.println("jvM1:" + toHex(M1));
+			// System.out.println("jvS:" + toHex(S));
 			// With default routine
 			M2 = SRP6JavascriptRoutines.computeServerEvidence(digest, A, M1, S);
 		}

@@ -75,7 +75,8 @@ var SRP6JavascriptClientSession_N1024_SHA256 = (function(){
 	
 	// public helper
 	function fromHex(s) {
-		return new BigInteger(s, 16);
+		var ss = ""+s; // jdk1.7 rhino requires string concat
+		return new BigInteger(ss, 16);
 	}
 	
 	var state = INIT;
@@ -99,8 +100,8 @@ var SRP6JavascriptClientSession_N1024_SHA256 = (function(){
 	
 	// private
 	function check(v, name) {
-		if( typeof v == 'undefined' || v == null || v == "" ) {
-			throw new Error(name+" must not be null or empty");
+		if( typeof v == 'undefined' || v == null || v == "" || v == "0" ) {
+			throw new Error(name+" must not be null, empty or zero");
 		}
 	}
 	
@@ -229,16 +230,26 @@ var SRP6JavascriptClientSession_N1024_SHA256 = (function(){
 	 */
 	function step2(s, BB, kk) {
 		check(s);
+		//console.log("M1 js s:" + s);
 		check(BB);
+		//console.log("M1 js BB:" + BB);
 		check(kk);
-		B = fromHex(BB);
+		//console.log("M1 js kk:" + kk);
+		B = fromHex(BB); 
+		//console.log("M1 js B:" + B);
 		k = fromHex(kk);
+		//console.log("M1 js k:" + k);
+
 		var x = generateX(s, I, P);
+		//console.log("M1 js x:" + x);
 		// 1024 bit N implies 512 bit key implies 2 x 16byte random implies twice salt generation
 		var aStr = generateRandomSalt() + generateRandomSalt();
 		a = fromHex(aStr);
+		//console.log("M1 js a:" + a);
 		A = g.modPow(a, N);
+		//console.log("M1 js A:" + A);
 		u = computeU(A.toString(16),BB);
+		//console.log("M1 js u:" + u);
 		S = computeSessionKey(k, x, u, a, B);
 		
 		//console.log("jsU:" + toHex(u));
@@ -251,6 +262,11 @@ var SRP6JavascriptClientSession_N1024_SHA256 = (function(){
 		M1str = H(AA+BB+toHex(S));
 		
 		//console.log("M1str:" + M1str);
+		
+		//console.log("M1 js A:" + AA);
+		//console.log("M1 js B:" + BB);
+		//console.log("M1 js S:" + toHex(S));
+		//console.log("M1 jsM1:" + M1str);
 		
 		state = STEP_2;
 		return { A: AA, M1: M1str };
@@ -278,14 +294,14 @@ var SRP6JavascriptClientSession_N1024_SHA256 = (function(){
 		if (state != STEP_2)
 			throw new Error("IllegalStateException State violation: Session must be in STEP_2 state");
 
-		//console.log("jsA:" + toHex(A));
-		//console.log("jsM1_2:" + M1str);
-		//console.log("jsS:" + toHex(S));
+		//console.log("M2 js A:" + toHex(A));
+		//console.log("M2 jsM1:" + M1str);
+		//console.log("M2 js S:" + toHex(S));
 		
 		var computedM2 = H(toHex(A)+M1str+toHex(S));
 		
-		//console.log("jsServerM2:" + M2);
-		//console.log("jsClientM2:" + computedM2);
+		//console.log("M2 jsServerM2:" + M2);
+		//console.log("M2 jsClientM2:" + computedM2);
 		
 		if (! computedM2.equals(M2)) {
 			console.log("server  M2:"+M2+"\ncomputedM2:"+computedM2);

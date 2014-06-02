@@ -145,8 +145,8 @@ tests({
 		
 		var credentials = client.step2(salt, B, javaServerSession.k);
 		
-		console.log("A:"+credentials.A);
-		console.log("M1:"+credentials.M1);
+		//console.log("A:"+credentials.A);
+		//console.log("M1:"+credentials.M1);
 		
 		var M2 = server.step2(credentials.A, credentials.M1);
 		

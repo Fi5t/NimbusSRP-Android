@@ -32,7 +32,7 @@ public class SRP6VerifierTest extends TestCase {
 		SRP6VerifierGenerator gen = new SRP6VerifierGenerator(config);
 		
 		final byte[] salt = SRP6VerifierGenerator.generateRandomSalt();
-		System.out.println("Salt: " + new BigInteger(salt));
+		// System.out.println("Salt: " + new BigInteger(salt));
 		
 		final String userID = "alice";
 		final String password = "secret";
