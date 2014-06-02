@@ -26,7 +26,7 @@ public class SRP6SessionTest extends TestCase {
 	
 	public void testAuthSuccess() {
 	
-		System.out.println("*** Test successful authentication ***");
+		// System.out.println("*** Test successful authentication ***");
 		
 		// username + password
 		String username = "alice";
@@ -42,8 +42,8 @@ public class SRP6SessionTest extends TestCase {
 		byte[] s = SRP6VerifierGenerator.generateRandomSalt();
 		BigInteger v = verifierGen.generateVerifier(new BigInteger(s), username, password);
 		
-		System.out.println("Salt 's': " + new BigInteger(s).toString(16));
-		System.out.println("Verifier 'v': " + v.toString(16));
+		// System.out.println("Salt 's': " + new BigInteger(s).toString(16));
+		// System.out.println("Verifier 'v': " + v.toString(16));
 		
 		
 		// Init client and server
@@ -61,10 +61,10 @@ public class SRP6SessionTest extends TestCase {
 		assertEquals(SRP6ClientSession.State.STEP_1, client.getState());
 		assertEquals(SRP6ServerSession.State.STEP_1, server.getState());
 		
-		System.out.println("Client -> Server: Username: " + username);
-		System.out.println("Server -> Client: B: " + B.toString(16));
-		System.out.println("Server -> Client: salt: " + new BigInteger(s).toString(16));
-		
+		// System.out.println("Client -> Server: Username: " + username);
+		// System.out.println("Server -> Client: B: " + B.toString(16));
+		// System.out.println("Server -> Client: salt: " + new
+		// BigInteger(s).toString(16));
 		
 		// Step TWO
 		
@@ -81,7 +81,6 @@ public class SRP6SessionTest extends TestCase {
 		
 		try {
 			M2 = server.step2(cred.A, cred.M1);
-			
 		} catch (SRP6Exception e) {
 			fail("Server step 2 failed: " + e.getMessage());
 		}
@@ -89,10 +88,9 @@ public class SRP6SessionTest extends TestCase {
 		assertEquals(SRP6ClientSession.State.STEP_2, client.getState());
 		assertEquals(SRP6ServerSession.State.STEP_2, server.getState());
 		
-		System.out.println("Client -> Server: A : " + cred.A.toString(16));
-		System.out.println("Client -> Server: M1: " + cred.M1.toString(16));
-		System.out.println("Server -> Client: M2: " + M2.toString(16));
-		
+		// System.out.println("Client -> Server: A : " + cred.A.toString(16));
+		// System.out.println("Client -> Server: M1: " + cred.M1.toString(16));
+		// System.out.println("Server -> Client: M2: " + M2.toString(16));
 		
 		// STEP THREE
 		
@@ -105,6 +103,6 @@ public class SRP6SessionTest extends TestCase {
 		
 		assertEquals(SRP6ClientSession.State.STEP_3, client.getState());
 		
-		System.out.println("Auth success");
+		// System.out.println("Auth success");
 	}
 }

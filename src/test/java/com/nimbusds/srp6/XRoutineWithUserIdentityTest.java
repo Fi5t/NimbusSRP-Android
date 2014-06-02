@@ -26,7 +26,7 @@ public class XRoutineWithUserIdentityTest extends TestCase {
 	
 	public void test() {
 	
-		System.out.println("*** Test alt 'x' routine x = H(s | H(I | \":\" | P)) ***");
+		// System.out.println("*** Test alt 'x' routine x = H(s | H(I | \":\" | P)) ***");
 	
 		// Use http://srp.stanford.edu/demo/demo.html as benchmark and
 		// for test vectors
@@ -52,11 +52,11 @@ public class XRoutineWithUserIdentityTest extends TestCase {
 		assertNotNull(gen.getXRoutine());
 		
 		BigInteger v = gen.generateVerifier(salt, userID, password);
-		System.out.println("computed v: " + v);
+		// System.out.println("computed v: " + v);
 		
 		// From demo
 		BigInteger targetV = BigIntegerUtils.fromHex("100e0c40a5c281dbfb046911634f8e69d3469964863c01eb4683d8d182926da72");
-		System.out.println("target   v: " + targetV);
+		// System.out.println("target   v: " + targetV);
 		
 		assertEquals(targetV, v);
 	}

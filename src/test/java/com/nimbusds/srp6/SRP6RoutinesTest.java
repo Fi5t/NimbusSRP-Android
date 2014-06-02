@@ -8,7 +8,6 @@ import java.security.SecureRandom;
 
 import junit.framework.*;
 
-
 /**
  * Tests the SRP-6a utility methods.
  *
@@ -130,8 +129,6 @@ public class SRP6RoutinesTest extends TestCase {
 	
 	public void testAuthSuccess() {
 	
-		System.out.println("*** Test SRP-6a routines - auth success ***");
-	
 		SecureRandom random = new SecureRandom();
 		BigInteger N = SRP6CryptoParams.N_256;
 		BigInteger g = SRP6CryptoParams.g_common;
@@ -146,42 +143,37 @@ public class SRP6RoutinesTest extends TestCase {
 		// generate verifier
 		BigInteger x = SRP6Routines.computeX(newMessageDigest(), s, P);
 		BigInteger v = SRP6Routines.computeVerifier(N, g, x);
-		System.out.println("Verifier 'v': " + v.toString(16));
+		// System.out.println("Verifier 'v': " + v.toString(16));
 		
 		// generate client A
 		BigInteger a = SRP6Routines.generatePrivateValue(N, random);
 		BigInteger A = SRP6Routines.computePublicClientValue(N, g, a);
-		System.out.println("Client 'A': " + A.toString(16));
+		// System.out.println("Client 'A': " + A.toString(16));
 		
 		// generate server B
 		BigInteger b = SRP6Routines.generatePrivateValue(N, random);
 		BigInteger k = SRP6Routines.computeK(newMessageDigest(), N, g);
 		BigInteger B = SRP6Routines.computePublicServerValue(N, g, k, v, b);
-		System.out.println("Server 'B': " + B.toString(16));
+		// System.out.println("Server 'B': " + B.toString(16));
 		
 		// calcuate client S
-		if (! SRP6Routines.isValidPublicValue(N, B))
-			fail("Invalid server B");
+		assertTrue("Invalid server B", SRP6Routines.isValidPublicValue(N, B));
 		
 		BigInteger u = SRP6Routines.computeU(newMessageDigest(), N, A, B);
 		BigInteger S_c = SRP6Routines.computeSessionKey(N, g, k, x, u, a, B);
 		
 		// calcuate server S
-		if (! SRP6Routines.isValidPublicValue(N, A))
-			fail("Invalid client A");
+		assertTrue("Invalid client A", SRP6Routines.isValidPublicValue(N, A));
 		
 		BigInteger S_s = SRP6Routines.computeSessionKey(N, v, u, A, b);
 		
-		if (S_s.equals(S_c))
-			System.out.println("Auth success");
-		else
-			fail("Auth failure: Session key mismatch");
+		assertTrue("Auth failure: Session key mismatch", S_s.equals(S_c));
 	}
 	
 	
 	public void testAuthWithBadPassword() {
 	
-		System.out.println("*** Test SRP-6a routines - bad password ***");
+		// System.out.println("*** Test SRP-6a routines - bad password ***");
 	
 		SecureRandom random = new SecureRandom();
 		BigInteger N = SRP6CryptoParams.N_256;
@@ -199,37 +191,29 @@ public class SRP6RoutinesTest extends TestCase {
 		BigInteger x = SRP6Routines.computeX(newMessageDigest(), s, P);
 		BigInteger xBad = SRP6Routines.computeX(newMessageDigest(), s, Pbad);
 		BigInteger v = SRP6Routines.computeVerifier(N, g, x);
-		System.out.println("Verifier 'v': " + v.toString(16));
+		// System.out.println("Verifier 'v': " + v.toString(16));
 		
 		// generate client A
 		BigInteger a = SRP6Routines.generatePrivateValue(N, random);
 		BigInteger A = SRP6Routines.computePublicClientValue(N, g, a);
-		System.out.println("Client 'A': " + A.toString(16));
+		// System.out.println("Client 'A': " + A.toString(16));
 		
 		// generate server B
 		BigInteger b = SRP6Routines.generatePrivateValue(N, random);
 		BigInteger k = SRP6Routines.computeK(newMessageDigest(), N, g);
 		BigInteger B = SRP6Routines.computePublicServerValue(N, g, k, v, b);
-		System.out.println("Server 'B': " + B.toString(16));
+		// System.out.println("Server 'B': " + B.toString(16));
 		
 		// calcuate client S
-		if (! SRP6Routines.isValidPublicValue(N, B))
-			fail("Invalid server B");
+		assertTrue("Invalid server B", SRP6Routines.isValidPublicValue(N, B));
 		
 		BigInteger u = SRP6Routines.computeU(newMessageDigest(), N, A, B);
 		BigInteger S_c = SRP6Routines.computeSessionKey(N, g, k, xBad, u, a, B);
 		
-		// calcuate server S
-		if (! SRP6Routines.isValidPublicValue(N, A))
-			fail("Invalid client A");
+		assertTrue("Invalid client A", SRP6Routines.isValidPublicValue(N, A));
 		
 		BigInteger S_s = SRP6Routines.computeSessionKey(N, v, u, A, b);
 		
-		if (S_s.equals(S_c)) {
-			fail("Unexpected auth success");
-		}
-		else {
-			System.out.println("Auth failure: Session key mismatch");
-		}
+		assertFalse("Unexpected auth success", S_s.equals(S_c));
 	}
 }
