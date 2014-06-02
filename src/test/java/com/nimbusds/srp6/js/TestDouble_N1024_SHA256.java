@@ -6,7 +6,6 @@ import java.security.MessageDigest;
 
 import com.nimbusds.srp6.BigIntegerUtils;
 import com.nimbusds.srp6.SRP6CryptoParams;
-import com.nimbusds.srp6.URoutineContext;
 import com.nimbusds.srp6.SRP6VerifierGenerator;
 
 /**
@@ -16,8 +15,6 @@ import com.nimbusds.srp6.SRP6VerifierGenerator;
 public class TestDouble_N1024_SHA256 {
 	public static SRP6CryptoParams config = SRP6CryptoParams.getInstance(1024, "SHA-256");
 	private SRP6VerifierGenerator verifierGen = new SRP6VerifierGenerator(config);
-
-	private HexHashedURoutine hexStringHashedKeysRoutine = new HexHashedURoutine();
 
 	public BigInteger fromHex(String hex) {
 		return new BigInteger(hex, 16);
@@ -67,8 +64,4 @@ public class TestDouble_N1024_SHA256 {
 		return toHex(v).toLowerCase();
 	}
 
-	public String computeU(String Astr, String Bstr) {
-		BigInteger u = hexStringHashedKeysRoutine.computeU(config, new URoutineContext(fromHex(Astr), fromHex(Bstr)));
-		return toHex(u);
-	}
 }
