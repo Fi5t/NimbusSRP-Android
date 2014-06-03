@@ -33,9 +33,7 @@ public class SRP6Server extends SRP6Tool {
 	}
 	
 	
-	/**
-	 * {@inheritDoc}
-	 */
+	@Override
 	public void run()
 		throws IOException {
 		
@@ -77,7 +75,7 @@ public class SRP6Server extends SRP6Tool {
 		System.out.print("\tEnter client evidence message 'M1' (hex): ");
 		BigInteger M1 = readBigInteger();
 		
-		BigInteger M2 = null;
+		BigInteger M2;
 		
 		try {
 			M2 = server.step2(A, M1);

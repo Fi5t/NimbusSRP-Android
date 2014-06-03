@@ -37,7 +37,7 @@ public class SRP6VerifierGenerator {
 	public SRP6VerifierGenerator(final SRP6CryptoParams config) {
 	
 		if (config == null)
-			throw new NullPointerException("The SRP-6a crypto parameters must not be null");
+			throw new IllegalArgumentException("The SRP-6a crypto parameters must not be null");
 		
 		this.config = config;
 	}
@@ -118,13 +118,13 @@ public class SRP6VerifierGenerator {
 	public BigInteger generateVerifier(final byte[] salt, final byte[] userID, final byte[] password) {
 	
 		if (salt == null)
-			throw new NullPointerException("The salt 's' must not be null");
+			throw new IllegalArgumentException("The salt 's' must not be null");
 		
 		if (password == null)
-			throw new NullPointerException("The password 'P' must not be null");
+			throw new IllegalArgumentException("The password 'P' must not be null");
 	
 		// Compute the password key 'x'
-		BigInteger x = null;
+		BigInteger x;
 		
 		if (xRoutine != null) {
 			

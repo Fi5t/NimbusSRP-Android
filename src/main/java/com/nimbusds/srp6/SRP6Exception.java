@@ -32,7 +32,7 @@ public class SRP6Exception extends Exception {
 		 * SRP-6a authentication session timeout.
 		 */
 		TIMEOUT
-	};
+	}
 	
 	
 	/**
@@ -53,7 +53,7 @@ public class SRP6Exception extends Exception {
 		super(message);
 		
 		if (cause == null)
-			throw new NullPointerException("The cause type must not be null");
+			throw new IllegalArgumentException("The cause type must not be null");
 		
 		this.cause = cause;
 	}

@@ -188,7 +188,7 @@ public class SRP6ClientSession extends SRP6Session {
 		
 		
 		if (password == null)
-			throw new NullPointerException("The user password 'P' must not be null");
+			throw new IllegalArgumentException("The user password 'P' must not be null");
 			
 		this.password = password;
 		
@@ -232,7 +232,7 @@ public class SRP6ClientSession extends SRP6Session {
 	
 		// Check arguments
 		if (config == null)
-			throw new NullPointerException("The SRP-6a crypto parameters must not be null");
+			throw new IllegalArgumentException("The SRP-6a crypto parameters must not be null");
 
 		this.config = config;
 		
@@ -243,13 +243,13 @@ public class SRP6ClientSession extends SRP6Session {
 		
 		
 		if (s == null)
-			throw new NullPointerException("The salt 's' must not be null");
+			throw new IllegalArgumentException("The salt 's' must not be null");
 			
 		this.s = s;
 		
 		
 		if (B == null)
-			throw new NullPointerException("The public server value 'B' must not be null");
+			throw new IllegalArgumentException("The public server value 'B' must not be null");
 		
 		this.B = B;
 		
@@ -349,7 +349,7 @@ public class SRP6ClientSession extends SRP6Session {
 		// Check argument
 		
 		if (M2 == null)
-			throw new NullPointerException("The server evidence message 'M2' must not be null");
+			throw new IllegalArgumentException("The server evidence message 'M2' must not be null");
 	
 		this.M2 = M2;
 	

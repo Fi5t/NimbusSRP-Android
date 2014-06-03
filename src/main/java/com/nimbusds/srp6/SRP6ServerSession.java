@@ -108,7 +108,7 @@ public class SRP6ServerSession extends SRP6Session {
 		super(timeout);
 		
 		if (config == null)
-			throw new NullPointerException("The SRP-6a crypto parameters must not be null");
+			throw new IllegalArgumentException("The SRP-6a crypto parameters must not be null");
 
 		this.config = config;
 		
@@ -169,13 +169,13 @@ public class SRP6ServerSession extends SRP6Session {
 		
 		
 		if (s == null)
-			throw new NullPointerException("The salt 's' must not be null");
+			throw new IllegalArgumentException("The salt 's' must not be null");
 			
 		this.s = s;
 		
 		
 		if (v == null)
-			throw new NullPointerException("The verifier 'v' must not be null");
+			throw new IllegalArgumentException("The verifier 'v' must not be null");
 			
 		this.v = v;
 		
@@ -214,7 +214,7 @@ public class SRP6ServerSession extends SRP6Session {
 	 * 
 	 * <ul>
 	 *     <li>From client: user identity 'I'.
-	 *     <li>Simulated by server, preferrably consistently for the 
+	 *     <li>Simulated by server, preferably consistently for the
 	 *         specified identity 'I': salt 's' and password verifier 'v' 
 	 *         values.
 	 * </ul>
@@ -226,7 +226,7 @@ public class SRP6ServerSession extends SRP6Session {
 	 *
 	 * @return The server public value 'B'.
 	 *
-	 * @throws IllegalStateException If the mehod is invoked in a state 
+	 * @throws IllegalStateException If the method is invoked in a state
 	 *                               other than {@link State#INIT}.
 	 */
 	public BigInteger mockStep1(final String userID, final BigInteger s, final BigInteger v) {
@@ -256,7 +256,7 @@ public class SRP6ServerSession extends SRP6Session {
 	 *                       value 'A' is invalid or the user credentials
 	 *                       are invalid.
 	 *
-	 * @throws IllegalStateException If the mehod is invoked in a state 
+	 * @throws IllegalStateException If the method is invoked in a state
 	 *                               other than {@link State#STEP_1}.
 	 */
 	public BigInteger step2(final BigInteger A, final BigInteger M1)
@@ -265,12 +265,12 @@ public class SRP6ServerSession extends SRP6Session {
 		// Check arguments
 		
 		if (A == null)
-			throw new NullPointerException("The client public value 'A' must not be null");
+			throw new IllegalArgumentException("The client public value 'A' must not be null");
 			
 		this.A = A;
 		
 		if (M1 == null)
-			throw new NullPointerException("The client evidence message 'M1' must not be null");
+			throw new IllegalArgumentException("The client evidence message 'M1' must not be null");
 		
 		this.M1 = M1;
 	
@@ -301,7 +301,7 @@ public class SRP6ServerSession extends SRP6Session {
 		S = SRP6Routines.computeSessionKey(config.N, v, u, A, b);
 		
 		// Compute the own client evidence message 'M1'
-		BigInteger computedM1 = null;
+		BigInteger computedM1;
 		
 		if (clientEvidenceRoutine != null) {
 		

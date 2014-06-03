@@ -68,9 +68,7 @@ public class SRP6Client extends SRP6Tool {
 	}
 	
 	
-	/**
-	 * @inheritDoc
-	 */
+	@Override
 	public void run()
 		throws IOException {
 	
@@ -86,20 +84,20 @@ public class SRP6Client extends SRP6Tool {
 		System.out.print("Your choice [1]: ");
 		
 		String mode = readInput("1");
-		
-		if (mode.equals("1")) {
-			
-			System.out.println();
-			generatePasswordVerifier();
-		}
-		else if (mode.equals("2")) {
-		
-			System.out.println();
-			clientSession();
-		}
-		else {
-			System.out.println("Unknown choice, aborting...");
-			return;
+
+		switch (mode) {
+
+			case "1":
+				System.out.println();
+				generatePasswordVerifier();
+				break;
+			case "2":
+				System.out.println();
+				clientSession();
+				break;
+			default:
+				System.out.println("Unknown choice, aborting...");
+				break;
 		}
 	}
 	
@@ -125,7 +123,7 @@ public class SRP6Client extends SRP6Tool {
 		
 		String ss = readInput("16");
 		
-		int saltBytes = 0;
+		int saltBytes;
 		
 		try {
 			saltBytes = Integer.parseInt(ss);
@@ -181,7 +179,7 @@ public class SRP6Client extends SRP6Tool {
 		BigInteger B = readBigInteger();
 		System.out.println();
 		
-		SRP6ClientCredentials cred = null;
+		SRP6ClientCredentials cred;
 		
 		try {
 			cred = client.step2(config, s, B);

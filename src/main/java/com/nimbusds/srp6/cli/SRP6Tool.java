@@ -126,41 +126,39 @@ public abstract class SRP6Tool {
 		
 		String choice = readInput("1");
 		
-		BigInteger N = null;
-		BigInteger g = null;
+		BigInteger N;
+		BigInteger g;
 		
 		boolean selectedPrecomputed = true;
-		
-		if (choice.equals("1")) {
-			N = SRP6CryptoParams.N_256;
-			g = SRP6CryptoParams.g_common;
-		}
-		else if (choice.equals("2")) {
-			N = SRP6CryptoParams.N_512;
-			g = SRP6CryptoParams.g_common;
-		}
-		else if (choice.equals("3")) {
-			N = SRP6CryptoParams.N_768;
-			g = SRP6CryptoParams.g_common;
-		}
-		else if (choice.equals("4")) {
-			N = SRP6CryptoParams.N_1024;
-			g = SRP6CryptoParams.g_common;
-		}
-		else if (choice.equals("5")) {
-			
-			System.out.println();
-			
-			System.out.print(prefix + "Enter prime 'N' (hex): ");
-			N = readBigInteger();
-			
-			System.out.print(prefix + "Enter generator 'g' (hex): ");
-			g = readBigInteger();
-			
-			selectedPrecomputed = false;
-		}
-		else {
-			throw new IOException("Unknown choice");
+
+		switch (choice) {
+
+			case "1":
+				N = SRP6CryptoParams.N_256;
+				g = SRP6CryptoParams.g_common;
+				break;
+			case "2":
+				N = SRP6CryptoParams.N_512;
+				g = SRP6CryptoParams.g_common;
+				break;
+			case "3":
+				N = SRP6CryptoParams.N_768;
+				g = SRP6CryptoParams.g_common;
+				break;
+			case "4":
+				N = SRP6CryptoParams.N_1024;
+				g = SRP6CryptoParams.g_common;
+				break;
+			case "5":
+				System.out.println();
+				System.out.print(prefix + "Enter prime 'N' (hex): ");
+				N = readBigInteger();
+				System.out.print(prefix + "Enter generator 'g' (hex): ");
+				g = readBigInteger();
+				selectedPrecomputed = false;
+				break;
+			default:
+				throw new IOException("Unknown choice");
 		}
 		
 		System.out.println();

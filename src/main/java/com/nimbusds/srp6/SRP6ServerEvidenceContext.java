@@ -39,8 +39,8 @@ public class SRP6ServerEvidenceContext {
 	 * @param S  The session key 'S'.
 	 */
 	public SRP6ServerEvidenceContext(final BigInteger A,
-					    final BigInteger M1,
-					    final BigInteger S) {
+					 final BigInteger M1,
+					 final BigInteger S) {
 					    
 		this.A = A;
 		this.M1 = M1;

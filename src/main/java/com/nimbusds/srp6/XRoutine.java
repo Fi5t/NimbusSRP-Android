@@ -33,7 +33,7 @@ public interface XRoutine {
 	 *
 	 * @param digest   The hash function 'H'. To enforce a particular hash
 	 *                 algorithm, e.g. "SHA-1", you may perform a check 
-	 *                 that throws an {@code IllegalArgumentExeption} or 
+	 *                 that throws an {@code IllegalArgumentException} or
 	 *                 ignore this argument altogether.
 	 * @param salt     The salt 's'. This is considered a mandatory argument
 	 *                 in computation of 'x'.

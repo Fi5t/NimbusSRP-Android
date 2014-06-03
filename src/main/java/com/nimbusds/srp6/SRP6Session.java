@@ -296,13 +296,13 @@ public abstract class SRP6Session {
 	}
 
 	/**
-	 * Sets a custom routine to compute hashed keys 'u' a 'H(A | B)'. Note that
-	 * the custom routine must be set prior to
+	 * Sets a custom routine to compute hashed keys 'u' a 'H(A | B)'. Note
+	 * that the custom routine must be set prior to
 	 * {@link SRP6ServerSession.State#STEP_2}.
 	 * 
-	 * @param routine
-	 *            The hashed kyes 'u' routine or {@code null} to use the default
-	 *            {@link SRP6Routines#computeU}.
+	 * @param hashedKeysRoutine
+	 *            The hashed kyes 'u' routine or {@code null} to use the
+	 *            default {@link SRP6Routines#computeU}.
 	 */
 	public void setHashedKeysRoutine(URoutine hashedKeysRoutine) {
 		this.hashedKeysRoutine = hashedKeysRoutine;
@@ -402,11 +402,11 @@ public abstract class SRP6Session {
 	public void setAttribute(final String key, final Object value) {
 	
 		if (key == null)
-			throw new NullPointerException("The attribute key must not be null");
+			throw new IllegalArgumentException("The attribute key must not be null");
 			
 		// create new attribute map on demand
 		if (attributes == null)
-			attributes = new HashMap<String,Object>();
+			attributes = new HashMap<>();
 		
 		attributes.put(key, value);
 	}
@@ -425,7 +425,7 @@ public abstract class SRP6Session {
 	public Object getAttribute(final String key) {
 	
 		if (key == null)
-			throw new NullPointerException("The attribute key must not be null");
+			throw new IllegalArgumentException("The attribute key must not be null");
 		
 		if (attributes == null)
 			return null;

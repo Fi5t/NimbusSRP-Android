@@ -198,10 +198,7 @@ public class SRP6Routines {
 	                                         final BigInteger value) {
 		
 		// check that value % N != 0
-		if (value.mod(N).equals(BigInteger.ZERO))
-			return false;
-		else
-			return true;
+		return !value.mod(N).equals(BigInteger.ZERO);
 	}
 	
 	

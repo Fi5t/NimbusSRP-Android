@@ -165,12 +165,12 @@ public class SRP6CryptoParams {
 	public SRP6CryptoParams(final BigInteger N, final BigInteger g, final String H) {
 	
 		if (N == null)
-			throw new NullPointerException("The prime parameter 'N' must not be null");
+			throw new IllegalArgumentException("The prime parameter 'N' must not be null");
 			
 		this.N = N;
 		
 		if (g == null)
-			throw new NullPointerException("The generator parameter 'g' must not be null");
+			throw new IllegalArgumentException("The generator parameter 'g' must not be null");
 		
 		this.g = g;
 		

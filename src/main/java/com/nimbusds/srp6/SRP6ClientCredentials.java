@@ -35,13 +35,13 @@ public final class SRP6ClientCredentials {
 	public SRP6ClientCredentials(final BigInteger A, final BigInteger M1) {
 	
 		if (A == null)
-			throw new NullPointerException("The public client value 'A' must not be null");
+			throw new IllegalArgumentException("The public client value 'A' must not be null");
 			
 		this.A = A;
 		
 		
 		if (M1 == null)
-			throw new NullPointerException("The client evidence message 'M1' must not be null");
+			throw new IllegalArgumentException("The client evidence message 'M1' must not be null");
 			
 		this.M1 = M1;
 	}
