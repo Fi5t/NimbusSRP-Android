@@ -86,7 +86,7 @@ version 1.4.1 (2013-04-05)
 	* Publishes library to Maven Central.
 
 version 1.5.0 (2014-06-03)
-	* Javascript client session. 
+	* Adds interface for custom computeU routine.  
 
 
 [EOF]
