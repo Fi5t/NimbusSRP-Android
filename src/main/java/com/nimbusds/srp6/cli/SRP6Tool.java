@@ -7,7 +7,7 @@ import java.io.IOException;
 
 import java.math.BigInteger;
 
-import com.nimbusds.srp6.Hex;
+import com.nimbusds.srp6.BigIntegerUtils;
 import com.nimbusds.srp6.SRP6CryptoParams;
 
 
@@ -92,7 +92,7 @@ public abstract class SRP6Tool {
 	public BigInteger readBigInteger()
 		throws IOException {
 	
-		BigInteger bigInt = Hex.decodeToBigInteger(readInput());
+		BigInteger bigInt = BigIntegerUtils.fromHex(readInput());
 		
 		if (bigInt == null)
 			throw new IOException("Bad hex encoding");
@@ -166,8 +166,8 @@ public abstract class SRP6Tool {
 		System.out.println();
 		
 		if (selectedPrecomputed) {
-			System.out.println(prefix + "Selected prime 'N' (hex): " + Hex.encode(N));
-			System.out.println(prefix + "Selected generator 'g' (hex): " + Hex.encode(g));
+			System.out.println(prefix + "Selected prime 'N' (hex): " + BigIntegerUtils.toHex(N));
+			System.out.println(prefix + "Selected generator 'g' (hex): " + BigIntegerUtils.toHex(g));
 			System.out.println();
 		}
 		

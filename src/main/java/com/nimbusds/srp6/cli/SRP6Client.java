@@ -1,12 +1,10 @@
 package com.nimbusds.srp6.cli;
 
 
-import java.io.BufferedReader;
 import java.io.IOException;
-
 import java.math.BigInteger;
 
-import com.nimbusds.srp6.Hex;
+import com.nimbusds.srp6.BigIntegerUtils;
 import com.nimbusds.srp6.SRP6ClientCredentials;
 import com.nimbusds.srp6.SRP6ClientSession;
 import com.nimbusds.srp6.SRP6CryptoParams;
@@ -142,9 +140,9 @@ public class SRP6Client extends SRP6Tool {
 		
 		BigInteger v = vGen.generateVerifier(s, user.I, user.P);
 		
-		System.out.println("Generated salt 's' (hex): " + Hex.encode(s));
+		System.out.println("Generated salt 's' (hex): " + BigIntegerUtils.toHex(s));
 		System.out.println();
-		System.out.println("Computed password verifier 'v' (hex): " + Hex.encode(v));
+		System.out.println("Computed password verifier 'v' (hex): " + BigIntegerUtils.toHex(v));
 	}
 	
 	
@@ -194,8 +192,8 @@ public class SRP6Client extends SRP6Tool {
 			return;
 		}
 		
-		System.out.println("\tComputed public value 'A' (hex): " + Hex.encode(cred.A));
-		System.out.println("\tComputed evidence message 'M1' (hex): " + Hex.encode(cred.M1));
+		System.out.println("\tComputed public value 'A' (hex): " + BigIntegerUtils.toHex(cred.A));
+		System.out.println("\tComputed evidence message 'M1' (hex): " + BigIntegerUtils.toHex(cred.M1));
 		System.out.println();
 		
 		

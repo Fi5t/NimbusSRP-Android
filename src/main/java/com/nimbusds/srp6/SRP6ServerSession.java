@@ -2,10 +2,6 @@ package com.nimbusds.srp6;
 
 
 import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.SecureRandom;
-import java.util.HashMap;
-import java.util.Map;
 
 
 /**
@@ -192,7 +188,7 @@ public class SRP6ServerSession extends SRP6Session {
 		k = SRP6Routines.computeK(digest, config.N, config.g);
 		digest.reset();
 		
-		b = SRP6Routines.generatePrivateValue(digest, config.N, random);
+		b = SRP6Routines.generatePrivateValue(config.N, random);
 		digest.reset();
 		
 		B = SRP6Routines.computePublicServerValue(config.N, config.g, k, v, b);
@@ -294,8 +290,13 @@ public class SRP6ServerSession extends SRP6Session {
 		if (noSuchUserIdentity)
 			throw new SRP6Exception("Bad client credentials", SRP6Exception.CauseType.BAD_CREDENTIALS);
 		
-		u = SRP6Routines.computeU(digest, config.N, A, B);
-		digest.reset();
+		if (hashedKeysRoutine != null) {
+			URoutineContext hashedKeysContext = new URoutineContext(A, B);
+			u = hashedKeysRoutine.computeU(config, hashedKeysContext);
+		} else {
+			u = SRP6Routines.computeU(digest, config.N, A, B);
+			digest.reset();
+		}
 		
 		S = SRP6Routines.computeSessionKey(config.N, v, u, A, b);
 		

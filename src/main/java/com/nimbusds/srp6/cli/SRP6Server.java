@@ -4,9 +4,8 @@ package com.nimbusds.srp6.cli;
 import java.io.IOException;
 import java.math.BigInteger;
 
-import com.nimbusds.srp6.Hex;
+import com.nimbusds.srp6.BigIntegerUtils;
 import com.nimbusds.srp6.SRP6CryptoParams;
-import com.nimbusds.srp6.SRP6Exception;
 import com.nimbusds.srp6.SRP6ServerSession;
 
 
@@ -65,7 +64,7 @@ public class SRP6Server extends SRP6Tool {
 		BigInteger B = server.step1(I, s, v);
 		
 		System.out.println();
-		System.out.println("\tComputed public server value 'B' (hex): " + Hex.encode(B));
+		System.out.println("\tComputed public server value 'B' (hex): " + BigIntegerUtils.toHex(B));
 		System.out.println();
 		
 		
@@ -90,7 +89,7 @@ public class SRP6Server extends SRP6Tool {
 		}
 		
 		System.out.println();
-		System.out.println("\tComputed server evidence message 'M2 (hex): " + Hex.encode(M2));
+		System.out.println("\tComputed server evidence message 'M2 (hex): " + BigIntegerUtils.toHex(M2));
 		
 		// Success
 		System.out.println();

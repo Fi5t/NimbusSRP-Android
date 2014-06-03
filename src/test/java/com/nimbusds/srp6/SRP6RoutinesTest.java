@@ -8,7 +8,6 @@ import java.security.SecureRandom;
 
 import junit.framework.*;
 
-
 /**
  * Tests the SRP-6a utility methods.
  *
@@ -117,7 +116,6 @@ public class SRP6RoutinesTest extends TestCase {
 	public void testComputeSessionKeyFromServerParams() {
 	
 		BigInteger N = new BigInteger("11144252439149533417835749556168991736939157778924947037200268358613863350040339017097790259154750906072491181606044774215413467851989724116331597513345603");
-		BigInteger g = new BigInteger("2");
 		BigInteger v = new BigInteger("7474502944304737201933065391525517979626350323656683177706520871363411502343933100270074963363249763705942958154733367887987540769816195164179972652012309");
 		BigInteger u = new BigInteger("1058795856907579501448181236341287514343869634531");
 		BigInteger A = new BigInteger("5851783883133110801737748616944168062144125592645124739670882600504491688868508507620920981803278916068202671958283061912270679717280194420389126894561611");
@@ -131,15 +129,10 @@ public class SRP6RoutinesTest extends TestCase {
 	
 	public void testAuthSuccess() {
 	
-		System.out.println("*** Test SRP-6a routines - auth success ***");
-	
 		SecureRandom random = new SecureRandom();
 		BigInteger N = SRP6CryptoParams.N_256;
 		BigInteger g = SRP6CryptoParams.g_common;
 	
-		// username
-		byte[] I = "username".getBytes();
-		
 		// password
 		byte[] P = "secret".getBytes();
 		
@@ -150,50 +143,42 @@ public class SRP6RoutinesTest extends TestCase {
 		// generate verifier
 		BigInteger x = SRP6Routines.computeX(newMessageDigest(), s, P);
 		BigInteger v = SRP6Routines.computeVerifier(N, g, x);
-		System.out.println("Verifier 'v': " + v.toString(16));
+		// System.out.println("Verifier 'v': " + v.toString(16));
 		
 		// generate client A
-		BigInteger a = SRP6Routines.generatePrivateValue(newMessageDigest(), N, random);
+		BigInteger a = SRP6Routines.generatePrivateValue(N, random);
 		BigInteger A = SRP6Routines.computePublicClientValue(N, g, a);
-		System.out.println("Client 'A': " + A.toString(16));
+		// System.out.println("Client 'A': " + A.toString(16));
 		
 		// generate server B
-		BigInteger b = SRP6Routines.generatePrivateValue(newMessageDigest(), N, random);
+		BigInteger b = SRP6Routines.generatePrivateValue(N, random);
 		BigInteger k = SRP6Routines.computeK(newMessageDigest(), N, g);
 		BigInteger B = SRP6Routines.computePublicServerValue(N, g, k, v, b);
-		System.out.println("Server 'B': " + B.toString(16));
+		// System.out.println("Server 'B': " + B.toString(16));
 		
 		// calcuate client S
-		if (! SRP6Routines.isValidPublicValue(N, B))
-			fail("Invalid server B");
+		assertTrue("Invalid server B", SRP6Routines.isValidPublicValue(N, B));
 		
 		BigInteger u = SRP6Routines.computeU(newMessageDigest(), N, A, B);
 		BigInteger S_c = SRP6Routines.computeSessionKey(N, g, k, x, u, a, B);
 		
 		// calcuate server S
-		if (! SRP6Routines.isValidPublicValue(N, A))
-			fail("Invalid client A");
+		assertTrue("Invalid client A", SRP6Routines.isValidPublicValue(N, A));
 		
 		BigInteger S_s = SRP6Routines.computeSessionKey(N, v, u, A, b);
 		
-		if (S_s.equals(S_c))
-			System.out.println("Auth success");
-		else
-			fail("Auth failure: Session key mismatch");
+		assertTrue("Auth failure: Session key mismatch", S_s.equals(S_c));
 	}
 	
 	
 	public void testAuthWithBadPassword() {
 	
-		System.out.println("*** Test SRP-6a routines - bad password ***");
+		// System.out.println("*** Test SRP-6a routines - bad password ***");
 	
 		SecureRandom random = new SecureRandom();
 		BigInteger N = SRP6CryptoParams.N_256;
 		BigInteger g = SRP6CryptoParams.g_common;
 	
-		// username
-		byte[] I = "username".getBytes();
-		
 		// good + bad password
 		byte[] P = "secret".getBytes();
 		byte[] Pbad = "s3cr3t".getBytes();
@@ -206,37 +191,29 @@ public class SRP6RoutinesTest extends TestCase {
 		BigInteger x = SRP6Routines.computeX(newMessageDigest(), s, P);
 		BigInteger xBad = SRP6Routines.computeX(newMessageDigest(), s, Pbad);
 		BigInteger v = SRP6Routines.computeVerifier(N, g, x);
-		System.out.println("Verifier 'v': " + v.toString(16));
+		// System.out.println("Verifier 'v': " + v.toString(16));
 		
 		// generate client A
-		BigInteger a = SRP6Routines.generatePrivateValue(newMessageDigest(), N, random);
+		BigInteger a = SRP6Routines.generatePrivateValue(N, random);
 		BigInteger A = SRP6Routines.computePublicClientValue(N, g, a);
-		System.out.println("Client 'A': " + A.toString(16));
+		// System.out.println("Client 'A': " + A.toString(16));
 		
 		// generate server B
-		BigInteger b = SRP6Routines.generatePrivateValue(newMessageDigest(), N, random);
+		BigInteger b = SRP6Routines.generatePrivateValue(N, random);
 		BigInteger k = SRP6Routines.computeK(newMessageDigest(), N, g);
 		BigInteger B = SRP6Routines.computePublicServerValue(N, g, k, v, b);
-		System.out.println("Server 'B': " + B.toString(16));
+		// System.out.println("Server 'B': " + B.toString(16));
 		
 		// calcuate client S
-		if (! SRP6Routines.isValidPublicValue(N, B))
-			fail("Invalid server B");
+		assertTrue("Invalid server B", SRP6Routines.isValidPublicValue(N, B));
 		
 		BigInteger u = SRP6Routines.computeU(newMessageDigest(), N, A, B);
 		BigInteger S_c = SRP6Routines.computeSessionKey(N, g, k, xBad, u, a, B);
 		
-		// calcuate server S
-		if (! SRP6Routines.isValidPublicValue(N, A))
-			fail("Invalid client A");
+		assertTrue("Invalid client A", SRP6Routines.isValidPublicValue(N, A));
 		
 		BigInteger S_s = SRP6Routines.computeSessionKey(N, v, u, A, b);
 		
-		if (S_s.equals(S_c)) {
-			fail("Unexpected auth success");
-		}
-		else {
-			System.out.println("Auth failure: Session key mismatch");
-		}
+		assertFalse("Unexpected auth success", S_s.equals(S_c));
 	}
 }

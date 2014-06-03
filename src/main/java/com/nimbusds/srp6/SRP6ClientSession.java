@@ -3,10 +3,6 @@ package com.nimbusds.srp6;
 
 import java.math.BigInteger;
 import java.nio.charset.Charset;
-import java.security.MessageDigest;
-import java.security.SecureRandom;
-import java.util.HashMap;
-import java.util.Map;
 
 
 /**
@@ -162,22 +158,26 @@ public class SRP6ClientSession extends SRP6Session {
 	
 	
 	/**
-	 * Records the identity 'I' and password 'P' of the authenticating user.
-	 * The session is incremented to {@link State#STEP_1}.
-	 *
-	 * <p>Argument origin:
+	 * Records the identity 'I' and password 'P' of the authenticating user. The
+	 * session is incremented to {@link State#STEP_1}.
+	 * 
+	 * <p>
+	 * Argument origin:
 	 * 
 	 * <ul>
-	 *     <li>From user: user identity 'I' and password 'P'.
+	 * <li>From user: user identity 'I' and password 'P'.
 	 * </ul>
-	 *
-	 * @param userID   The identity 'I' of the authenticating user, UTF-8
-	 *                 encoded. Must not be {@code null} or empty.
-	 * @param password The user password 'P', UTF-8 encoded. Must not be
-	 *                 {@code null}.
-	 *
-	 * @throws IllegalStateException If the mehod is invoked in a state 
-	 *                               other than {@link State#INIT}.
+	 * 
+	 * @param userID
+	 *            The identity 'I' of the authenticating user, UTF-8 encoded.
+	 *            Must not be {@code null} or empty.
+	 * @param password
+	 *            The user password 'P', UTF-8 encoded. Must not be {@code null}
+	 *            .
+	 * 
+	 * @throws IllegalStateException
+	 *             If the method is invoked in a state other than
+	 *             {@link State#INIT}.
 	 */
 	public void step1(final String userID, final String password) {
 	
@@ -286,7 +286,7 @@ public class SRP6ClientSession extends SRP6Session {
 		}
 		
 		// Generate client private and public values
-		a = SRP6Routines.generatePrivateValue(digest, config.N, random);
+		a = SRP6Routines.generatePrivateValue(config.N, random);
 		digest.reset();
 		
 		A = SRP6Routines.computePublicClientValue(config.N, config.g, a);
@@ -323,22 +323,25 @@ public class SRP6ClientSession extends SRP6Session {
 	
 	
 	/**
-	 * Receives the server evidence message 'M1'. The session is incremented
-	 * to {@link State#STEP_3}.
-	 *
-	 * <p>Argument origin:
+	 * Receives the server evidence message 'M1'. The session is incremented to
+	 * {@link State#STEP_3}.
+	 * 
+	 * <p>
+	 * Argument origin:
 	 * 
 	 * <ul>
-	 *     <li>From server: evidence message 'M2'.
+	 * <li>From server: evidence message 'M2'.
 	 * </ul>
-	 *
-	 * @param M2 The server evidence message 'M2'. Must not be {@code null}.
-	 *
-	 * @throws IllegalStateException If the mehod is invoked in a state 
-	 *                               other than {@link State#STEP_2}.
-	 * @throws SRP6Exception         If the session has timed out or the 
-	 *                               server evidence message 'M2' is 
-	 *                               invalid.
+	 * 
+	 * @param M2
+	 *            The server evidence message 'M2'. Must not be {@code null}.
+	 * 
+	 * @throws IllegalStateException
+	 *             If the method is invoked in a state other than
+	 *             {@link State#STEP_2}.
+	 * @throws SRP6Exception
+	 *             If the session has timed out or the server evidence message
+	 *             'M2' is invalid.
 	 */
 	public void step3(final BigInteger M2)
 		throws SRP6Exception {

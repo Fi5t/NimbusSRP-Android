@@ -8,7 +8,8 @@ package com.nimbusds.srp6;
  */
 public class SRP6Exception extends Exception {
 
-	
+	private static final long serialVersionUID = 4640494990301260666L;
+
 	/**
 	 * SRP-6a exception causes.
 	 */

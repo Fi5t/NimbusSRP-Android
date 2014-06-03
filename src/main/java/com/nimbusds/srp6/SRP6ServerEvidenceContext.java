@@ -38,7 +38,7 @@ public class SRP6ServerEvidenceContext {
 	 * @param M1 The client evidence message 'M1'.
 	 * @param S  The session key 'S'.
 	 */
-	protected SRP6ServerEvidenceContext(final BigInteger A,
+	public SRP6ServerEvidenceContext(final BigInteger A,
 					    final BigInteger M1,
 					    final BigInteger S) {
 					    

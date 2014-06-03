@@ -48,8 +48,8 @@ public class XRoutineWithUserIdentity implements XRoutine {
 	
 	
 	/**
-	 * Returns a string representation of the routine algorightm.
-	 *
+	 * Returns a string representation of the routine algorithm.
+	 * 
 	 * @return "H(s | H(I | ":" | P))"
 	 */
 	public String toString() {
