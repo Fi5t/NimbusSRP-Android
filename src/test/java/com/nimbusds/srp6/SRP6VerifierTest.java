@@ -11,18 +11,8 @@ import junit.framework.*;
  * Tests the SRP-6a verifier generator.
  *
  * @author Vladimir Dzhuvinov
- * @version $version$ (2011-11-08)
  */
 public class SRP6VerifierTest extends TestCase {
-	
-
-	/**
-	 * Creates a new test.
-	 */
-	public SRP6VerifierTest(String name) {
-	
-		super(name);
-	}
 	
 	
 	public void testConstructors() {

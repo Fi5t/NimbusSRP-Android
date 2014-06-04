@@ -1,6 +1,8 @@
 package com.nimbusds.srp6;
 
+
 import java.math.BigInteger;
+
 
 /**
  * Hexadecimal encoding and decoding utility.
@@ -40,19 +42,18 @@ public class Hex {
 	}
 
 	/**
-	 * Encodes the specified byte array into a hex string. The resulting string
-	 * always uses two hexadecimals per byte. As a result, the length of the
-	 * resulting string is guaranteed to be twice the length of the supplied
-	 * byte array.
+	 * Encodes the specified byte array into a hex string. The resulting
+	 * string always uses two hexadecimals per byte. As a result, the
+	 * length of the resulting string is guaranteed to be twice the length
+	 * of the supplied byte array.
 	 * 
-	 * @param bytes
-	 *            The byte array to encode.
+	 * @param bytes The byte array to encode.
 	 * 
-	 * @return The resulting hex encoded string or {@code null} if the input is
-	 *         undefined.
+	 * @return The resulting hex encoded string or {@code null} if the
+	 *         input is undefined.
 	 * 
-	 * @deprecated Unused in Nimbus library replace with 3rd party e.g. apache
-	 *             commons-codec
+	 * @deprecated Unused in Nimbus library replace with 3rd party e.g.
+	 *             apache commons-codec
 	 */
 	@Deprecated
 	public static String encode(final byte[] bytes) {
@@ -75,10 +76,10 @@ public class Hex {
 	/**
 	 * Encodes the specified big integer into a hex string.
 	 * 
-	 * @return The resulting hex encoded string or {@code null} if the input is
-	 *         undefined.
+	 * @return The resulting hex encoded string or {@code null} if the
+	 *         input is undefined.
 	 * 
-	 * @deprecated Replaced by {@link BigIntegerUtils#fromHex()}
+	 * @deprecated Replaced by {@link BigIntegerUtils#fromHex}
 	 */
 	@Deprecated
 	public static String encode(final BigInteger bigint) {
@@ -92,13 +93,12 @@ public class Hex {
 	/**
 	 * Decodes the specified hex string into a byte array.
 	 * 
-	 * @param hex
-	 *            The hex encoded string to decode.
+	 * @param hex The hex encoded string to decode.
 	 * 
 	 * @return The resulting byte array or {@code null} if decoding failed.
 	 * 
-	 * @deprecated Unused in Nimbus library replace with 3rd party e.g. apache
-	 *             commons-codec
+	 * @deprecated Unused in Nimbus library replace with 3rd party e.g.
+	 *             apache commons-codec
 	 */
 	@Deprecated
 	public static byte[] decodeToByteArray(final String hex) {
@@ -140,12 +140,12 @@ public class Hex {
 	/**
 	 * Decodes the specified hex string into a big integer.
 	 * 
-	 * @param hex
-	 *            The hex encoded string to decode.
+	 * @param hex The hex encoded string to decode.
 	 * 
-	 * @return The resulting big integer or {@code null} if decoding failed.
+	 * @return The resulting big integer or {@code null} if decoding
+	 *         failed.
 	 * 
-	 * @deprecated Replaced by {@link BigIntegerUtils#toHex()}
+	 * @deprecated Replaced by {@link BigIntegerUtils#toHex}
 	 */
 	@Deprecated
 	public static BigInteger decodeToBigInteger(final String hex) {

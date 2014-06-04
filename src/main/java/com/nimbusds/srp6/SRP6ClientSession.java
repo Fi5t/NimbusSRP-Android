@@ -15,17 +15,17 @@ import java.nio.charset.Charset;
  * <ul>
  *     <li>Create a new SRP-6a client session for each authentication attempt.
  *     <li>If you wish to use custom routines for the password key 'x', the
- *         server evidence messge 'M1', and / or the client evidence message 
+ *         server evidence message 'M1', and / or the client evidence message
  *        'M2' specify them at this point.
  *     <li>Proceed to {@link #step1 step one} by recording the input user
  *         identity 'I' (submitted to the server) and password 'P'.
  *     <li>Proceed to {@link #step2 step two} on receiving the password salt
  *         's' and the public server value 'B' from the server. At this point
- *         the SRP-6a crypto parameters 'N', 'g' and 'H' must also be specified.
- *         These can either be agreed in advance between server and client or 
- *         suggested by the server in its step one response.
- *     <li>Proceed to {@link #step3 step three} on receiving the server evidence
- *         message 'M2'.
+ *         the SRP-6a crypto parameters 'N', 'g' and 'H' must also be
+ *         specified. These can either be agreed in advance between server and
+ *         client or suggested by the server in its step one response.
+ *     <li>Proceed to {@link #step3 step three} on receiving the server
+ *         evidence message 'M2'.
  * </ul>
  *
  * @author Vladimir Dzhuvinov
@@ -34,7 +34,8 @@ public class SRP6ClientSession extends SRP6Session {
 	
 	
 	/**
-	 * Enumerates the states of a client-side SRP-6a authentication session.
+	 * Enumerates the states of a client-side SRP-6a authentication
+	 * session.
 	 */
 	public static enum State {
 	
@@ -158,26 +159,22 @@ public class SRP6ClientSession extends SRP6Session {
 	
 	
 	/**
-	 * Records the identity 'I' and password 'P' of the authenticating user. The
-	 * session is incremented to {@link State#STEP_1}.
+	 * Records the identity 'I' and password 'P' of the authenticating
+	 * user. The session is incremented to {@link State#STEP_1}.
 	 * 
-	 * <p>
-	 * Argument origin:
+	 * <p>Argument origin:
 	 * 
 	 * <ul>
-	 * <li>From user: user identity 'I' and password 'P'.
+	 *     <li>From user: user identity 'I' and password 'P'.
 	 * </ul>
 	 * 
-	 * @param userID
-	 *            The identity 'I' of the authenticating user, UTF-8 encoded.
-	 *            Must not be {@code null} or empty.
-	 * @param password
-	 *            The user password 'P', UTF-8 encoded. Must not be {@code null}
-	 *            .
+	 * @param userID   The identity 'I' of the authenticating user, UTF-8
+	 *                 encoded. Must not be {@code null} or empty.
+	 * @param password The user password 'P', UTF-8 encoded. Must not be
+	 *                 {@code null}.
 	 * 
-	 * @throws IllegalStateException
-	 *             If the method is invoked in a state other than
-	 *             {@link State#INIT}.
+	 * @throws IllegalStateException If the method is invoked in a state
+	 *                               other than {@link State#INIT}.
 	 */
 	public void step1(final String userID, final String password) {
 	
@@ -222,7 +219,7 @@ public class SRP6ClientSession extends SRP6Session {
 	 * @return The client credentials consisting of the client public key 
 	 *         'A' and the client evidence message 'M1'.
 	 *
-	 * @throws IllegalStateException If the mehod is invoked in a state 
+	 * @throws IllegalStateException If the method is invoked in a state
 	 *                               other than {@link State#STEP_1}.
 	 * @throws SRP6Exception         If the session has timed out or the 
 	 *                               public server value 'B' is invalid.
@@ -278,8 +275,7 @@ public class SRP6ClientSession extends SRP6Session {
 					     userID.getBytes(Charset.forName("UTF-8")),
 					     password.getBytes(Charset.forName("UTF-8")));
 					     
-		}
-		else {
+		} else {
 			// With default rotine
 			x = SRP6Routines.computeX(digest, s.toByteArray(), password.getBytes(Charset.forName("UTF-8")));
 			digest.reset();
@@ -307,8 +303,8 @@ public class SRP6ClientSession extends SRP6Session {
 			// With custom routine
 			SRP6ClientEvidenceContext ctx = new SRP6ClientEvidenceContext(userID, s, A, B, S);
 			M1 = clientEvidenceRoutine.computeClientEvidence(config, ctx);
-		}
-		else {
+
+		} else {
 			// With default routine
 			M1 = SRP6Routines.computeClientEvidence(digest, A, B, S);
 			digest.reset();
@@ -323,8 +319,8 @@ public class SRP6ClientSession extends SRP6Session {
 	
 	
 	/**
-	 * Receives the server evidence message 'M1'. The session is incremented to
-	 * {@link State#STEP_3}.
+	 * Receives the server evidence message 'M1'. The session is
+	 * incremented to {@link State#STEP_3}.
 	 * 
 	 * <p>
 	 * Argument origin:
@@ -333,15 +329,14 @@ public class SRP6ClientSession extends SRP6Session {
 	 * <li>From server: evidence message 'M2'.
 	 * </ul>
 	 * 
-	 * @param M2
-	 *            The server evidence message 'M2'. Must not be {@code null}.
+	 * @param M2 The server evidence message 'M2'. Must not be
+	 *           {@code null}.
 	 * 
-	 * @throws IllegalStateException
-	 *             If the method is invoked in a state other than
-	 *             {@link State#STEP_2}.
-	 * @throws SRP6Exception
-	 *             If the session has timed out or the server evidence message
-	 *             'M2' is invalid.
+	 * @throws IllegalStateException If the method is invoked in a state
+	 *                               other than {@link State#STEP_2}.
+	 * @throws SRP6Exception         If the session has timed out or the
+	 *                               server evidence message 'M2' is
+	 *                               invalid.
 	 */
 	public void step3(final BigInteger M2)
 		throws SRP6Exception {
@@ -363,7 +358,7 @@ public class SRP6ClientSession extends SRP6Session {
 	
 
 		// Compute the own server evidence message 'M2'
-		BigInteger computedM2 = null;
+		BigInteger computedM2;
 		
 		if (serverEvidenceRoutine != null) {
 		
@@ -371,8 +366,8 @@ public class SRP6ClientSession extends SRP6Session {
 			SRP6ServerEvidenceContext ctx = new SRP6ServerEvidenceContext(A, M1, S);
 			
 			computedM2 = serverEvidenceRoutine.computeServerEvidence(config, ctx);
-		}
-		else {
+
+		} else {
 			// With default routine
 			computedM2 = SRP6Routines.computeServerEvidence(digest, A, M1, S);
 		}

@@ -119,7 +119,6 @@ public class SRP6Routines {
 	 *
 	 * <p>Specification: RFC 5054.
 	 *
-	 * @param digest The hash function 'H'. Must not be {@code null}.
 	 * @param N      The prime parameter 'N'. Must not be {@code null}.
 	 * @param random Source of randomness. Must not be {@code null}.
 	 *

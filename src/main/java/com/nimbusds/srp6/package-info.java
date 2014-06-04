@@ -22,7 +22,5 @@
  *
  * <p>This product uses the 'Secure Remote Password' cryptographic 
  * authentication system developed by Tom Wu (tjw@CS.Stanford.EDU).
- *
- * @author Vladimir Dzhuvinov
  */
 package com.nimbusds.srp6;

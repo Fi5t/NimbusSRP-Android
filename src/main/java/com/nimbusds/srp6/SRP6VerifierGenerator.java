@@ -8,8 +8,8 @@ import java.nio.charset.Charset;
 /**
  * Generator of password verifier 'v' values.
  *
- * <p>{@link SRP6Routines#generateRandomSalt} may be used to create a random salt 
- * 's' of a specified byte size.
+ * <p>{@link SRP6Routines#generateRandomSalt} may be used to create a random
+ * salt 's' of a specified byte size.
  *
  * @author Vladimir Dzhuvinov
  */
@@ -46,7 +46,8 @@ public class SRP6VerifierGenerator {
 	/**
 	 * Generates a random salt 's'. 
 	 *
-	 * <p>This method is a shortcut to {@link SRP6Routines#generateRandomSalt}.
+	 * <p>This method is a shortcut to
+	 * {@link SRP6Routines#generateRandomSalt}.
 	 *
 	 * @param numBytes The number of bytes the salt 's' must have.
 	 *
@@ -61,7 +62,8 @@ public class SRP6VerifierGenerator {
 	/**
 	 * Generates a random 16-byte salt 's'. 
 	 *
-	 * <p>This method is a shortcut to {@link SRP6Routines#generateRandomSalt}.
+	 * <p>This method is a shortcut to
+	 * {@link SRP6Routines#generateRandomSalt}.
 	 *
 	 * @return The salt 's' as a byte array.
 	 */
@@ -75,7 +77,8 @@ public class SRP6VerifierGenerator {
 	 * Sets a custom routine for the password key 'x' computation.
 	 *
 	 * @param routine The password key 'x' routine or {@code null} to use 
-	 *                the {@link SRP6Routines#computeX default one} instead.
+	 *                the {@link SRP6Routines#computeX default one}
+	 *                instead.
 	 */
 	public void setXRoutine(final XRoutine routine) {
 	
@@ -109,8 +112,8 @@ public class SRP6VerifierGenerator {
 	 *
 	 * @param salt     The salt 's'. Must not be {@code null}.
 	 * @param userID   The user identity 'I'. May be {@code null} if the
-	 *                 default 'x' routine is used or the custom one ignores
-	 *                 it.
+	 *                 default 'x' routine is used or the custom one
+	 *                 ignores it.
 	 * @param password The user password 'P'. Must not be {@code null}. 
 	 *
 	 * @return The resulting verifier 'v'.

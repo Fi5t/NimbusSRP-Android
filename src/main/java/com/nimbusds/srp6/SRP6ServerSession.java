@@ -203,8 +203,8 @@ public class SRP6ServerSession extends SRP6Session {
 	
 	/**
 	 * Increments this SRP-6a authentication session to 
-	 * {@link State#STEP_1} indicating a non-existing user identity 'I' with
-	 * mock (simulated) salt 's' and password verifier 'v' values.
+	 * {@link State#STEP_1} indicating a non-existing user identity 'I'
+	 * with mock (simulated) salt 's' and password verifier 'v' values.
 	 *
 	 * <p>This method can be used to avoid informing the client at step one
 	 * that the user identity is bad and throw instead a guaranteed general 

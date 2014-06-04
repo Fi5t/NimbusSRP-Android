@@ -10,18 +10,8 @@ import junit.framework.TestCase;
  * Test the alternative 'x' routine interface handling.
  *
  * @author Vladimir Dzhuvinov
- * @version $version$ (2011-11-09)
  */
 public class XRoutineWithUserIdentityTest extends TestCase {
-
-
-	/**
-	 * Creates a new test.
-	 */
-	public XRoutineWithUserIdentityTest(String name) {
-	
-		super(name);
-	}
 	
 	
 	public void test() {
@@ -49,7 +39,7 @@ public class XRoutineWithUserIdentityTest extends TestCase {
 		
 		XRoutine altX = new XRoutineWithUserIdentity();
 		gen.setXRoutine(altX);
-		assertNotNull(gen.getXRoutine());
+		assertEquals(altX, gen.getXRoutine());
 		
 		BigInteger v = gen.generateVerifier(salt, userID, password);
 		// System.out.println("computed v: " + v);

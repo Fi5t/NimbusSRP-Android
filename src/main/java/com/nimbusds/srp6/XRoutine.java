@@ -35,14 +35,14 @@ public interface XRoutine {
 	 *                 algorithm, e.g. "SHA-1", you may perform a check 
 	 *                 that throws an {@code IllegalArgumentException} or
 	 *                 ignore this argument altogether.
-	 * @param salt     The salt 's'. This is considered a mandatory argument
-	 *                 in computation of 'x'.
+	 * @param salt     The salt 's'. This is considered a mandatory
+	 *                 argument in computation of 'x'.
 	 * @param username The user identity 'I'. It may be ignored if the 
 	 *                 username is allowed to change or if a user may 
-	 *                 authenticate with multiple alternate identities, such
-	 *                 as name and email address.
-	 * @param password The user password 'P'. This is considered a mandatory
-	 *                 argument in the computation of 'x'.
+	 *                 authenticate with multiple alternate identities,
+	 *                 such as name and email address.
+	 * @param password The user password 'P'. This is considered a
+	 *                 mandatory argument in the computation of 'x'.
 	 *
 	 * @return The resulting 'x' value.
 	 */

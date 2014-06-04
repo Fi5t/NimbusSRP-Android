@@ -1,9 +1,11 @@
 package com.nimbusds.srp6;
 
+
 import java.math.BigInteger;
 
+
 /**
- * Immutable snapshot of SRP-6a client session variables to be used in a
+ * Immutable snapshot of the SRP-6a client session variables to be used in a
  * {@link ClientEvidenceRoutine}.
  *
  * @author Vladimir Dzhuvinov
@@ -52,10 +54,10 @@ public class SRP6ClientEvidenceContext {
 	 * @param S      The session key 'S'.
 	 */
 	public SRP6ClientEvidenceContext(final String userID,
-	                                    final BigInteger s,
-					    final BigInteger A,
-					    final BigInteger B,
-					    final BigInteger S) {
+	                                 final BigInteger s,
+					 final BigInteger A,
+					 final BigInteger B,
+					 final BigInteger S) {
 					    
 		this.userID = userID;
 		this.s = s;

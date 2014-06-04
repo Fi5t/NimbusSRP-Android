@@ -21,14 +21,12 @@ public interface URoutine {
 	/**
 	 * Computes a client evidence message 'u' as 'H(A | B)'.
 	 * 
-	 * @param cryptoParams
-	 *            The crypto parameters for the SRP-6a protocol.
-	 * @param ctx
-	 *            Snapshot of the SRP-6a client session variables which may be
-	 *            used in the computation of the hashed keys message.
+	 * @param cryptoParams The crypto parameters for the SRP-6a protocol.
+	 * @param ctx          Snapshot of the SRP-6a client session variables
+	 *                     which may be used in the computation of the
+	 *                     hashed keys message.
 	 * 
 	 * @return The resulting 'u' as 'H(A | B)'.
 	 */
 	public BigInteger computeU(final SRP6CryptoParams cryptoParams, final URoutineContext ctx);
-
 }

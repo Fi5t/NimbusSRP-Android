@@ -32,7 +32,10 @@ public class XRoutineWithUserIdentity implements XRoutine {
 	 *
 	 * @return The resulting 'x' value.
 	 */
-	public BigInteger computeX(final MessageDigest digest, final byte[] salt, final byte[] username, final byte[] password) {
+	public BigInteger computeX(final MessageDigest digest,
+				   final byte[] salt,
+				   final byte[] username,
+				   final byte[] password) {
 	
 		digest.update(username);
 		digest.update((byte)':');
@@ -48,7 +51,7 @@ public class XRoutineWithUserIdentity implements XRoutine {
 	
 	
 	/**
-	 * Returns a string representation of the routine algorithm.
+	 * Returns a string representation of this routine algorithm.
 	 * 
 	 * @return "H(s | H(I | ":" | P))"
 	 */

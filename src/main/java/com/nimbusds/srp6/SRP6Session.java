@@ -115,12 +115,14 @@ public abstract class SRP6Session {
 	 * Custom routine for the server evidence message 'M2' computation.
 	 */
 	protected ServerEvidenceRoutine serverEvidenceRoutine = null;
-	
+
+
 	/**
 	 * Custom routine for the hashed keys 'u' computation.
 	 */
 	protected URoutine hashedKeysRoutine = null;
-	
+
+
 	/**
 	 * Optional storage of arbitrary session attributes.
 	 */
@@ -132,8 +134,9 @@ public abstract class SRP6Session {
 	 *
 	 * @param timeout The SRP-6a authentication session timeout in seconds. 
 	 *                If the authenticating counterparty (server or client) 
-	 *                fails to respond within the specified time the session
-	 *                will be closed. If zero timeouts are disabled.
+	 *                fails to respond within the specified time the
+	 *                session will be closed. If zero timeouts are
+	 *                disabled.
 	 */
 	public SRP6Session(final int timeout) {
 	
@@ -188,11 +191,8 @@ public abstract class SRP6Session {
 			return false;
 	
 		final long now = System.currentTimeMillis();
-		
-		if (now > lastActivity + (timeout * 1000))
-			return true;
-		else
-			return false;
+
+		return now > lastActivity + (timeout * 1000);
 	}
 	
 	
@@ -284,7 +284,8 @@ public abstract class SRP6Session {
 	
 		return serverEvidenceRoutine;
 	}
-	
+
+
 	/**
 	 * Gets the custom routine to compute hashed keys 'u' a 'H(A | B)'.
 	 * 
@@ -292,21 +293,25 @@ public abstract class SRP6Session {
 	 *         {@link SRP6Routines#computeU} is to be used.
 	 */
 	public URoutine getHashedKeysRoutine() {
+
 		return hashedKeysRoutine;
 	}
+
 
 	/**
 	 * Sets a custom routine to compute hashed keys 'u' a 'H(A | B)'. Note
 	 * that the custom routine must be set prior to
 	 * {@link SRP6ServerSession.State#STEP_2}.
 	 * 
-	 * @param hashedKeysRoutine
-	 *            The hashed kyes 'u' routine or {@code null} to use the
-	 *            default {@link SRP6Routines#computeU}.
+	 * @param hashedKeysRoutine The hashed keys 'u' routine or {@code null}
+	 *                          to use the default
+	 *                          {@link SRP6Routines#computeU}.
 	 */
-	public void setHashedKeysRoutine(URoutine hashedKeysRoutine) {
+	public void setHashedKeysRoutine(final URoutine hashedKeysRoutine) {
+
 		this.hashedKeysRoutine = hashedKeysRoutine;
 	}
+
 
 	/**
 	 * Gets the password salt 's'.

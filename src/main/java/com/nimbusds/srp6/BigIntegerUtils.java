@@ -18,8 +18,8 @@ public class BigIntegerUtils {
 	/**
 	 * Encodes the specified big integer into a hex string.
 	 *
-	 * @return The resulting hex encoded string or {@code null} if the input
-	 *         is undefined.
+	 * @return The resulting hex encoded string or {@code null} if the
+	 *         input is undefined.
 	 */
 	public static String toHex(final BigInteger bigint) {
 	
@@ -34,7 +34,8 @@ public class BigIntegerUtils {
 	 *
 	 * @param hex The hex encoded string to decode.
 	 *
-	 * @return The resulting big integer or {@code null} if decoding failed.
+	 * @return The resulting big integer or {@code null} if decoding
+	 *         failed.
 	 */
 	public static BigInteger fromHex(final String hex) {
 

@@ -9,7 +9,5 @@
  *     <li>{@link com.nimbusds.srp6.cli.SRP6Server} Command-line server for 
  *         Secure Remote Password (SRP-6a) authentication.
  * </ul>
- *
- * @author Vladimir Dzhuvinov
  */
 package com.nimbusds.srp6.cli;

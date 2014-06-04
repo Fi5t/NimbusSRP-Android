@@ -8,30 +8,15 @@ import java.security.SecureRandom;
 
 import junit.framework.*;
 
+
 /**
  * Tests the SRP-6a utility methods.
  *
  * @author Vladimir Dzhuvinov
- * @version $version$ (2011-11-09)
  */
 public class SRP6RoutinesTest extends TestCase {
 	
-
-	/**
-	 * Creates a new test.
-	 */
-	public SRP6RoutinesTest(String name) {
 	
-		super(name);
-	}
-	
-	
-	/**
-	 * Returns a new "SHA-1" message digest instance.
-	 *
-	 * @return A new digest instance or {@code null} if the algorithm is
-	 *         not supported.
-	 */
 	private MessageDigest newMessageDigest() {
 	
 		try {
