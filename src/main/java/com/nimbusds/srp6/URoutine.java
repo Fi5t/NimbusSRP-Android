@@ -19,7 +19,7 @@ public interface URoutine {
 
 
 	/**
-	 * Computes a client evidence message 'u' as 'H(A | B)'.
+	 * Computes 'u' as 'H(A | B)'.
 	 * 
 	 * @param cryptoParams The crypto parameters for the SRP-6a protocol.
 	 * @param ctx          Snapshot of the SRP-6a client session variables
