@@ -19,25 +19,25 @@
 		for Java.
 	</description>
 
-	<url>https://bitbucket.org/nimbusds/nimbus-srp</url>
+	<url>http://connect2id.com/products/nimbus-srp</url>
 
 	<organization>
-		<name>NimbusDS</name>
-		<url>http://nimbusds.com/</url>
+		<name>Connect2id Ltd.</name>
+		<url>http://connect2id.com</url>
 	</organization>
     
 	<licenses>
 		<license>
-			<name>GNU GENERAL PUBLIC LICENSE, Version 2, June 1991</name>
-			<url>http://www.gnu.org/licenses/gpl-2.0.txt</url>
+			<name>Apache License Version 2.0, January 2004</name>
+			<url>http://www.apache.org/licenses/</url>
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
     
 	<scm>
-		<connection>scm:git:https://bitbucket.org/nimbusds/nimbus-srp.git</connection>
-		<developerConnection>scm:git:git@bitbucket.org:nimbusds/nimbus-srp.git</developerConnection>
-		<url>https://bitbucket.org/nimbusds/nimbus-srp.git</url>
+		<connection>scm:git:https://bitbucket.org/connect2id/nimbus-srp.git</connection>
+		<developerConnection>scm:git:git@bitbucket.org:connect2id/nimbus-srp.git</developerConnection>
+		<url>https://bitbucket.org/connect2id/nimbus-srp.git</url>
 		<tag>HEAD</tag>
 	</scm>
     

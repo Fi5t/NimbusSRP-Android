@@ -1,6 +1,6 @@
 Nimbus SRP: Secure Remote Password (SRP-6a) protocol implementation for Java
 
-Copyright (c) Vladimir Dzhuvinov, 2011 - 2013
+Copyright (c) Connect2id Ltd. and others, 2011 - 2014
 
 
 README
@@ -10,8 +10,8 @@ for Java.
 
 Features:
 
-	* Convenient client and server-side session classes, with tracking of 
-	  the current authentication state.
+	* Convenient client and server-side session classes, with tracking of the
+	  current authentication state.
 	  
 	* Convenient verifier 'v' generator.
 	
@@ -21,9 +21,9 @@ Features:
 	* Includes a set of pre-computed safe primes 'N' of various bitsizes 
 	  (256-bit, 512-bit, etc.)
 	  
-	* Interfaces to allow definition of custom routines for the password 
-	  key 'x', the server evidence message 'M1' and the client evidence 
-	  message 'M2'.
+	* Interfaces to allow definition of custom routines for the password key
+	  'x', the hash routine, the server evidence message 'M1' and the client
+	  evidence message 'M2'.
 
 	* No external package dependencies. 
 
@@ -34,22 +34,20 @@ system developed by Tom Wu (tjw@CS.Stanford.EDU).
 For installation instructions, usage and other information visit the Nimbus SRP
 website:
 
-	http://software.dzhuvinov.com/nimbus-srp.html
+	http://connect2id.com/products/nimbus-srp
 	
 
 Content of this package:
 
 	README.txt                This file.
 	
-	LICENSE-Commercial.txt    The commercial software license.
-	
-	LICENSE-GPL.txt           The GPL 2.0 software license.
+	LICENSE.txt               The Apache 2.0 software license.
 	
 	nimbus-srp-<version>.jar  JAR file containing the library classes.
 	
 	srp-client.jar            Interactive command-line client and verifier 
-	                          generator for Secure Remote Password (SRP-6a) 
-				  authentication.
+	                          generator for Secure Remote Password (SRP-6a)
+	                          authentication.
 	
 	srp-server.jar            Interactive command-line server for Secure 
 	                          Remote Password (SRP-6a) authentication.
@@ -85,8 +83,9 @@ version 1.4.1 (2013-04-05)
 	* Switches build to Apache Maven.
 	* Publishes library to Maven Central.
 
-version 1.5.0 (2014-06-03)
-	* Adds interface for custom computeU routine.  
+version 1.5.0 (2014-06-04)
+	* Adds interface for custom computeU routine.
+	* Switches project license to Apache 2.0.
 
 
 [EOF]
