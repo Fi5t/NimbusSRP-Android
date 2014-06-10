@@ -83,8 +83,9 @@ version 1.4.1 (2013-04-05)
 	* Switches build to Apache Maven.
 	* Publishes library to Maven Central.
 
-version 1.5.0 (2014-06-04)
+version 1.5 (2014-06-10)
 	* Adds interface for custom computeU routine.
+	* Refactors BigInteger utility class.
 	* Switches project license to Apache 2.0.
 
 
