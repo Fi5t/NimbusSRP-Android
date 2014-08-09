@@ -120,7 +120,8 @@ public abstract class SRP6Tool {
 		System.out.println(prefix + "\t2 = select precomputed 512-bit");
 		System.out.println(prefix + "\t3 = select precomputed 768-bit");
 		System.out.println(prefix + "\t4 = select precomputed 1024-bit");
-		System.out.println(prefix + "\t5 = enter prime 'N' and generator 'g'");
+		System.out.println(prefix + "\t5 = select precomputed 2048-bit");
+		System.out.println(prefix + "\t6 = enter prime 'N' and generator 'g'");
 		System.out.println();
 		System.out.print(prefix + "Your choice [1]: ");
 		
@@ -150,6 +151,10 @@ public abstract class SRP6Tool {
 				g = SRP6CryptoParams.g_common;
 				break;
 			case "5":
+				N = SRP6CryptoParams.N_2048;
+				g = SRP6CryptoParams.g_common;
+				break;
+			case "6":
 				System.out.println();
 				System.out.print(prefix + "Enter prime 'N' (hex): ");
 				N = readBigInteger();
