@@ -17,8 +17,7 @@ import java.security.NoSuchAlgorithmException;
  * users or servers; it only needs to verify their validity, which can be done 
  * mathematically or by simple table lookup.
  *
- * <p>For convenience this class includes a set of precomputed parameters,
- * obtained from the SRP-6a demo at http://srp.stanford.edu/demo/demo.html.
+ * <p>For convenience this class includes a set of precomputed parameters.
  *
  * @author Vladimir Dzhuvinov
  */
@@ -29,38 +28,51 @@ public class SRP6CryptoParams {
 
 	
 	/**
-	 * Precomputed safe 256-bit prime 'N', as decimal.
+	 * Precomputed safe 256-bit prime 'N', as decimal. Origin SRP-6a demo
+	 * at http://srp.stanford.edu/demo/demo.html.
 	 */
 	public static final BigInteger N_256 = new BigInteger("125617018995153554710546479714086468244499594888726646874671447258204721048803");
 	
 	
 	/**
-	 * Precomputed safe 512-bit prime 'N', as decimal.
+	 * Precomputed safe 512-bit prime 'N', as decimal. Origin SRP-6a demo
+	 * at http://srp.stanford.edu/demo/demo.html.
 	 */
 	public static final BigInteger N_512 = new BigInteger("11144252439149533417835749556168991736939157778924947037200268358613863350040339017097790259154750906072491181606044774215413467851989724116331597513345603");
 	 
 	 
 	/**
-	 * Precomputed safe 768-bit prime 'N', as decimal.
+	 * Precomputed safe 768-bit prime 'N', as decimal. Origin SRP-6a demo
+	 * at http://srp.stanford.edu/demo/demo.html.
 	 */
 	public static final BigInteger N_768 = new BigInteger("1087179135105457859072065649059069760280540086975817629066444682366896187793570736574549981488868217843627094867924800342887096064844227836735667168319981288765377499806385489913341488724152562880918438701129530606139552645689583147");
 	 
 	 
 	/**
-	 * Precomputed safe 1024-bit prime 'N', as decimal.
+	 * Precomputed safe 1024-bit prime 'N', as decimal. Origin RFC 5054,
+	 * appendix A.
 	 */
 	public static final BigInteger N_1024 = new BigInteger("167609434410335061345139523764350090260135525329813904557420930309800865859473551531551523800013916573891864789934747039010546328480848979516637673776605610374669426214776197828492691384519453218253702788022233205683635831626913357154941914129985489522629902540768368409482248290641036967659389658897350067939");
 
 
+	/**
+	 * Precomputed safe 1536-bit prime 'N', as decimal. Origin RFC 5054,
+	 * appendix A.
+	 */
+	public static final BigInteger N_1536 = new BigInteger("1486998185923128292816507353619409521152457662596380074614818966810244974827752411420380336514078832314731499938313197533147998565301020797040787428051479639316928015998415709101293902971072960487527411068082311763171549170528008620813391411445907584912865222076100726050255271567749213905330659264908657221124284665444825474741087704974475795505492821585749417639344967192301749033325359286273431675492866492416941152646940908101472416714421046022696100064262587");
+
+
         /**
-         * Precomputed safe 2048-bit prime 'N', as decimal.
+         * Precomputed safe 2048-bit prime 'N', as decimal. Origin RFC 5054,
+	 * appendix A.
          */
 	public static final BigInteger N_2048 = new BigInteger("21766174458617435773191008891802753781907668374255538511144643224689886235383840957210909013086056401571399717235807266581649606472148410291413364152197364477180887395655483738115072677402235101762521901569820740293149529620419333266262073471054548368736039519702486226506248861060256971802984953561121442680157668000761429988222457090413873973970171927093992114751765168063614761119615476233422096442783117971236371647333871414335895773474667308967050807005509320424799678417036867928316761272274230314067548291133582479583061439577559347101961771406173684378522703483495337037655006751328447510550299250924469288819");
 
 
 	/**
 	 * Generator 'g' parameter for {@link #N_256}, {@link #N_512}, 
-	 * {@link #N_768}, {@link #N_1024}, and {@link #N_2048} as decimal.
+	 * {@link #N_768}, {@link #N_1024}, {@link #N_1536}, and
+	 * {@link #N_2048} as decimal.
 	 */
 	public static final BigInteger g_common = BigInteger.valueOf(2);
 	
@@ -84,8 +96,8 @@ public class SRP6CryptoParams {
 	
 	
 	/**
-	 * Returns an SRP-6a crypto parameters instance with precomputed 'N' and
-	 * 'g' values and the specified hash algorithm 'H'.
+	 * Returns an SRP-6a crypto parameters instance with precomputed 'N'
+	 * and 'g' values and the specified hash algorithm 'H'.
 	 *
 	 * @param bitsize The preferred prime number bitsize. Must exist as a 
 	 *                precomputed constant.
@@ -113,6 +125,9 @@ public class SRP6CryptoParams {
 			
 		else if (bitsize == 1024)
 			return new SRP6CryptoParams(N_1024, g_common, H);
+
+		else if (bitsize == 1536)
+			return new SRP6CryptoParams(N_1536, g_common, H);
 
 		else if (bitsize == 2048)
 			return new SRP6CryptoParams(N_2048, g_common, H);

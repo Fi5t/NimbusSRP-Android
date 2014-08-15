@@ -18,6 +18,7 @@ public class SRP6CryptoParamsTest extends TestCase {
 		assertTrue(SRP6CryptoParams.N_512.isProbablePrime(15));
 		assertTrue(SRP6CryptoParams.N_768.isProbablePrime(15));
 		assertTrue(SRP6CryptoParams.N_1024.isProbablePrime(15));
+		assertTrue(SRP6CryptoParams.N_1536.isProbablePrime(15));
 		assertTrue(SRP6CryptoParams.N_2048.isProbablePrime(15));
 	}
 
