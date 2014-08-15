@@ -88,5 +88,7 @@ version 1.5 (2014-06-10)
 	* Refactors BigInteger utility class.
 	* Switches project license to Apache 2.0.
 
+version 1.5.1 (2014-08-15)
+    * Introduces stricter 'g' parameter checking.
 
 [EOF]
