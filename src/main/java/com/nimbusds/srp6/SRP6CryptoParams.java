@@ -171,6 +171,16 @@ public class SRP6CryptoParams {
 		
 		if (g == null)
 			throw new IllegalArgumentException("The generator parameter 'g' must not be null");
+
+		if (g.equals(BigInteger.ONE))
+			throw new IllegalArgumentException("The generator parameter 'g' must not be 1");
+
+		if (g.equals(N.subtract(BigInteger.ONE)))
+			throw new IllegalArgumentException("The generator parameter 'g' must not equal N - 1");
+
+		if (g.equals(BigInteger.ZERO))
+			throw new IllegalArgumentException("The generator parameter 'g' must not be 0");
+
 		
 		this.g = g;
 		
