@@ -90,5 +90,6 @@ version 1.5 (2014-06-10)
 
 version 1.5.1 (2014-08-15)
     * Introduces stricter 'g' parameter checking.
+    * Adds precomputed 2048-bit 'N' parameter.
 
 [EOF]

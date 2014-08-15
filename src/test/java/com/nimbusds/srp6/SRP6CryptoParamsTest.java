@@ -12,6 +12,16 @@ import junit.framework.TestCase;
 public class SRP6CryptoParamsTest extends TestCase {
 
 
+	public void testPrecomputedPrimes() {
+
+		assertTrue(SRP6CryptoParams.N_256.isProbablePrime(15));
+		assertTrue(SRP6CryptoParams.N_512.isProbablePrime(15));
+		assertTrue(SRP6CryptoParams.N_768.isProbablePrime(15));
+		assertTrue(SRP6CryptoParams.N_1024.isProbablePrime(15));
+		assertTrue(SRP6CryptoParams.N_2048.isProbablePrime(15));
+	}
+
+
 	public void testIllegalGeneratorArg() {
 
 		try {
