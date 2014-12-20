@@ -276,7 +276,7 @@ public class SRP6ClientSession extends SRP6Session {
 					     password.getBytes(Charset.forName("UTF-8")));
 					     
 		} else {
-			// With default rotine
+			// With default routine
 			x = SRP6Routines.computeX(digest, s.toByteArray(), password.getBytes(Charset.forName("UTF-8")));
 			digest.reset();
 		}
@@ -292,8 +292,13 @@ public class SRP6ClientSession extends SRP6Session {
 		k = SRP6Routines.computeK(digest, config.N, config.g);
 		digest.reset();
 		
-		u = SRP6Routines.computeU(digest, config.N, A, B);
-		digest.reset();
+		if (hashedKeysRoutine != null) {
+			URoutineContext hashedKeysContext = new URoutineContext(A, B);
+			u = hashedKeysRoutine.computeU(config, hashedKeysContext);
+		} else {
+			u = SRP6Routines.computeU(digest, config.N, A, B);
+			digest.reset();
+		}
 		
 		S = SRP6Routines.computeSessionKey(config.N, config.g, k, x, u, a, B);
 		
