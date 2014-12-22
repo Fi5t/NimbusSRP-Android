@@ -93,4 +93,9 @@ version 1.5.1 (2014-08-15)
     * Adds precomputed 1536 and 2048-bit 'N' parameters from RFC 5054, Appendix
       A.
 
+version 1.5.2 (2014-12-22)
+	* Adds missing URoutine support to client session (iss #9).
+	* Fixes BigInteger to byte array conversion in SRP6VerifierGenerator (iss
+	  #10).
+
 [EOF]
