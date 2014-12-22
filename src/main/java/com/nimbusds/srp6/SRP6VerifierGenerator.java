@@ -138,7 +138,7 @@ public class SRP6VerifierGenerator {
 					      password);		     
 		}
 		else {
-			// With default rotine
+			// With default routine
 			x = SRP6Routines.computeX(config.getMessageDigestInstance(), salt, password);
 		}
 		
@@ -168,9 +168,17 @@ public class SRP6VerifierGenerator {
 		
 		if (userID != null)
 			userIDBytes = userID.getBytes(Charset.forName("UTF-8"));
-	
-		
-		return generateVerifier(salt.toByteArray(), userIDBytes, password.getBytes(Charset.forName("UTF-8")));
+
+		byte[] passwordBytes = password.getBytes(Charset.forName("UTF-8"));
+
+		byte[] saltBytes = salt.toByteArray();
+		if (saltBytes[0] == 0) {
+			byte[] tmp = new byte[saltBytes.length - 1];
+			System.arraycopy(saltBytes, 1, tmp, 0, tmp.length);
+			saltBytes = tmp;
+		}
+
+		return generateVerifier(saltBytes, userIDBytes, passwordBytes);
 	}
 	
 	
