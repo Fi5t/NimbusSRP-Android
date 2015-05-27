@@ -1,6 +1,7 @@
 package com.nimbusds.srp6;
 
 
+import java.io.Serializable;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -21,11 +22,14 @@ import java.security.NoSuchAlgorithmException;
  *
  * @author Vladimir Dzhuvinov
  */
-public class SRP6CryptoParams {
+public class SRP6CryptoParams implements Serializable {
 
-	
+	/**
+	 * SerialVersionUID
+	 */
+	private static final long serialVersionUID = -8758433435502894107L;
+
 	// Pre-computed primes 'N' for a set of bitsizes
-
 	
 	/**
 	 * Precomputed safe 256-bit prime 'N', as decimal. Origin SRP-6a demo

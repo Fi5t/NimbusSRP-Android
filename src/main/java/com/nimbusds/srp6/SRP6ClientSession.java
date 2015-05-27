@@ -1,8 +1,10 @@
 package com.nimbusds.srp6;
 
 
+import java.io.Serializable;
 import java.math.BigInteger;
 import java.nio.charset.Charset;
+import java.security.MessageDigest;
 
 
 /**
@@ -30,9 +32,15 @@ import java.nio.charset.Charset;
  *
  * @author Vladimir Dzhuvinov
  */
-public class SRP6ClientSession extends SRP6Session {
+public class SRP6ClientSession extends SRP6Session implements Serializable {
 	
 	
+	/**
+	 * SerialVersionUID
+	 */
+	private static final long serialVersionUID = -479060216624675478L;
+
+
 	/**
 	 * Enumerates the states of a client-side SRP-6a authentication
 	 * session.
@@ -233,7 +241,7 @@ public class SRP6ClientSession extends SRP6Session {
 
 		this.config = config;
 		
-		digest = config.getMessageDigestInstance();
+		MessageDigest digest = config.getMessageDigestInstance();
 		
 		if (digest == null)
 			throw new IllegalArgumentException("Unsupported hash algorithm 'H': " + config.H);
@@ -374,14 +382,13 @@ public class SRP6ClientSession extends SRP6Session {
 
 		} else {
 			// With default routine
+			MessageDigest digest = config.getMessageDigestInstance();
 			computedM2 = SRP6Routines.computeServerEvidence(digest, A, M1, S);
 		}
 		
 		if (! computedM2.equals(M2))
 			throw new SRP6Exception("Bad server credentials", SRP6Exception.CauseType.BAD_CREDENTIALS);
 
-		digest.reset();
-	
 		state = State.STEP_3;
 		
 		updateLastActivityTime();

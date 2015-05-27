@@ -11,7 +11,7 @@
 	
 	<groupId>com.nimbusds</groupId>
 	<artifactId>srp6a</artifactId>
-	<version>1.5.2-SNAPSHOT</version>
+	<version>1.5.3-bwittwer-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	
 	<name>Nimbus SRP6a</name>
