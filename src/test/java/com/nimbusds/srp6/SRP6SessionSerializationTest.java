@@ -3,8 +3,8 @@
  */
 package com.nimbusds.srp6;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -16,9 +16,8 @@ import junit.framework.TestCase;
  * @author bwittwer
  */
 public class SRP6SessionSerializationTest extends TestCase {
-
 	
-	public void testAuthSuccess() {
+	public void testSerialization() {
 
 		// System.out.println("*** Test successful authentication ***");
 
@@ -72,9 +71,19 @@ public class SRP6SessionSerializationTest extends TestCase {
 		// System.out.println("Server -> Client: salt: " + new
 		// BigInteger(s).toString(16));
 
-		toFile(server, "step1");
+		byte[] bytes = null;
+		try {
+			bytes = toByteArray(server);
+		} catch (IOException e1) {
+			fail("Serialization failed: " + e1.getMessage());
+		}
 
-		SRP6ServerSession copy = fromFile("step1");
+		SRP6ServerSession copy = null;
+		try {
+			copy = fromByteArray(bytes);
+		} catch (Exception e1) {
+			fail("Deserialization failed: " + e1.getMessage());
+		}
 		
 		assertEquals(SRP6ServerSession.State.STEP_1, copy.getState());
 		assertEquals(s, copy.getSalt());
@@ -126,52 +135,57 @@ public class SRP6SessionSerializationTest extends TestCase {
 		// System.out.println("Auth success");
 	}
 
-	public void toFile(SRP6ServerSession session, String filename) {
-
+	protected byte[] toByteArray(SRP6ServerSession session) throws IOException {
 		ObjectOutputStream oos = null;
-
+		ByteArrayOutputStream byteStream = null;
 		try {
-			final FileOutputStream fichier = new FileOutputStream("target/" + filename + ".ser");
-			oos = new ObjectOutputStream(fichier);
-
+			byteStream = new ByteArrayOutputStream();
+			oos = new ObjectOutputStream(byteStream);
 			oos.writeObject(session);
-
 			oos.flush();
-
-		} catch (final java.io.IOException e) {
-			e.printStackTrace();
+			return byteStream.toByteArray();
+		} catch (IOException e) {
+			throw e;
 		} finally {
 			try {
 				if (oos != null) {
 					oos.flush();
 					oos.close();
 				}
-			} catch (final IOException ex) {
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+			try {
+				if (byteStream != null) {
+					byteStream.close();
+				}
+			} catch (IOException ex) {
 				ex.printStackTrace();
 			}
 		}
 	}
 
-	public SRP6ServerSession fromFile(String filename) {
+	protected SRP6ServerSession fromByteArray(byte[] bytes) throws Exception  {
 		ObjectInputStream ois = null;
-
+		ByteArrayInputStream byteStream = null;
 		try {
-			final FileInputStream fichier = new FileInputStream("target/" + filename + ".ser");
-			ois = new ObjectInputStream(fichier);
-			final SRP6ServerSession result = (SRP6ServerSession) ois.readObject();
-
+			byteStream = new ByteArrayInputStream(bytes);
+			ois = new ObjectInputStream(byteStream);
+			SRP6ServerSession result = (SRP6ServerSession) ois.readObject();
 			return result;
-
-		} catch (final java.io.IOException e) {
-			e.printStackTrace();
-			return null;
-		} catch (final ClassNotFoundException e) {
-			e.printStackTrace();
-			return null;
+		} catch (IOException | ClassNotFoundException e) {
+			throw e;
 		} finally {
 			try {
 				if (ois != null) {
 					ois.close();
+				}
+			} catch (final IOException ex) {
+				ex.printStackTrace();
+			}
+			try {
+				if (byteStream != null) {
+					byteStream.close();
 				}
 			} catch (final IOException ex) {
 				ex.printStackTrace();
