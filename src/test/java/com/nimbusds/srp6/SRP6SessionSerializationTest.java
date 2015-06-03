@@ -1,6 +1,3 @@
-/*
- * (c) LeShop SA 2015
- */
 package com.nimbusds.srp6;
 
 import java.io.ByteArrayInputStream;
@@ -13,13 +10,13 @@ import java.math.BigInteger;
 import junit.framework.TestCase;
 
 /**
- * @author bwittwer
+ * @author Bernard Wittwer
  */
 public class SRP6SessionSerializationTest extends TestCase {
 	
 	public void testSerialization() {
 
-		// System.out.println("*** Test successful authentication ***");
+		// System.out.println("*** Test serialization of server session ***");
 
 		// username + password
 		String username = "alice";
@@ -135,6 +132,9 @@ public class SRP6SessionSerializationTest extends TestCase {
 		// System.out.println("Auth success");
 	}
 
+	/**
+	 * Use a ObjectOutputStream to perform serialization
+	 */
 	protected byte[] toByteArray(SRP6ServerSession session) throws IOException {
 		ObjectOutputStream oos = null;
 		ByteArrayOutputStream byteStream = null;
@@ -164,7 +164,10 @@ public class SRP6SessionSerializationTest extends TestCase {
 			}
 		}
 	}
-
+	
+	/**
+	 * Use a ObjectInputStream to perform deserialization
+	 */
 	protected SRP6ServerSession fromByteArray(byte[] bytes) throws Exception  {
 		ObjectInputStream ois = null;
 		ByteArrayInputStream byteStream = null;
