@@ -100,6 +100,5 @@ version 1.5.2 (2014-12-22)
 
 version 1.5.3 (2015-06-03)
 	* Makes SRP6Session serialisable (iss #3).
-	*
 
 [EOF]
