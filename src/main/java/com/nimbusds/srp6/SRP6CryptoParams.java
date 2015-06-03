@@ -25,7 +25,7 @@ import java.security.NoSuchAlgorithmException;
 public class SRP6CryptoParams implements Serializable {
 
 	/**
-	 * SerialVersionUID
+	 * Serializable class version number
 	 */
 	private static final long serialVersionUID = -8758433435502894107L;
 

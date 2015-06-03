@@ -3,7 +3,6 @@ package com.nimbusds.srp6;
 
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.security.MessageDigest;
 import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,7 +18,7 @@ import java.util.Map;
 public abstract class SRP6Session implements Serializable {
 
 	/**
-	 * SerialVersionUID
+	 * Serializable class version number
 	 */
 	private static final long serialVersionUID = 3813344182070859518L;
 
@@ -385,8 +384,7 @@ public abstract class SRP6Session implements Serializable {
 			return null;
 	
 		if (doHash) {
-			MessageDigest digest = config.getMessageDigestInstance();			
-			return new BigInteger(digest.digest(S.toByteArray()));
+			return new BigInteger(config.getMessageDigestInstance().digest(S.toByteArray()));
 		}
 		else {
 			return S;

@@ -36,7 +36,7 @@ public class SRP6ClientSession extends SRP6Session implements Serializable {
 	
 	
 	/**
-	 * SerialVersionUID
+	 * Serializable class version number
 	 */
 	private static final long serialVersionUID = -479060216624675478L;
 

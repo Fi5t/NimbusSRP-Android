@@ -37,7 +37,7 @@ import java.security.MessageDigest;
 public class SRP6ServerSession extends SRP6Session implements Serializable {
 
 	/**
-	 * SerialVersionUID
+	 * Serializable class version number
 	 */
 	private static final long serialVersionUID = -4076520488632450473L;
 
@@ -119,9 +119,7 @@ public class SRP6ServerSession extends SRP6Session implements Serializable {
 
 		this.config = config;
 		
-		MessageDigest digest = config.getMessageDigestInstance();
-		
-		if (digest == null)
+		if (config.getMessageDigestInstance() == null)
 			throw new IllegalArgumentException("Unsupported hash algorithm 'H': " + config.H);
 
 		state = State.INIT;
