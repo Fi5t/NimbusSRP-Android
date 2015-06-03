@@ -1,8 +1,8 @@
 package com.nimbusds.srp6;
 
 
+import java.io.Serializable;
 import java.math.BigInteger;
-import java.security.MessageDigest;
 import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,22 +14,22 @@ import java.util.Map;
  *
  * @author Vladimir Dzhuvinov
  * @author John Kim
+ * @author Bernard Wittwer
  */
-public abstract class SRP6Session {
-	
+public abstract class SRP6Session implements Serializable {
+
+	/**
+	 * Serializable class version number
+	 */
+	private static final long serialVersionUID = 3813344182070859518L;
+
 
 	/**
 	 * The crypto configuration.
 	 */
 	protected SRP6CryptoParams config;
-	
-	
-	/**
-	 * Message digest (not thread-safe).
-	 */
-	protected MessageDigest digest;
-	
-	
+
+
 	/**
 	 * Source of randomness.
 	 */
@@ -387,8 +387,7 @@ public abstract class SRP6Session {
 			return null;
 	
 		if (doHash) {
-			digest.reset();
-			return new BigInteger(digest.digest(S.toByteArray()));
+			return new BigInteger(config.getMessageDigestInstance().digest(S.toByteArray()));
 		}
 		else {
 			return S;

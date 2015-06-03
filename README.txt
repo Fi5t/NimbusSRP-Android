@@ -1,6 +1,6 @@
 Nimbus SRP: Secure Remote Password (SRP-6a) protocol implementation for Java
 
-Copyright (c) Connect2id Ltd. and others, 2011 - 2014
+Copyright (c) Connect2id Ltd. and others, 2011 - 2015
 
 
 README
@@ -97,5 +97,9 @@ version 1.5.2 (2014-12-22)
 	* Adds missing URoutine support to client session (iss #9).
 	* Fixes BigInteger to byte array conversion in SRP6VerifierGenerator (iss
 	  #10).
+
+version 1.5.3 (2015-06-03)
+	* Makes SRP6Session serialisable (iss #3).
+	*
 
 [EOF]

@@ -1,7 +1,9 @@
 package com.nimbusds.srp6;
 
 
+import java.io.Serializable;
 import java.math.BigInteger;
+import java.security.MessageDigest;
 
 
 /**
@@ -31,10 +33,16 @@ import java.math.BigInteger;
  * </ul>
  *
  * @author Vladimir Dzhuvinov
+ * @author Bernard Wittwer
  */
-public class SRP6ServerSession extends SRP6Session {
-	
-	
+public class SRP6ServerSession extends SRP6Session implements Serializable {
+
+	/**
+	 * Serializable class version number
+	 */
+	private static final long serialVersionUID = -4076520488632450473L;
+
+
 	/**
 	 * Enumerates the states of a server-side SRP-6a authentication session.
 	 */
@@ -112,9 +120,7 @@ public class SRP6ServerSession extends SRP6Session {
 
 		this.config = config;
 		
-		digest = config.getMessageDigestInstance();
-		
-		if (digest == null)
+		if (config.getMessageDigestInstance() == null)
 			throw new IllegalArgumentException("Unsupported hash algorithm 'H': " + config.H);
 
 		state = State.INIT;
@@ -183,6 +189,8 @@ public class SRP6ServerSession extends SRP6Session {
 		// Check current state
 		if (state != State.INIT)
 			throw new IllegalStateException("State violation: Session must be in INIT state");
+		
+		MessageDigest digest = config.getMessageDigestInstance();
 		
 		// Generate server private and public values
 		k = SRP6Routines.computeK(digest, config.N, config.g);
@@ -290,6 +298,8 @@ public class SRP6ServerSession extends SRP6Session {
 		if (noSuchUserIdentity)
 			throw new SRP6Exception("Bad client credentials", SRP6Exception.CauseType.BAD_CREDENTIALS);
 		
+		MessageDigest digest = config.getMessageDigestInstance();
+		
 		if (hashedKeysRoutine != null) {
 			URoutineContext hashedKeysContext = new URoutineContext(A, B);
 			u = hashedKeysRoutine.computeU(config, hashedKeysContext);
@@ -331,6 +341,7 @@ public class SRP6ServerSession extends SRP6Session {
 		else {
 			// With default routine
 			M2 = SRP6Routines.computeServerEvidence(digest, A, M1, S);
+			digest.reset();
 		}
 		
 		updateLastActivityTime();
