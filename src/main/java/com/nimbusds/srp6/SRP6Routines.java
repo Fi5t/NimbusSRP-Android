@@ -89,7 +89,7 @@ public class SRP6Routines {
 		digest.update(salt);
 		digest.update(output);
 		
-		return new BigInteger(1, digest.digest());
+		return BigIntegerUtils.bigIntegerFromBytes(digest.digest());
 	}
 	
 	
@@ -303,7 +303,7 @@ public class SRP6Routines {
 		digest.update(B.toByteArray());
 		digest.update(S.toByteArray());
 
-		return new BigInteger(1, digest.digest());
+		return BigIntegerUtils.bigIntegerFromBytes(digest.digest());
 	}
 	
 	
@@ -331,7 +331,7 @@ public class SRP6Routines {
 		digest.update(M1.toByteArray());
 		digest.update(S.toByteArray());
 		
-		return new BigInteger(1, digest.digest());
+		return BigIntegerUtils.bigIntegerFromBytes(digest.digest());
 	}
 	
 	
@@ -365,7 +365,7 @@ public class SRP6Routines {
 		
 		byte[] output = digest.digest();
 		
-		return new BigInteger(1, output);
+		return BigIntegerUtils.bigIntegerFromBytes(output);
 	}
 	
 	
@@ -379,8 +379,8 @@ public class SRP6Routines {
 	 * @return The padded big integer as a byte array.
 	 */
 	protected static byte[] getPadded(final BigInteger n, final int length) {
-	
-		byte[] bs = bigIntegerToUnsignedByteArray(n);
+
+		byte[] bs = BigIntegerUtils.bigIntegerToBytes(n);
 		
 		if (bs.length < length) {
 		
@@ -391,34 +391,8 @@ public class SRP6Routines {
 		
 		return bs;
 	}
-	
-	
-	/**
-	 * Returns the specified big integer as an unsigned byte array.
-	 *
-	 * @param value The big integer, must not be {@code null}.
-	 *
-	 * @return A byte array without a leading zero if present in the signed
-	 *         encoding.
-	 */
-	protected static byte[] bigIntegerToUnsignedByteArray(final BigInteger value) {
-	
-		byte[] bytes = value.toByteArray();
-        
-		// remove leading zero if any
-		if (bytes[0] == 0) {
 
-			byte[] tmp = new byte[bytes.length - 1];
 
-			System.arraycopy(bytes, 1, tmp, 0, tmp.length);
-
-			return tmp;
-		}
-        
-		return bytes;
-	}
-	
-	
 	/**
 	 * Returns a random big integer in the specified range [min, max].
 	 *

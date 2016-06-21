@@ -134,7 +134,7 @@ public class SRP6Client extends SRP6Tool {
 			return;
 		}
 		
-		BigInteger s = new BigInteger(1, SRP6VerifierGenerator.generateRandomSalt(saltBytes));
+		BigInteger s = BigIntegerUtils.bigIntegerFromBytes(SRP6VerifierGenerator.generateRandomSalt(saltBytes));
 		
 		BigInteger v = vGen.generateVerifier(s, user.I, user.P);
 		

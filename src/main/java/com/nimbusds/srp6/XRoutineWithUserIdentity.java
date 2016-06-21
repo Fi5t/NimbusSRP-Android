@@ -46,7 +46,7 @@ public class XRoutineWithUserIdentity implements XRoutine {
 		digest.update(salt);
 		output = digest.digest(output);
 
-		return new BigInteger(1, output);
+		return BigIntegerUtils.bigIntegerFromBytes(output);
 	}
 	
 	

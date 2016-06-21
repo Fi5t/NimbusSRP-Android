@@ -387,7 +387,7 @@ public abstract class SRP6Session implements Serializable {
 			return null;
 	
 		if (doHash) {
-			return new BigInteger(config.getMessageDigestInstance().digest(S.toByteArray()));
+			return new BigInteger(config.getMessageDigestInstance().digest(BigIntegerUtils.bigIntegerToBytes(S)));
 		}
 		else {
 			return S;

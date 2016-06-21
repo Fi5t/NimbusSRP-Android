@@ -171,12 +171,7 @@ public class SRP6VerifierGenerator {
 
 		byte[] passwordBytes = password.getBytes(Charset.forName("UTF-8"));
 
-		byte[] saltBytes = salt.toByteArray();
-		if (saltBytes[0] == 0) {
-			byte[] tmp = new byte[saltBytes.length - 1];
-			System.arraycopy(saltBytes, 1, tmp, 0, tmp.length);
-			saltBytes = tmp;
-		}
+		byte[] saltBytes = BigIntegerUtils.bigIntegerToBytes(salt);
 
 		return generateVerifier(saltBytes, userIDBytes, passwordBytes);
 	}
