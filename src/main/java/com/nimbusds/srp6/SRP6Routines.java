@@ -299,9 +299,9 @@ public class SRP6Routines {
 	                                               final BigInteger B,
 	                                               final BigInteger S) {
 		
-		digest.update(A.toByteArray());
-		digest.update(B.toByteArray());
-		digest.update(S.toByteArray());
+		digest.update(BigIntegerUtils.bigIntegerToBytes(A));
+		digest.update(BigIntegerUtils.bigIntegerToBytes(B));
+		digest.update(BigIntegerUtils.bigIntegerToBytes(S));
 
 		return BigIntegerUtils.bigIntegerFromBytes(digest.digest());
 	}
@@ -327,9 +327,9 @@ public class SRP6Routines {
 	                                                  final BigInteger M1,
 	                                                  final BigInteger S) {
 	
-		digest.update(A.toByteArray());
-		digest.update(M1.toByteArray());
-		digest.update(S.toByteArray());
+		digest.update(BigIntegerUtils.bigIntegerToBytes(A));
+		digest.update(BigIntegerUtils.bigIntegerToBytes(M1));
+		digest.update(BigIntegerUtils.bigIntegerToBytes(S));
 		
 		return BigIntegerUtils.bigIntegerFromBytes(digest.digest());
 	}
