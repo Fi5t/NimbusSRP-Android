@@ -101,4 +101,9 @@ version 1.5.2 (2014-12-22)
 version 1.5.3 (2015-06-03)
 	* Makes SRP6Session serialisable (iss #3).
 
+version 2.0.0 (2016-10-27) 
+	* Consistent use of RFC2945 conversions between byte array and BigInteger (iss #11, #12, #13) by Jonathan Haas. 
+	* Changed method signature of getSessionKey (now two methods not one with a switch)
+	* Depending on how you are generating your random salt, and whether it is an RFC2945 legal byte string, you may lock your users out with this change. It is best to assume users will have to reset their verifier if you upgrade to this version.  
+ 
 [EOF]
