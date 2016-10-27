@@ -104,7 +104,8 @@ version 2.0.0 (2016-10-27)
 	#12, #13) by Jonathan Haas. 
 	* Changed method signature of getSessionKey (now two methods not one with a switch)
 	* Depending on how you are generating your random salt, and whether it is an RFC2945 
-	legal byte string, you may lock your users out with this change. It is best to assume 
-	all users will have to reset their verifier if created by a previous version.
+	legal byte string, you may lock your users out upgrading from older version. 
+	It is best to assume all users will have to reset their verifier if upgrading from a 
+	previous version.
  
 [EOF]
