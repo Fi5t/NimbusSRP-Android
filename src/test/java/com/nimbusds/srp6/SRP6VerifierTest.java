@@ -13,7 +13,25 @@ import junit.framework.*;
  */
 public class SRP6VerifierTest extends TestCase {
 	
-	
+
+	public void testIssue13() throws Exception {
+			SRP6CryptoParams instance = SRP6CryptoParams.getInstance();
+			SRP6VerifierGenerator srp6VerifierGenerator = new SRP6VerifierGenerator(instance);
+			BigInteger salt;
+			byte[] saltByteArray = SRP6Routines.generateRandomSalt(16);
+			saltByteArray[0] = 0;
+			saltByteArray[1] |= (byte) 0x80;
+			salt = new BigInteger(saltByteArray);
+			BigInteger v = srp6VerifierGenerator.generateVerifier(salt, "user", "secret");
+			SRP6ClientSession srp6ClientSession = new SRP6ClientSession();
+			SRP6ServerSession srp6ServerSession = new SRP6ServerSession(instance);
+			srp6ClientSession.step1("user", "secret");
+			BigInteger b = srp6ServerSession.step1("user", salt, v);
+			SRP6ClientCredentials srp6ClientCredentials = srp6ClientSession.step2(instance, salt, b);
+			BigInteger m2 = srp6ServerSession.step2(srp6ClientCredentials.A, srp6ClientCredentials.M1);
+			srp6ClientSession.step3(m2);
+	}
+
 	public void testConstructors() {
 	
 		SRP6CryptoParams config = SRP6CryptoParams.getInstance();
