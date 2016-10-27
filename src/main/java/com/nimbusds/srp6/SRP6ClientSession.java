@@ -279,14 +279,14 @@ public class SRP6ClientSession extends SRP6Session implements Serializable {
 		if (xRoutine != null) {
 			
 			// With custom routine
-			x = xRoutine.computeX(config.getMessageDigestInstance(), 
-			                     s.toByteArray(),
+			x = xRoutine.computeX(config.getMessageDigestInstance(),
+						 BigIntegerUtils.bigIntegerToBytes(s),
 					     userID.getBytes(Charset.forName("UTF-8")),
 					     password.getBytes(Charset.forName("UTF-8")));
 					     
 		} else {
 			// With default routine
-			x = SRP6Routines.computeX(digest, s.toByteArray(), password.getBytes(Charset.forName("UTF-8")));
+			x = SRP6Routines.computeX(digest, BigIntegerUtils.bigIntegerToBytes(s), password.getBytes(Charset.forName("UTF-8")));
 			digest.reset();
 		}
 		

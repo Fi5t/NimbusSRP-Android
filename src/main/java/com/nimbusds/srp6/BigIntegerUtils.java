@@ -2,6 +2,7 @@ package com.nimbusds.srp6;
 
 
 import java.math.BigInteger;
+import java.util.Arrays;
 
 
 /**
@@ -50,7 +51,33 @@ public class BigIntegerUtils {
 			return null;
 		}
 	}
-	
+
+	/**
+	 * Converts a byte array to a positive BigInteger
+	 *
+	 * @param bytes byte array
+	 *
+	 * @return positive BigInteger containing the data of the supplied byte array
+	 */
+	public static BigInteger bigIntegerFromBytes(final byte[] bytes) {
+		return new BigInteger(1, bytes);
+	}
+
+	/**
+	 * Converts a BigInteger into a byte array ignoring the sign of the BigInteger, according to SRP specification
+	 *
+	 * @param bigInteger BigInteger, must not be null
+	 *
+	 * @return byte array (leading byte is always != 0), empty array if BigInteger is zero.
+	 */
+	public static byte[] bigIntegerToBytes(final BigInteger bigInteger) {
+		byte[] bytes = bigInteger.toByteArray();
+		if (bytes[0] == 0) {
+			return Arrays.copyOfRange(bytes, 1, bytes.length);
+		}
+		return bytes;
+	}
+
 	/**
 	 * Prevents instantiation.
 	 */
