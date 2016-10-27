@@ -3,6 +3,7 @@ package com.nimbusds.srp6;
 
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.security.MessageDigest;
 import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.Map;
@@ -368,30 +369,40 @@ public abstract class SRP6Session implements Serializable {
 	
 		return M2;
 	}
-	
-	
+
+
 	/**
-	 * Gets the shared session key 'S' or its hash H(S).
+	 * Gets the shared session key 'S'
 	 *
-	 * @param doHash If {@code true} the hash H(S) of the session key will
-	 *               be returned instead of the raw value.
-	 *
-	 * @return The shared session key 'S' or its hash H(S). {@code null} 
+	 * @return The shared session key 'S'. {@code null} 
 	 *         will be returned if authentication failed or the method is
 	 *         invoked in a session state when the session key 'S' has not
 	 *         been computed yet.
 	 */
-	public BigInteger getSessionKey(final boolean doHash) {
+	public BigInteger getSessionKey() {
+		return S;
+	}
+	
+	
+	/**
+	 * Gets the hash of the shared session key H(S).
+	 *
+	 * @return The hash of the shared session key H(S). {@code null} 
+	 *         will be returned if authentication failed or the method is
+	 *         invoked in a session state when the session key 'S' has not
+	 *         been computed yet.
+	 */
+	public byte[] getSessionKeyHash() {
 	
 		if (S == null)
 			return null;
-	
-		if (doHash) {
-			return new BigInteger(config.getMessageDigestInstance().digest(BigIntegerUtils.bigIntegerToBytes(S)));
-		}
-		else {
-			return S;
-		}
+
+		MessageDigest digest = config.getMessageDigestInstance();
+
+		if (digest == null)
+			throw new IllegalArgumentException("Unsupported hash algorithm 'H': " + config.H);
+		
+		return digest.digest(BigIntegerUtils.bigIntegerToBytes(S));
 	}
 	
 	
