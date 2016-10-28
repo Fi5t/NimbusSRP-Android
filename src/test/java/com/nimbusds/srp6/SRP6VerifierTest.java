@@ -50,8 +50,8 @@ public class SRP6VerifierTest extends TestCase {
 							      salt, 
 							      password.getBytes()));
 	
-		assertEquals(targetV, gen.generateVerifier(new BigInteger(salt), password));
-		assertEquals(targetV, gen.generateVerifier(new BigInteger(salt), userID, password));
+		assertEquals(targetV, gen.generateVerifier(new BigInteger(1, salt), password));
+		assertEquals(targetV, gen.generateVerifier(new BigInteger(1, salt), userID, password));
 		assertEquals(targetV, gen.generateVerifier(salt, password.getBytes()));
 		assertEquals(targetV, gen.generateVerifier(salt, userID.getBytes(), password.getBytes()));
 	}
