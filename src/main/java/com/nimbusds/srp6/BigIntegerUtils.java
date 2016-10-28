@@ -55,7 +55,7 @@ public class BigIntegerUtils {
 	/**
 	 * Converts a byte array to a positive BigInteger
 	 *
-	 * @param bytes byte array
+	 * @param bytes byte array in big endian unsigned RFC2945 format
 	 *
 	 * @return positive BigInteger containing the data of the supplied byte array
 	 */
@@ -64,13 +64,14 @@ public class BigIntegerUtils {
 	}
 
 	/**
-	 * Converts a BigInteger into a byte array ignoring the sign of the BigInteger, according to SRP specification
+	 * Converts a BigInteger into a byte array ignoring the sign of the BigInteger, according to RFC2945 specification
 	 *
-	 * @param bigInteger BigInteger, must not be null
+	 * @param bigInteger BigInteger, must not be null, should not be negative
 	 *
 	 * @return byte array (leading byte is always != 0), empty array if BigInteger is zero.
 	 */
 	public static byte[] bigIntegerToBytes(final BigInteger bigInteger) {
+		assert(bigInteger.signum() != -1);
 		byte[] bytes = bigInteger.toByteArray();
 		if (bytes[0] == 0) {
 			return Arrays.copyOfRange(bytes, 1, bytes.length);
