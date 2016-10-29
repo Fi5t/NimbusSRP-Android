@@ -3,9 +3,6 @@
 
 [![Quality Gate](https://sonarqube.com/api/badges/gate?key=com.nimbusds%3Asrp6a)](https://sonarqube.com/dashboard/index/com.nimbusds%3Asrp6a)
 
-#### This project is analysed on [SonarQube.com](https://sonarqube.com)!
-
-
 Nimbus SRP: Secure Remote Password (SRP-6a) protocol implementation for Java
 
 Copyright (c) Connect2id Ltd. and others, 2011 - 2016
