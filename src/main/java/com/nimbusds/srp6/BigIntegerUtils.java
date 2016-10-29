@@ -71,7 +71,7 @@ public class BigIntegerUtils {
 	 * @return byte array (leading byte is always != 0), empty array if BigInteger is zero.
 	 */
 	public static byte[] bigIntegerToBytes(final BigInteger bigInteger) {
-		assert(bigInteger.signum() != -1);
+		assert(bigInteger.signum() != -1); // NOSONAR
 		byte[] bytes = bigInteger.toByteArray();
 		if (bytes[0] == 0) {
 			return Arrays.copyOfRange(bytes, 1, bytes.length);
