@@ -1,5 +1,5 @@
 
-![NimbusSRP](https://bytebucket.org/connect2id/nimbus-srp/raw/0d1e1bf95c812d26114b1a7972ed512b10ca5ab4/nimubs-logo.png)
+![NimbusSRP](https://bytebucket.org/connect2id/nimbus-srp/raw/0d77bbb18b5e223115135b6582ef6998596abd42/nimubs-logo-small.png)
 
 [![Quality Gate](https://sonarqube.com/api/badges/gate?key=com.nimbusds%3Asrp6a)](https://sonarqube.com/dashboard/index/com.nimbusds%3Asrp6a)
 
