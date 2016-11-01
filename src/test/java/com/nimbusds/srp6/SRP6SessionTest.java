@@ -29,7 +29,7 @@ public class SRP6SessionTest extends TestCase {
 		
 		// Generate verifier
 		SRP6VerifierGenerator verifierGen = new SRP6VerifierGenerator(config);
-		BigInteger s = new BigInteger(1, SRP6VerifierGenerator.generateRandomSalt());
+		BigInteger s = new BigInteger(1, verifierGen.generateRandomSalt());
 		BigInteger v = verifierGen.generateVerifier(s, username, password);
 		
 		// System.out.println("Salt 's': " + s.toString(16));

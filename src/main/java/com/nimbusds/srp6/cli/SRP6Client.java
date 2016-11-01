@@ -1,8 +1,8 @@
 package com.nimbusds.srp6.cli;
 
-
 import java.io.IOException;
 import java.math.BigInteger;
+import java.security.SecureRandom;
 
 import com.nimbusds.srp6.BigIntegerUtils;
 import com.nimbusds.srp6.SRP6ClientCredentials;
@@ -10,7 +10,6 @@ import com.nimbusds.srp6.SRP6ClientSession;
 import com.nimbusds.srp6.SRP6CryptoParams;
 import com.nimbusds.srp6.SRP6Exception;
 import com.nimbusds.srp6.SRP6VerifierGenerator;
-
 
 /**
  * Interactive command-line client and verifier generator for Secure Remote 
@@ -24,7 +23,6 @@ import com.nimbusds.srp6.SRP6VerifierGenerator;
  * @author Vladimir Dzhuvinov
  */
 public class SRP6Client extends SRP6Tool {
-
 
 	/**
 	 * User identity 'I' and password 'P'.
@@ -70,17 +68,17 @@ public class SRP6Client extends SRP6Tool {
 	
 	@Override
 	public void run()
-		throws IOException {
+		throws IOException, SRP6Exception {
 	
-		System.out.println("*** Nimbus SRP-6a client / verifier generator ***");
-		System.out.println();
+		println("*** Nimbus SRP-6a client / verifier generator ***");
+		println();
 		
 		
 		// Choose mode
-		System.out.println("Choose mode: ");
-		System.out.println("\t1 = generate password verifier");
-		System.out.println("\t2 = client auth session");
-		System.out.println();
+		println("Choose mode: ");
+		println("\t1 = generate password verifier");
+		println("\t2 = client auth session");
+		println();
 		System.out.print("Your choice [1]: ");
 		
 		String mode = readInput("1");
@@ -88,15 +86,15 @@ public class SRP6Client extends SRP6Tool {
 		switch (mode) {
 
 			case "1":
-				System.out.println();
+				println();
 				generatePasswordVerifier();
 				break;
 			case "2":
-				System.out.println();
+				println();
 				clientSession();
 				break;
 			default:
-				System.out.println("Unknown choice, aborting...");
+				println("Unknown choice, aborting...");
 				break;
 		}
 	}
@@ -111,13 +109,13 @@ public class SRP6Client extends SRP6Tool {
 	private void generatePasswordVerifier()
 		throws IOException {
 		
-		System.out.println("Initialize verifier generator");
+		println("Initialize verifier generator");
 		SRP6CryptoParams config = getConfig("\t");
 		
 		SRP6VerifierGenerator vGen = new SRP6VerifierGenerator(config);
 		
 		User user = getUser("");
-		System.out.println();
+		println();
 		
 		System.out.print("Enter preferred salt 's' byte size [16]: ");
 		
@@ -130,20 +128,29 @@ public class SRP6Client extends SRP6Tool {
 			
 		} catch (NumberFormatException e) {
 		
-			System.out.println("Couldn't parse salt 's' byte size: " + e.getMessage());
+			println("Couldn't parse salt 's' byte size: " + e.getMessage());
 			return;
 		}
-		
-		BigInteger s = BigIntegerUtils.bigIntegerFromBytes(SRP6VerifierGenerator.generateRandomSalt(saltBytes));
+
+		BigInteger s = BigIntegerUtils.bigIntegerFromBytes(vGen.generateRandomSalt(saltBytes, random));
 		
 		BigInteger v = vGen.generateVerifier(s, user.I, user.P);
-		
-		System.out.println("Generated salt 's' (hex): " + BigIntegerUtils.toHex(s));
-		System.out.println();
-		System.out.println("Computed password verifier 'v' (hex): " + BigIntegerUtils.toHex(v));
+
+		logSalt(BigIntegerUtils.toHex(s));
+		println();
+		logV(BigIntegerUtils.toHex(v));
 	}
-	
-	
+
+	protected void logV(String V) {
+		println("Computed password verifier 'v' (hex): " + V);
+	}
+
+	protected void logSalt(String s) {
+		println("Generated salt 's' (hex): " + s);
+	}
+
+	protected SecureRandom random = new SecureRandom();
+
 	/**
 	 * Interactive command-line interface to a SRP-6a client authentication
 	 * session.
@@ -151,33 +158,39 @@ public class SRP6Client extends SRP6Tool {
 	 * @throws IOException On a console I/O exception.
 	 */
 	private void clientSession()
-		throws IOException {
+		throws IOException, SRP6Exception {
 	
 		// Step 1
 	
-		System.out.println("Client session step 1");
+		println("Client session step 1");
 		
-		SRP6ClientSession client = new SRP6ClientSession();
+		SRP6ClientSession client = new SRP6ClientSession(){{
+			/**
+			 * this override is so that JUnit tests dcan inject a not-so-random insecure generator from the outside.
+			 * to be secure simply use SRP6ClientSession without overriding its random generator.
+ 			 */
+			this.random = SRP6Client.this.random;
+		}};
 		
 		User user = getUser("\t");
 		client.step1(user.I, user.P);
 	
-		System.out.println();
+		println();
 		
 		
 		// Step 2
 		
-		System.out.println("Client session step 2");
+		println("Client session step 2");
 		
 		SRP6CryptoParams config = getConfig("\t");
 		
 		System.out.print("\tEnter salt 's' (hex): ");
 		BigInteger s = readBigInteger();
-		System.out.println();
+		println();
 		
 		System.out.print("\tEnter public server value 'B' (hex): ");
 		BigInteger B = readBigInteger();
-		System.out.println();
+		println();
 		
 		SRP6ClientCredentials cred;
 		
@@ -186,18 +199,18 @@ public class SRP6Client extends SRP6Tool {
 			
 		} catch (SRP6Exception e) {
 			
-			System.out.println(e.getMessage());
+			println(e.getMessage());
 			return;
 		}
-		
-		System.out.println("\tComputed public value 'A' (hex): " + BigIntegerUtils.toHex(cred.A));
-		System.out.println("\tComputed evidence message 'M1' (hex): " + BigIntegerUtils.toHex(cred.M1));
-		System.out.println();
+
+		logA(BigIntegerUtils.toHex(cred.A));
+		logM1(BigIntegerUtils.toHex(cred.M1));
+		println();
 		
 		
 		// Step 3
 		
-		System.out.println("Client session step 3");
+		println("Client session step 3");
 		
 		System.out.print("\tEnter server evidence message 'M2' (hex): ");
 		
@@ -208,17 +221,28 @@ public class SRP6Client extends SRP6Tool {
 			
 		} catch (SRP6Exception e) {
 		
-			System.out.println(e.getMessage());
-			return;
+			println(e.getMessage());
+			throw e;
 		}
 		
 		
 		// Success
-		System.out.println();
-		System.out.println("Client authentication successfully completed");
+		println();
+		println("Client authentication successfully completed");
+		println();
+		logS(BigIntegerUtils.toHex(client.getSessionKey()));
+		logShash(client.getSessionKeyHash());
 	}
-	
-	
+
+	void logM1(String M1) {
+		println("\tComputed evidence message 'M1' (hex): " + M1);
+	}
+
+	void logA(String A) {
+		println("\tComputed public value 'A' (hex): " + A);
+	}
+
+
 	/**
 	 * Interactive command-line session to obtain the user identity 'I' and
 	 * password 'P'.
@@ -240,8 +264,6 @@ public class SRP6Client extends SRP6Tool {
 		
 		return new User(I, P);
 	}
-	
-	
 
 	/**
 	 * The main entry point to the command-line SRP-6a client and verifier

@@ -271,7 +271,7 @@ public class SRP6ClientSession extends SRP6Session implements Serializable {
 		
 		
 		// Check B validity
-		if (! SRP6Routines.isValidPublicValue(config.N, B))
+		if (! srp6Routines.isValidPublicValue(config.N, B))
 			throw new SRP6Exception("Bad server public value 'B'", SRP6Exception.CauseType.BAD_PUBLIC_VALUE);
 		
 		
@@ -286,30 +286,30 @@ public class SRP6ClientSession extends SRP6Session implements Serializable {
 					     
 		} else {
 			// With default routine
-			x = SRP6Routines.computeX(digest, BigIntegerUtils.bigIntegerToBytes(s), password.getBytes(Charset.forName("UTF-8")));
+			x = srp6Routines.computeX(digest, BigIntegerUtils.bigIntegerToBytes(s), password.getBytes(Charset.forName("UTF-8")));
 			digest.reset();
 		}
 		
 		// Generate client private and public values
-		a = SRP6Routines.generatePrivateValue(config.N, random);
+		a = srp6Routines.generatePrivateValue(config.N, random);
 		digest.reset();
 		
-		A = SRP6Routines.computePublicClientValue(config.N, config.g, a);
+		A = srp6Routines.computePublicClientValue(config.N, config.g, a);
 		
 		
 		// Compute the session key
-		k = SRP6Routines.computeK(digest, config.N, config.g);
+		k = srp6Routines.computeK(digest, config.N, config.g);
 		digest.reset();
 		
 		if (hashedKeysRoutine != null) {
 			URoutineContext hashedKeysContext = new URoutineContext(A, B);
 			u = hashedKeysRoutine.computeU(config, hashedKeysContext);
 		} else {
-			u = SRP6Routines.computeU(digest, config.N, A, B);
+			u = srp6Routines.computeU(digest, config.N, A, B);
 			digest.reset();
 		}
 		
-		S = SRP6Routines.computeSessionKey(config.N, config.g, k, x, u, a, B);
+		S = srp6Routines.computeSessionKey(config.N, config.g, k, x, u, a, B);
 		
 		// Compute the client evidence message
 		if (clientEvidenceRoutine != null) {
@@ -320,7 +320,7 @@ public class SRP6ClientSession extends SRP6Session implements Serializable {
 
 		} else {
 			// With default routine
-			M1 = SRP6Routines.computeClientEvidence(digest, A, B, S);
+			M1 = srp6Routines.computeClientEvidence(digest, A, B, S);
 			digest.reset();
 		}
 
@@ -384,7 +384,7 @@ public class SRP6ClientSession extends SRP6Session implements Serializable {
 		} else {
 			// With default routine
 			MessageDigest digest = config.getMessageDigestInstance();
-			computedM2 = SRP6Routines.computeServerEvidence(digest, A, M1, S);
+			computedM2 = srp6Routines.computeServerEvidence(digest, A, M1, S);
 		}
 		
 		if (! computedM2.equals(M2))

@@ -9,6 +9,7 @@ import java.math.BigInteger;
 
 import com.nimbusds.srp6.BigIntegerUtils;
 import com.nimbusds.srp6.SRP6CryptoParams;
+import com.nimbusds.srp6.SRP6Exception;
 
 
 /**
@@ -180,13 +181,28 @@ public abstract class SRP6Tool {
 		
 		return new SRP6CryptoParams(N, g, H);
 	}
-	
+
+	protected void println() {
+		System.out.println();
+	}
+
+	void logShash(byte[] sessionKeyHash) {
+		println("\tHashed shared key 'H(S)' (hex): " + javax.xml.bind.DatatypeConverter.printHexBinary(sessionKeyHash));
+	}
+
+	void logS(String S) {
+		println("\tComputed shared key 'S' (hex): " + S);
+	}
+
+	protected void println(String msg){
+		System.out.println(msg);
+	}
 	
 	/**
 	 * Runs the SRP-6a command-line tool.
 	 *
 	 * @throws IOException On missing / bad input or console I/O exception.
 	 */
-	public abstract void run() throws IOException;
+	public abstract void run() throws IOException, SRP6Exception;
 
 }
