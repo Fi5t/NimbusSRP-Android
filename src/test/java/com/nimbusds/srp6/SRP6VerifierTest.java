@@ -12,13 +12,14 @@ import junit.framework.*;
  * @author Vladimir Dzhuvinov
  */
 public class SRP6VerifierTest extends TestCase {
-	
+
+	SRP6Routines srp6Routines = new SRP6Routines();
 
 	public void testIssue13() throws Exception {
 			SRP6CryptoParams instance = SRP6CryptoParams.getInstance();
 			SRP6VerifierGenerator srp6VerifierGenerator = new SRP6VerifierGenerator(instance);
 			BigInteger salt;
-			byte[] saltByteArray = SRP6Routines.generateRandomSalt(16);
+			byte[] saltByteArray = srp6Routines.generateRandomSalt(16);
 			saltByteArray[0] = 0;
 			saltByteArray[1] |= (byte) 0x80;
 			salt = new BigInteger(saltByteArray);
@@ -38,15 +39,15 @@ public class SRP6VerifierTest extends TestCase {
 		
 		SRP6VerifierGenerator gen = new SRP6VerifierGenerator(config);
 		
-		final byte[] salt = SRP6VerifierGenerator.generateRandomSalt();
+		final byte[] salt = gen.generateRandomSalt();
 		// System.out.println("Salt: " + new BigInteger(salt));
 		
 		final String userID = "alice";
 		final String password = "secret";
 		
-		BigInteger targetV = SRP6Routines.computeVerifier(config.N, 
+		BigInteger targetV = srp6Routines.computeVerifier(config.N,
 		                                              config.g, 
-							      SRP6Routines.computeX(config.getMessageDigestInstance(), 
+							      srp6Routines.computeX(config.getMessageDigestInstance(),
 							      salt, 
 							      password.getBytes()));
 	

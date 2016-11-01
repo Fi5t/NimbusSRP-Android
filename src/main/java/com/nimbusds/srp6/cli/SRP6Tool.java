@@ -9,6 +9,7 @@ import java.math.BigInteger;
 
 import com.nimbusds.srp6.BigIntegerUtils;
 import com.nimbusds.srp6.SRP6CryptoParams;
+import com.nimbusds.srp6.SRP6Exception;
 
 
 /**
@@ -114,16 +115,16 @@ public abstract class SRP6Tool {
 	public SRP6CryptoParams getConfig(final String prefix)
 		throws IOException {
 		
-		System.out.println(prefix + "Enter prime 'N' (hex): ");
+		println(prefix + "Enter prime 'N' (hex): ");
 		
-		System.out.println(prefix + "\t1 = select precomputed 256-bit");
-		System.out.println(prefix + "\t2 = select precomputed 512-bit");
-		System.out.println(prefix + "\t3 = select precomputed 768-bit");
-		System.out.println(prefix + "\t4 = select precomputed 1024-bit");
-		System.out.println(prefix + "\t5 = select precomputed 2048-bit");
-		System.out.println(prefix + "\t6 = enter prime 'N' and generator 'g'");
-		System.out.println();
-		System.out.print(prefix + "Your choice [1]: ");
+		println(prefix + "\t1 = select precomputed 256-bit");
+		println(prefix + "\t2 = select precomputed 512-bit");
+		println(prefix + "\t3 = select precomputed 768-bit");
+		println(prefix + "\t4 = select precomputed 1024-bit");
+		println(prefix + "\t5 = select precomputed 2048-bit");
+		println(prefix + "\t6 = enter prime 'N' and generator 'g'");
+		println();
+		print(prefix + "Your choice [1]: ");
 		
 		String choice = readInput("1");
 		
@@ -155,10 +156,10 @@ public abstract class SRP6Tool {
 				g = SRP6CryptoParams.g_common;
 				break;
 			case "6":
-				System.out.println();
-				System.out.print(prefix + "Enter prime 'N' (hex): ");
+				println();
+				print(prefix + "Enter prime 'N' (hex): ");
 				N = readBigInteger();
-				System.out.print(prefix + "Enter generator 'g' (hex): ");
+				print(prefix + "Enter generator 'g' (hex): ");
 				g = readBigInteger();
 				selectedPrecomputed = false;
 				break;
@@ -166,27 +167,47 @@ public abstract class SRP6Tool {
 				throw new IOException("Unknown choice");
 		}
 		
-		System.out.println();
+		println();
 		
 		if (selectedPrecomputed) {
-			System.out.println(prefix + "Selected prime 'N' (hex): " + BigIntegerUtils.toHex(N));
-			System.out.println(prefix + "Selected generator 'g' (hex): " + BigIntegerUtils.toHex(g));
-			System.out.println();
+			println(prefix + "Selected prime 'N' (hex): " + BigIntegerUtils.toHex(N));
+			println(prefix + "Selected generator 'g' (hex): " + BigIntegerUtils.toHex(g));
+			println();
 		}
 		
-		System.out.print(prefix + "Enter hash algorithm 'H' [SHA-1]: ");
+		print(prefix + "Enter hash algorithm 'H' [SHA-1]: ");
 		String H = readInput("SHA-1");
-		System.out.println();
+		println();
 		
 		return new SRP6CryptoParams(N, g, H);
 	}
-	
-	
+
+	protected void println() {
+		System.out.println();
+	}
+
+	protected void print(String s) {
+		System.out.print(s);
+	}
+
+	protected void println(String msg){
+		println(msg);
+	}
+
+	void logShash(byte[] sessionKeyHash) {
+		println("\tHashed shared key 'H(S)' (hex): " + javax.xml.bind.DatatypeConverter.printHexBinary(sessionKeyHash));
+	}
+
+	void logS(String S) {
+		println("\tComputed shared key 'S' (hex): " + S);
+	}
+
+
 	/**
 	 * Runs the SRP-6a command-line tool.
 	 *
 	 * @throws IOException On missing / bad input or console I/O exception.
 	 */
-	public abstract void run() throws IOException;
+	public abstract void run() throws IOException, SRP6Exception;
 
 }

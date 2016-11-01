@@ -1,6 +1,7 @@
 package com.nimbusds.srp6;
 
 
+import java.io.Serializable;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.SecureRandom;
@@ -27,7 +28,7 @@ import java.security.SecureRandom;
  *
  * @author Vladimir Dzhuvinov
  */
-public class SRP6Routines {
+public class SRP6Routines implements Serializable {
 
 	
 	/**
@@ -41,14 +42,15 @@ public class SRP6Routines {
 	 *
 	 * @return The resulting multiplier 'k'.
 	 */
-	public static BigInteger computeK(final MessageDigest digest, 
+	public BigInteger computeK(final MessageDigest digest,
 	                                  final BigInteger N, 
 	                                  final BigInteger g) {
 	
 		return hashPaddedPair(digest, N, N, g);
 	}
 	
-	
+	protected SecureRandom random = new SecureRandom();
+
 	/**
 	 * Generates a random salt 's'.
 	 *
@@ -56,18 +58,25 @@ public class SRP6Routines {
 	 *
 	 * @return The salt 's' as a byte array.
 	 */
-	public static byte[] generateRandomSalt(final int numBytes) {
-	
-		SecureRandom random = new SecureRandom();
-		
+	public byte[] generateRandomSalt(final int numBytes) {
+		return generateRandomSalt(numBytes, random);
+	}
+
+	/**
+	 * Generates a random salt 's'.
+	 *
+	 * @param numBytes The number of bytes the salt 's' must have.
+	 * @param random A secure random number generator
+	 * @return The salt 's' as a byte array.
+	 */
+	public byte[] generateRandomSalt(final int numBytes, final SecureRandom random) {
 		byte[] salt = new byte[numBytes];
-		
+
 		random.nextBytes(salt);
-		
+
 		return salt;
 	}
-	
-	
+
 	/**
 	 * Computes x = H(s | H(P))
 	 *
@@ -80,7 +89,7 @@ public class SRP6Routines {
 	 *
 	 * @return The resulting 'x' value.
 	 */
-	public static BigInteger computeX(final MessageDigest digest,
+	public BigInteger computeX(final MessageDigest digest,
 	                                  final byte[] salt,
 	                                  final byte[] password) {         
 	                                    
@@ -105,7 +114,7 @@ public class SRP6Routines {
 	 *
 	 * @return The resulting verifier 'v'.
 	 */
-	public static BigInteger computeVerifier(final BigInteger N,
+	public BigInteger computeVerifier(final BigInteger N,
 	                                         final BigInteger g,
 	                                         final BigInteger x) {
 	
@@ -124,7 +133,7 @@ public class SRP6Routines {
 	 *
 	 * @return The resulting client or server private value ('a' or 'b').
 	 */
-	public static BigInteger generatePrivateValue(final BigInteger N,
+	public BigInteger generatePrivateValue(final BigInteger N,
 	                                              final SecureRandom random) {
 	 
 		final int minBits = Math.min(256, N.bitLength() / 2);
@@ -147,7 +156,7 @@ public class SRP6Routines {
 	 *
 	 * @return The public client value 'A'.
 	 */
-	public static BigInteger computePublicClientValue(final BigInteger N,
+	public BigInteger computePublicClientValue(final BigInteger N,
 	                                                  final BigInteger g,
 	                                                  final BigInteger a) {
 	                                                    
@@ -169,7 +178,7 @@ public class SRP6Routines {
 	 *
 	 * @return The public server value 'B'.
 	 */
-	public static BigInteger computePublicServerValue(final BigInteger N,
+	public BigInteger computePublicServerValue(final BigInteger N,
 	                                                  final BigInteger g,
 	                                                  final BigInteger k,
 	                                                  final BigInteger v,
@@ -193,7 +202,7 @@ public class SRP6Routines {
 	 *
 	 * @return {@code true} on successful validation, else {@code false}.
 	 */
-	public static boolean isValidPublicValue(final BigInteger N,
+	public boolean isValidPublicValue(final BigInteger N,
 	                                         final BigInteger value) {
 		
 		// check that value % N != 0
@@ -213,7 +222,7 @@ public class SRP6Routines {
 	 *
 	 * @return The resulting 'u' value.
 	 */
-	public static BigInteger computeU(final MessageDigest digest, 
+	public BigInteger computeU(final MessageDigest digest,
 	                                  final BigInteger N, 
 	                                  final BigInteger A,
 	                                  final BigInteger B) {
@@ -241,7 +250,7 @@ public class SRP6Routines {
 	 *
 	 * @return The resulting session key 'S'.
 	 */
-	public static BigInteger computeSessionKey(final BigInteger N,
+	public BigInteger computeSessionKey(final BigInteger N,
 	                                           final BigInteger g,
 	                                           final BigInteger k,
 	                                           final BigInteger x,
@@ -270,7 +279,7 @@ public class SRP6Routines {
 	 *
 	 * @return The resulting session key 'S'.
 	 */
-	public static BigInteger computeSessionKey(final BigInteger N,
+	public BigInteger computeSessionKey(final BigInteger N,
 	                                           final BigInteger v,
 	                                           final BigInteger u,
 	                                           final BigInteger A,
@@ -294,7 +303,7 @@ public class SRP6Routines {
 	 *
 	 * @return The resulting client evidence message 'M1'.
 	 */
-	public static BigInteger computeClientEvidence(final MessageDigest digest,
+	public BigInteger computeClientEvidence(final MessageDigest digest,
 	                                               final BigInteger A,
 	                                               final BigInteger B,
 	                                               final BigInteger S) {
@@ -322,7 +331,7 @@ public class SRP6Routines {
 	 *
 	 * @return The resulting server evidence message 'M2'.
 	 */
-	protected static BigInteger computeServerEvidence(final MessageDigest digest,
+	protected BigInteger computeServerEvidence(final MessageDigest digest,
 	                                                  final BigInteger A,
 	                                                  final BigInteger M1,
 	                                                  final BigInteger S) {
@@ -349,7 +358,7 @@ public class SRP6Routines {
 	 *
 	 * @return The resulting hashed padded pair.
 	 */
-	protected static BigInteger hashPaddedPair(final MessageDigest digest,
+	protected BigInteger hashPaddedPair(final MessageDigest digest,
 	                                           final BigInteger N,
 	                                           final BigInteger n1,
 	                                           final BigInteger n2) {
@@ -378,7 +387,7 @@ public class SRP6Routines {
 	 *
 	 * @return The padded big integer as a byte array.
 	 */
-	protected static byte[] getPadded(final BigInteger n, final int length) {
+	protected byte[] getPadded(final BigInteger n, final int length) {
 
 		byte[] bs = BigIntegerUtils.bigIntegerToBytes(n);
 		
@@ -404,7 +413,7 @@ public class SRP6Routines {
 	 *
 	 * @return A random big integer in the range [min, max].
 	 */
-	protected static BigInteger createRandomBigIntegerInRange(final BigInteger min, 
+	protected BigInteger createRandomBigIntegerInRange(final BigInteger min,
 	                                                          final BigInteger max,
 	                                                          final SecureRandom random) {
 	
@@ -435,7 +444,7 @@ public class SRP6Routines {
 		return new BigInteger(max.subtract(min).bitLength() - 1, random).add(min);
 	}
 
-	private SRP6Routines() {
+	SRP6Routines() {
 		// empty
 	}
 }

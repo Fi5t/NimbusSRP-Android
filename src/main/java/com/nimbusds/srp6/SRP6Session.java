@@ -16,8 +16,11 @@ import java.util.Map;
  * @author Vladimir Dzhuvinov
  * @author John Kim
  * @author Bernard Wittwer
+ * @author Simon Massey
  */
 public abstract class SRP6Session implements Serializable {
+
+	protected final SRP6Routines srp6Routines;
 
 	/**
 	 * Serializable class version number
@@ -34,9 +37,8 @@ public abstract class SRP6Session implements Serializable {
 	/**
 	 * Source of randomness.
 	 */
-	protected final SecureRandom random = new SecureRandom();
-	
-	
+	protected SecureRandom random = new SecureRandom();
+
 	/**
 	 * The SRP-6a authentication session timeout in seconds. If the 
 	 * authenticating counterparty (server or client) fails to respond 
@@ -138,35 +140,45 @@ public abstract class SRP6Session implements Serializable {
 	 *                fails to respond within the specified time the
 	 *                session will be closed. If zero timeouts are
 	 *                disabled.
+	 * @param srp6Routines The math routines to use.
 	 */
-	public SRP6Session(final int timeout) {
+	public SRP6Session(final int timeout, final SRP6Routines srp6Routines) {
 	
 		if (timeout < 0)
 			throw new IllegalArgumentException("The timeout must be zero (no timeout) or greater");
 		
 		this.timeout = timeout;
+		this.srp6Routines = srp6Routines;
 	}
-	
+
+	/**
+	 * Creates a new SRP-6a authentication session.
+	 *
+	 * @param timeout The SRP-6a authentication session timeout in seconds.
+	 *                If the authenticating counterparty (server or client)
+	 *                fails to respond within the specified time the
+	 *                session will be closed. If zero timeouts are
+	 *                disabled.
+	 */
+	public SRP6Session(final int timeout) {
+		this(timeout, new SRP6Routines());
+	}
 	
 	/**
 	 * Creates a new SRP-6a authentication session, session timeouts are 
-	 * disabled.
+	 * disabled. The default math routines are used.
 	 */
 	public SRP6Session() {
-	
-		this(0);
+		this(0, new SRP6Routines());
 	}
-	
-	
+
 	/**
 	 * Updates the last activity timestamp.
 	 */
 	protected void updateLastActivityTime() {
-	
 		lastActivity = System.currentTimeMillis();
 	}
-	
-	
+
 	/**
 	 * Gets the last session activity timestamp, in milliseconds since 
 	 * midnight, January 1, 1970 UTC (see System.currentTimeMillis()).

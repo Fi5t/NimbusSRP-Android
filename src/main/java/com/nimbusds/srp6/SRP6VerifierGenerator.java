@@ -3,6 +3,7 @@ package com.nimbusds.srp6;
 
 import java.math.BigInteger;
 import java.nio.charset.Charset;
+import java.security.SecureRandom;
 
 
 /**
@@ -14,6 +15,8 @@ import java.nio.charset.Charset;
  * @author Vladimir Dzhuvinov
  */
 public class SRP6VerifierGenerator {
+
+	final protected SRP6Routines srp6Routines;
 
 
 	/**
@@ -35,13 +38,25 @@ public class SRP6VerifierGenerator {
 	 *                be {@code null}.
 	 */
 	public SRP6VerifierGenerator(final SRP6CryptoParams config) {
-	
+		this(config, new SRP6Routines());
+	}
+
+	/**
+	 * Creates a new generator of password verifier 'v' values.
+	 *
+	 * @param config The SRP-6a crypto parameters configuration. Must not
+	 *                be {@code null}.
+	 * @param srp6Routines The cryptographic routines.
+	 */
+	public SRP6VerifierGenerator(final SRP6CryptoParams config, SRP6Routines srp6Routines) {
+
 		if (config == null)
 			throw new IllegalArgumentException("The SRP-6a crypto parameters must not be null");
-		
+
 		this.config = config;
+
+		this.srp6Routines = srp6Routines;
 	}
-	
 	
 	/**
 	 * Generates a random salt 's'. 
@@ -53,9 +68,25 @@ public class SRP6VerifierGenerator {
 	 *
 	 * @return The salt 's' as a byte array.
 	 */
-	public static byte[] generateRandomSalt(final int numBytes) {
+	public byte[] generateRandomSalt(final int numBytes) {
 	
-		return SRP6Routines.generateRandomSalt(numBytes);
+		return srp6Routines.generateRandomSalt(numBytes);
+	}
+
+	/**
+	 * Generates a random salt 's'.
+	 *
+	 * <p>This method is a shortcut to
+	 * {@link SRP6Routines#generateRandomSalt}.
+	 *
+	 * @param numBytes The number of bytes the salt 's' must have.
+	 * @param random A secure random number generator.
+	 *
+	 * @return The salt 's' as a byte array.
+	 */
+	public byte[] generateRandomSalt(final int numBytes, SecureRandom random) {
+
+		return srp6Routines.generateRandomSalt(numBytes, random);
 	}
 	
 	
@@ -67,9 +98,9 @@ public class SRP6VerifierGenerator {
 	 *
 	 * @return The salt 's' as a byte array.
 	 */
-	public static byte[] generateRandomSalt() {
+	public byte[] generateRandomSalt() {
 	
-		return SRP6Routines.generateRandomSalt(16);
+		return srp6Routines.generateRandomSalt(16);
 	}
 	
 	
@@ -139,10 +170,10 @@ public class SRP6VerifierGenerator {
 		}
 		else {
 			// With default routine
-			x = SRP6Routines.computeX(config.getMessageDigestInstance(), salt, password);
+			x = srp6Routines.computeX(config.getMessageDigestInstance(), salt, password);
 		}
 		
-		return SRP6Routines.computeVerifier(config.N, config.g, x);
+		return srp6Routines.computeVerifier(config.N, config.g, x);
 	}
 	
 	

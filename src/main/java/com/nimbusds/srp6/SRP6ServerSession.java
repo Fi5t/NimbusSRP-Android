@@ -193,13 +193,13 @@ public class SRP6ServerSession extends SRP6Session implements Serializable {
 		MessageDigest digest = config.getMessageDigestInstance();
 		
 		// Generate server private and public values
-		k = SRP6Routines.computeK(digest, config.N, config.g);
+		k = srp6Routines.computeK(digest, config.N, config.g);
 		digest.reset();
 		
-		b = SRP6Routines.generatePrivateValue(config.N, random);
+		b = srp6Routines.generatePrivateValue(config.N, random);
 		digest.reset();
 		
-		B = SRP6Routines.computePublicServerValue(config.N, config.g, k, v, b);
+		B = srp6Routines.computePublicServerValue(config.N, config.g, k, v, b);
 
 		state = State.STEP_1;
 		
@@ -291,7 +291,7 @@ public class SRP6ServerSession extends SRP6Session implements Serializable {
 			throw new SRP6Exception("Session timeout", SRP6Exception.CauseType.TIMEOUT);
 	
 		// Check A validity
-		if (! SRP6Routines.isValidPublicValue(config.N, A))
+		if (! srp6Routines.isValidPublicValue(config.N, A))
 			throw new SRP6Exception("Bad client public value 'A'", SRP6Exception.CauseType.BAD_PUBLIC_VALUE);
 		
 		// Check for previous mock step 1
@@ -304,11 +304,11 @@ public class SRP6ServerSession extends SRP6Session implements Serializable {
 			URoutineContext hashedKeysContext = new URoutineContext(A, B);
 			u = hashedKeysRoutine.computeU(config, hashedKeysContext);
 		} else {
-			u = SRP6Routines.computeU(digest, config.N, A, B);
+			u = srp6Routines.computeU(digest, config.N, A, B);
 			digest.reset();
 		}
 		
-		S = SRP6Routines.computeSessionKey(config.N, v, u, A, b);
+		S = srp6Routines.computeSessionKey(config.N, v, u, A, b);
 		
 		// Compute the own client evidence message 'M1'
 		BigInteger computedM1;
@@ -321,7 +321,7 @@ public class SRP6ServerSession extends SRP6Session implements Serializable {
 		}
 		else {
 			// With default routine
-			computedM1 = SRP6Routines.computeClientEvidence(digest, A, B, S);
+			computedM1 = srp6Routines.computeClientEvidence(digest, A, B, S);
 			digest.reset();
 		}
 		
@@ -340,7 +340,7 @@ public class SRP6ServerSession extends SRP6Session implements Serializable {
 		}
 		else {
 			// With default routine
-			M2 = SRP6Routines.computeServerEvidence(digest, A, M1, S);
+			M2 = srp6Routines.computeServerEvidence(digest, A, M1, S);
 			digest.reset();
 		}
 		

@@ -3,6 +3,7 @@ package com.nimbusds.srp6.cli;
 
 import java.io.IOException;
 import java.math.BigInteger;
+import java.security.SecureRandom;
 
 import com.nimbusds.srp6.BigIntegerUtils;
 import com.nimbusds.srp6.SRP6CryptoParams;
@@ -31,48 +32,55 @@ public class SRP6Server extends SRP6Tool {
 	
 		super();
 	}
-	
-	
+
+	protected SecureRandom random = new SecureRandom();
+
 	@Override
 	public void run()
 		throws IOException {
 		
-		System.out.println("*** Nimbus SRP-6a server ***");
-		System.out.println();
+		println("*** Nimbus SRP-6a server ***");
+		println();
 		
 		// Step INIT
-		System.out.println("Initialize server session");
+		println("Initialize server session");
 		SRP6CryptoParams config = getConfig("\t");
-		
-		SRP6ServerSession server = new SRP6ServerSession(config);
-		
+
+		@java.lang.SuppressWarnings("squid:S3599") // DBI
+		SRP6ServerSession server = new SRP6ServerSession(config){{
+			/**
+			 * this override is so that JUnit tests ccan inject a not-so-random generator from the outside.
+			 * you can just use a vanilla SRP6ServerSession which initialises its own secure random.
+			 */
+			this.random = SRP6Server.this.random;
+		}};
 		
 		// Step 1
-		System.out.println("Server session step 1");
+		println("Server session step 1");
 		
-		System.out.print("\tEnter user identity 'I': ");
+		print("\tEnter user identity 'I': ");
 		String I = readInput();
 		
-		System.out.print("\tEnter password salt 's' (hex): ");
+		print("\tEnter password salt 's' (hex): ");
 		BigInteger s = readBigInteger();
 		
-		System.out.print("\tEnter password verifier 'v' (hex): ");
+		print("\tEnter password verifier 'v' (hex): ");
 		BigInteger v = readBigInteger();
 		
 		BigInteger B = server.step1(I, s, v);
 		
-		System.out.println();
-		System.out.println("\tComputed public server value 'B' (hex): " + BigIntegerUtils.toHex(B));
-		System.out.println();
+		println();
+		logB(BigIntegerUtils.toHex(B));
+		println();
 		
 		
 		// Step 2
-		System.out.println("Server session step 2");
+		println("Server session step 2");
 		
-		System.out.print("\tEnter client public value 'A' (hex): ");
+		print("\tEnter client public value 'A' (hex): ");
 		BigInteger A = readBigInteger();
 		
-		System.out.print("\tEnter client evidence message 'M1' (hex): ");
+		print("\tEnter client evidence message 'M1' (hex): ");
 		BigInteger M1 = readBigInteger();
 		
 		BigInteger M2;
@@ -82,19 +90,29 @@ public class SRP6Server extends SRP6Tool {
 			
 		} catch (com.nimbusds.srp6.SRP6Exception e) {
 		
-			System.out.println(e.getMessage());
+			println(e.getMessage());
 			return;
 		}
 		
-		System.out.println();
-		System.out.println("\tComputed server evidence message 'M2 (hex): " + BigIntegerUtils.toHex(M2));
-		
+		println();
+		logM2(BigIntegerUtils.toHex(M2));
+
 		// Success
-		System.out.println();
-		System.out.println("Mutual authentication successfully completed");
+		println();
+		println("Mutual authentication successfully completed");
+		println();
+		logS(BigIntegerUtils.toHex(server.getSessionKey()));
+		logShash(server.getSessionKeyHash());
 	}
-	
-	
+
+	void logM2(String M2) {
+		println("\tComputed server evidence message 'M2' (hex): " + M2);
+	}
+
+	void logB(String B) {
+		println("\tComputed public server value 'B' (hex): " + B);
+	}
+
 	/**
 	 * The main entry point to the command-line SRP-6a server.
 	 *
@@ -109,4 +127,5 @@ public class SRP6Server extends SRP6Tool {
 		
 		server.run();
 	}
+
 }
