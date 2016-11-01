@@ -79,7 +79,7 @@ public class SRP6Client extends SRP6Tool {
 		println("\t1 = generate password verifier");
 		println("\t2 = client auth session");
 		println();
-		System.out.print("Your choice [1]: ");
+		print("Your choice [1]: ");
 		
 		String mode = readInput("1");
 
@@ -117,7 +117,7 @@ public class SRP6Client extends SRP6Tool {
 		User user = getUser("");
 		println();
 		
-		System.out.print("Enter preferred salt 's' byte size [16]: ");
+		print("Enter preferred salt 's' byte size [16]: ");
 		
 		String ss = readInput("16");
 		
@@ -184,11 +184,11 @@ public class SRP6Client extends SRP6Tool {
 		
 		SRP6CryptoParams config = getConfig("\t");
 		
-		System.out.print("\tEnter salt 's' (hex): ");
+		print("\tEnter salt 's' (hex): ");
 		BigInteger s = readBigInteger();
 		println();
 		
-		System.out.print("\tEnter public server value 'B' (hex): ");
+		print("\tEnter public server value 'B' (hex): ");
 		BigInteger B = readBigInteger();
 		println();
 		
@@ -212,7 +212,7 @@ public class SRP6Client extends SRP6Tool {
 		
 		println("Client session step 3");
 		
-		System.out.print("\tEnter server evidence message 'M2' (hex): ");
+		print("\tEnter server evidence message 'M2' (hex): ");
 		
 		BigInteger M2 = readBigInteger();
 		
@@ -256,10 +256,10 @@ public class SRP6Client extends SRP6Tool {
 	private User getUser(final String prefix)
 		throws IOException {
 		
-		System.out.print(prefix + "Enter user identity 'I': ");
+		print(prefix + "Enter user identity 'I': ");
 		String I = readInput();
 		
-		System.out.print(prefix + "Enter user password 'P': ");
+		print(prefix + "Enter user password 'P': ");
 		String P = readInput();
 		
 		return new User(I, P);

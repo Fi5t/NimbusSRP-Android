@@ -1,21 +1,22 @@
 package com.nimbusds.srp6.cli;
 
+import com.nimbusds.srp6.*;
 import junit.framework.TestCase;
-import org.junit.Before;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
+import static javax.xml.bind.DatatypeConverter.*;
 
 public class SRP6ToolsTest extends TestCase {
 
     class TestableSRP6Client extends SRP6Client {
 
         List<String> clientInput = new ArrayList<>();
-        List<String> clientOutput = new ArrayList<>();
 
         int counter = 0;
 
@@ -39,7 +40,7 @@ public class SRP6ToolsTest extends TestCase {
 
         @Override
         protected void println(String msg) {
-            clientOutput.add(msg);
+            // do nothing
         }
     }
 
@@ -48,7 +49,6 @@ public class SRP6ToolsTest extends TestCase {
         }
 
         List<String> serverInput = new ArrayList<>();
-        List<String> serverOutput = new ArrayList<>();
 
         int counter = 0;
 
@@ -69,14 +69,92 @@ public class SRP6ToolsTest extends TestCase {
 
         @Override
         protected void println(String msg) {
-            serverOutput.add(msg);
+            // do nothing
         }
     }
 
-    public void testOneRoundTrip() throws Exception {
+    public void testRandomInteractionZeroSalt() throws Exception {
+        final SecureRandom notRandomAtAll = new SecureRandom(){
+            byte b = Integer.valueOf(0x0).byteValue();
 
+            @Override
+            public synchronized void nextBytes(byte[] bytes) {
+                for( int i = 0; i < bytes.length; i++ ){
+                    bytes[i] = b;
+                }
+            }
+        };
+        testInteraction(notRandomAtAll);
+    }
+
+    public void testRandomInteractionOnesSalt() throws Exception {
         final SecureRandom notRandomAtAll = new SecureRandom(){
             byte b = Integer.valueOf(0xff).byteValue();
+
+            @Override
+            public synchronized void nextBytes(byte[] bytes) {
+                for( int i = 0; i < bytes.length; i++ ){
+                    bytes[i] = b;
+                }
+            }
+        };
+        testInteraction(notRandomAtAll);
+    }
+
+    void testInteraction(final SecureRandom notRandomAtAll) throws Exception {
+
+        SRP6CryptoParams config = SRP6CryptoParams.getInstance(256, "SHA-1");
+
+        SRP6VerifierGenerator vGen = new SRP6VerifierGenerator(config);
+
+        byte[] zeros = vGen.generateRandomSalt(16, notRandomAtAll);
+
+        SRP6Client.User user = new SRP6Client.User("tom@arcot.com", "some|complex?password!");
+
+        BigInteger s = BigIntegerUtils.bigIntegerFromBytes(zeros);
+
+        BigInteger v = vGen.generateVerifier(s, user.I, user.P);
+
+        SRP6ServerSession server = new SRP6ServerSession(config){{
+            /**
+             * this override is so that JUnit tests dcan inject a not-so-random generator from the outside.
+             * you can just use a vanilla SRP6ServerSession which initialises its own secure random.
+             */
+            this.random = notRandomAtAll;
+        }};
+
+        BigInteger B = server.step1(user.I, s, v);
+
+        SRP6ClientSession client = new SRP6ClientSession(){{
+            /**
+             * this override is so that JUnit tests dcan inject a not-so-random insecure generator from the outside.
+             * to be secure simply use SRP6ClientSession without overriding its random generator.
+             */
+            this.random = notRandomAtAll;
+        }};
+
+        client.step1(user.I, user.P);
+
+        SRP6ClientCredentials cred = client.step2(config, s, B);
+
+        BigInteger M2 = server.step2(cred.A, cred.M1);
+
+        client.step3(M2);
+
+        BigInteger serverKey = server.getSessionKey();
+        BigInteger clientKey = client.getSessionKey();
+
+        assertEquals(serverKey, clientKey);
+
+        byte[] serverHash = server.getSessionKeyHash();
+        byte[] clientHash = client.getSessionKeyHash();
+
+        assertTrue(Arrays.equals(serverHash, clientHash));
+    }
+
+    public void testOneRoundTripCli() throws Exception {
+        final SecureRandom notRandomAtAll = new SecureRandom(){
+            byte b = Integer.valueOf(0x0).byteValue();
 
             @Override
             public synchronized void nextBytes(byte[] bytes) {
@@ -91,7 +169,6 @@ public class SRP6ToolsTest extends TestCase {
 
         SRP6Client clientVerifier = new TestableSRP6Client() {
             {
-                // config
                 clientInput.add("1");
                 clientInput.add("1");
                 clientInput.add("SHA-1");
@@ -103,7 +180,12 @@ public class SRP6ToolsTest extends TestCase {
 
             @Override
             protected void println(String msg) {
-                System.out.println(msg);
+                // do nothing
+            }
+
+            @Override
+            protected void print(String s) {
+                // do nothing
             }
 
             @Override
@@ -120,13 +202,13 @@ public class SRP6ToolsTest extends TestCase {
 
         clientVerifier.run();
 
-        assertEquals("ffffffffffffffffffffffffffffffff", salt.get());
-        assertEquals("34859b915801c7040a2bf0ae96d40aef87fcd1be53906061b02dc9ea0943a563", verifier.get());
+        assertEquals("0", salt.get());
+        assertEquals("10db2cd8b5546faddb43da3593d65f96cfa6b368faf2c51392805f90b7ae99fc3", verifier.get());
 
         final AtomicReference<String> B = new AtomicReference<>();
         final AtomicReference<String> M2 = new AtomicReference<>();
-        final AtomicReference<String> S = new AtomicReference<>();
-        final AtomicReference<String> Shash = new AtomicReference<>();
+        final AtomicReference<String> SC = new AtomicReference<>();
+        final AtomicReference<String> SChash = new AtomicReference<>();
 
         SRP6Server server = new TestableSRP6Server() {
             {
@@ -135,17 +217,22 @@ public class SRP6ToolsTest extends TestCase {
                 serverInput.add("SHA-1");
                 serverInput.add("tom@arcot.com");
                 // salt + veriifer
-                serverInput.add("ffffffffffffffffffffffffffffffff");
-                serverInput.add("34859b915801c7040a2bf0ae96d40aef87fcd1be53906061b02dc9ea0943a563");
+                serverInput.add("0");
+                serverInput.add("10db2cd8b5546faddb43da3593d65f96cfa6b368faf2c51392805f90b7ae99fc3");
                 // A + M1
-                serverInput.add("1c4ab1a68975a8e1e07424e67090330cd9112705eb70dccdcb9a5f2052aa4488");
-                serverInput.add("236fbca54da7f52843baf872b1749515eed10a7c"); // ???
+                serverInput.add("11562b389885077484db68260dbeb8ad1e38e55f8390838931f8eca3d7ae565b4");
+                serverInput.add("7604aea9a1eb2547b9a4897893d4db76b2eac5e");
                 random = notRandomAtAll;
             }
 
             @Override
             protected void println(String msg) {
-                System.out.println(msg);
+                // do nothing
+            }
+
+            @Override
+            protected void print(String s) {
+                // do nothing
             }
 
             @Override
@@ -160,17 +247,24 @@ public class SRP6ToolsTest extends TestCase {
 
             @Override
             void logS(String SS) {
-                S.set(SS);
+                SC.set(SS);
+            }
+
+            @Override
+            void logShash(byte[] sessionKeyHash) {
+                SChash.set(printHexBinary(sessionKeyHash));
             }
         };
 
-//        server.run();
-//        assertEquals("7f4ca6fe958d4ef729f79c56b39a7ee738e43ea733b19e783db4ce47fe028765", B.get());
-//        assertEquals("220eba14444e38e8a09da4164391dfaec897d0d7fcd5595f7c9a4ae1aafbc06a", S.get());
-//        assertEquals("-", M2.get());
+        server.run();
+        assertEquals("a63b9fcdb5604e56c6c49c1134710e8a93af77e36e46605edd7825f9ace6e73", B.get());
+        assertEquals("3cee32cba00296023a9ee820e7f66d49b49f46ec84f7354ad119081c7f88b01f", SC.get());
+        assertEquals("2ddd38d7bd606bcb6986a4be5dd9ba136781af5d", M2.get());
 
         final AtomicReference<String> A = new AtomicReference<>();
         final AtomicReference<String> M1 = new AtomicReference<>();
+        final AtomicReference<String> SS = new AtomicReference<>();
+        final AtomicReference<String> SShash = new AtomicReference<>();
 
         SRP6Client client = new TestableSRP6Client() {
             {
@@ -181,16 +275,20 @@ public class SRP6ToolsTest extends TestCase {
                 clientInput.add("1");
                 clientInput.add("SHA-1");
                 // salt
-                clientInput.add("85e220dc7b5a858a0fddbe508d960927");
+                clientInput.add("0");
                 // B + M2
-                clientInput.add("7f4ca6fe958d4ef729f79c56b39a7ee738e43ea733b19e783db4ce47fe028765");
-                clientInput.add("ff");
+                clientInput.add("a63b9fcdb5604e56c6c49c1134710e8a93af77e36e46605edd7825f9ace6e73");
+                clientInput.add("2ddd38d7bd606bcb6986a4be5dd9ba136781af5d");
                 random = notRandomAtAll;
             }
 
             @Override
             protected void println(String msg) {
-                System.out.println(msg);
+               // do nothing
+            }
+            @Override
+            protected void print(String msg) {
+               // do nothing
             }
 
             @Override
@@ -202,12 +300,23 @@ public class SRP6ToolsTest extends TestCase {
             void logM1(String MM1) {
                 M1.set(MM1);
             }
+
+            @Override
+            void logS(String S) {
+                SS.set(S);
+            }
+
+            @Override
+            void logShash(byte[] sessionKeyHash) {
+                SShash.set(printHexBinary(sessionKeyHash));
+            }
         };
 
         client.run();
-        assertEquals("1c4ab1a68975a8e1e07424e67090330cd9112705eb70dccdcb9a5f2052aa4488", A);
-        assertEquals("236fbca54da7f52843baf872b1749515eed10a7c", M1);
-
+        assertEquals("11562b389885077484db68260dbeb8ad1e38e55f8390838931f8eca3d7ae565b4", A.get());
+        assertEquals("7604aea9a1eb2547b9a4897893d4db76b2eac5e", M1.get());
+        assertEquals("3cee32cba00296023a9ee820e7f66d49b49f46ec84f7354ad119081c7f88b01f", SS.get());
+        assertEquals(SChash.get(), SShash.get());
 
     }
 }

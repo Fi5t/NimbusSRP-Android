@@ -57,13 +57,13 @@ public class SRP6Server extends SRP6Tool {
 		// Step 1
 		println("Server session step 1");
 		
-		System.out.print("\tEnter user identity 'I': ");
+		print("\tEnter user identity 'I': ");
 		String I = readInput();
 		
-		System.out.print("\tEnter password salt 's' (hex): ");
+		print("\tEnter password salt 's' (hex): ");
 		BigInteger s = readBigInteger();
 		
-		System.out.print("\tEnter password verifier 'v' (hex): ");
+		print("\tEnter password verifier 'v' (hex): ");
 		BigInteger v = readBigInteger();
 		
 		BigInteger B = server.step1(I, s, v);
@@ -76,10 +76,10 @@ public class SRP6Server extends SRP6Tool {
 		// Step 2
 		println("Server session step 2");
 		
-		System.out.print("\tEnter client public value 'A' (hex): ");
+		print("\tEnter client public value 'A' (hex): ");
 		BigInteger A = readBigInteger();
 		
-		System.out.print("\tEnter client evidence message 'M1' (hex): ");
+		print("\tEnter client evidence message 'M1' (hex): ");
 		BigInteger M1 = readBigInteger();
 		
 		BigInteger M2;
