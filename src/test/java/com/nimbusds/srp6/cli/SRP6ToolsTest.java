@@ -117,7 +117,7 @@ public class SRP6ToolsTest extends TestCase {
 
         SRP6ServerSession server = new SRP6ServerSession(config){{
             /**
-             * this override is so that JUnit tests dcan inject a not-so-random generator from the outside.
+             * this override is so that JUnit tests ccan inject a not-so-random generator from the outside.
              * you can just use a vanilla SRP6ServerSession which initialises its own secure random.
              */
             this.random = notRandomAtAll;
@@ -127,7 +127,7 @@ public class SRP6ToolsTest extends TestCase {
 
         SRP6ClientSession client = new SRP6ClientSession(){{
             /**
-             * this override is so that JUnit tests dcan inject a not-so-random insecure generator from the outside.
+             * this override is so that JUnit tests ccan inject a not-so-random insecure generator from the outside.
              * to be secure simply use SRP6ClientSession without overriding its random generator.
              */
             this.random = notRandomAtAll;

@@ -48,7 +48,7 @@ public class SRP6Server extends SRP6Tool {
 		
 		SRP6ServerSession server = new SRP6ServerSession(config){{
 			/**
-			 * this override is so that JUnit tests dcan inject a not-so-random generator from the outside.
+			 * this override is so that JUnit tests ccan inject a not-so-random generator from the outside.
 			 * you can just use a vanilla SRP6ServerSession which initialises its own secure random.
 			 */
 			this.random = SRP6Server.this.random;

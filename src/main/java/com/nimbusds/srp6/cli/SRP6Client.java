@@ -166,7 +166,7 @@ public class SRP6Client extends SRP6Tool {
 		
 		SRP6ClientSession client = new SRP6ClientSession(){{
 			/**
-			 * this override is so that JUnit tests dcan inject a not-so-random insecure generator from the outside.
+			 * this override is so that JUnit tests can inject a not-so-random insecure generator from the outside.
 			 * to be secure simply use SRP6ClientSession without overriding its random generator.
  			 */
 			this.random = SRP6Client.this.random;
