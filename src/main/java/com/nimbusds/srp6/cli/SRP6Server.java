@@ -45,7 +45,8 @@ public class SRP6Server extends SRP6Tool {
 		// Step INIT
 		println("Initialize server session");
 		SRP6CryptoParams config = getConfig("\t");
-		
+
+		@java.lang.SuppressWarnings("squid:S3599") // DBI
 		SRP6ServerSession server = new SRP6ServerSession(config){{
 			/**
 			 * this override is so that JUnit tests ccan inject a not-so-random generator from the outside.

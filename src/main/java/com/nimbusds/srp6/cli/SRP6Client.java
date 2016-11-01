@@ -163,7 +163,8 @@ public class SRP6Client extends SRP6Tool {
 		// Step 1
 	
 		println("Client session step 1");
-		
+
+		@java.lang.SuppressWarnings("squid:S3599") // DBI
 		SRP6ClientSession client = new SRP6ClientSession(){{
 			/**
 			 * this override is so that JUnit tests can inject a not-so-random insecure generator from the outside.
