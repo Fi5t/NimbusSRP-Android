@@ -16,7 +16,7 @@ import java.security.SecureRandom;
  */
 public class SRP6VerifierGenerator {
 
-	protected SRP6Routines srp6Routines = null;
+	final protected SRP6Routines srp6Routines;
 
 
 	/**
