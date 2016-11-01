@@ -16,10 +16,11 @@ import java.util.Map;
  * @author Vladimir Dzhuvinov
  * @author John Kim
  * @author Bernard Wittwer
+ * @author Simon Massey
  */
 public abstract class SRP6Session implements Serializable {
 
-	protected SRP6Routines srp6Routines = null;
+	protected final SRP6Routines srp6Routines;
 
 	/**
 	 * Serializable class version number
@@ -175,11 +176,9 @@ public abstract class SRP6Session implements Serializable {
 	 * Updates the last activity timestamp.
 	 */
 	protected void updateLastActivityTime() {
-	
 		lastActivity = System.currentTimeMillis();
 	}
-	
-	
+
 	/**
 	 * Gets the last session activity timestamp, in milliseconds since 
 	 * midnight, January 1, 1970 UTC (see System.currentTimeMillis()).
