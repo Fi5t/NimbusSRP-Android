@@ -294,10 +294,6 @@ public class SRP6ServerSession extends SRP6Session implements Serializable {
 		if (! srp6Routines.isValidPublicValue(config.N, A))
 			throw new SRP6Exception("Bad client public value 'A'", SRP6Exception.CauseType.BAD_PUBLIC_VALUE);
 		
-		// Check for previous mock step 1
-		if (noSuchUserIdentity)
-			throw new SRP6Exception("Bad client credentials", SRP6Exception.CauseType.BAD_CREDENTIALS);
-		
 		MessageDigest digest = config.getMessageDigestInstance();
 		
 		if (hashedKeysRoutine != null) {
@@ -324,8 +320,9 @@ public class SRP6ServerSession extends SRP6Session implements Serializable {
 			computedM1 = srp6Routines.computeClientEvidence(digest, A, B, S);
 			digest.reset();
 		}
-		
-		if (! computedM1.equals(M1))
+
+		// Check for previous mock step 1 then check whether password proof works.
+		if (noSuchUserIdentity || ! computedM1.equals(M1))
 			throw new SRP6Exception("Bad client credentials", SRP6Exception.CauseType.BAD_CREDENTIALS);
 	
 		state = State.STEP_2;
