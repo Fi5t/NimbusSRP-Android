@@ -116,7 +116,7 @@ src/                      The source code.
 ### version 2.0.1 (2016-11-16)
 * Mitigates timing attacks to probe the existence of user identities on the 
   server side. The attack could take advantage of the server code returning the 
-  "bad credentials" error at different times for the case when the user doesn't  
+  "bad credentials" error at different times for the case when the user doesn't 
   exist and for the case when the user exists but the password is invalid 
   (issue #19).
   
