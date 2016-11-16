@@ -96,15 +96,16 @@ src/                      The source code.
 * Adds precomputed 1536 and 2048-bit 'N' parameters from RFC 5054, Appendix A.
 
 ### version 1.5.2 (2014-12-22)
-* Adds missing URoutine support to client session (iss #9).
-* Fixes BigInteger to byte array conversion in SRP6VerifierGenerator (iss #10).
+* Adds missing URoutine support to client session (issue #9).
+* Fixes BigInteger to byte array conversion in SRP6VerifierGenerator 
+  (issue #10).
 
 ### version 1.5.3 (2015-06-03)
-* Makes SRP6Session serialisable (iss #3).
+* Makes SRP6Session serialisable (issue #3).
 
 ### version 2.0.0 (2016-10-27) 
 * Consistent use of RFC2945 conversions between byte array and BigInteger 
-  (iss #11, #12, #13) by Jonathan Haas. 
+  (issues #11, #12, #13) by Jonathan Haas. 
 * Changed method signature of getSessionKey (now two methods not one with a 
   switch)
 * Depending on how you are generating your random salt, and whether it is an 
@@ -112,5 +113,12 @@ src/                      The source code.
   version. It is best to assume all users will have to reset their verifier if 
   upgrading from a previous version.
 
+### version 2.0.1 (2016-11-16)
+* Mitigates timing attacks to probe the existence of user identities on the 
+  server side. The attack could take advantage of the server code returning the 
+  "bad credentials" error at different times for the case when the user doesn't  
+  exist and for the case when the user exists but the password is invalid 
+  (issue #19).
+  
 
 [EOF]
