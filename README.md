@@ -62,47 +62,47 @@ src/                      The source code.
 
 ## Change log
 
-version 1.0 (2011-10-31)
+### version 1.0 (2011-10-31)
 * First release.
 
-version 1.1 (2011-11-09)
+### version 1.1 (2011-11-09)
 * Adds a convenient verifier 'v' generator class.
 * Adds interfaces to allow definition of custom routines for the 
   password key 'x', the server evidence message 'M1' and the client 
   evidence message 'M2'.
 
-version 1.2 (2011-11-18)
+### version 1.2 (2011-11-18)
 * Enables storage of arbitrary SRP-6a auth session attributes.
 * Adds session 'A', 'B', 'M1' and 'M2' getter methods.
 
-version 1.3 (2011-11-28)
+### version 1.3 (2011-11-28)
 * Adds command-line SRP-6a verifier generator, server and client.
 
-version 1.4 (2012-07-30)
+### version 1.4 (2012-07-30)
 * Removes unused lookUpHexAlphabet field and LOOKUPLENGTH constant.
 * Fixes SRP6Session.hasTimedOut() bug.
 
-version 1.4.1 (2013-04-05)
+### version 1.4.1 (2013-04-05)
 * Switches build to Apache Maven.
 * Publishes library to Maven Central.
 
-version 1.5 (2014-06-10)
+### version 1.5 (2014-06-10)
 * Adds interface for custom computeU routine.
 * Refactors BigInteger utility class.
 * Switches project license to Apache 2.0.
 
-version 1.5.1 (2014-08-15)
+### version 1.5.1 (2014-08-15)
 * Introduces stricter 'g' parameter checking.
 * Adds precomputed 1536 and 2048-bit 'N' parameters from RFC 5054, Appendix A.
 
-version 1.5.2 (2014-12-22)
+### version 1.5.2 (2014-12-22)
 * Adds missing URoutine support to client session (iss #9).
 * Fixes BigInteger to byte array conversion in SRP6VerifierGenerator (iss #10).
 
-version 1.5.3 (2015-06-03)
+### version 1.5.3 (2015-06-03)
 * Makes SRP6Session serialisable (iss #3).
 
-version 2.0.0 (2016-10-27) 
+### version 2.0.0 (2016-10-27) 
 * Consistent use of RFC2945 conversions between byte array and BigInteger 
   (iss #11, #12, #13) by Jonathan Haas. 
 * Changed method signature of getSessionKey (now two methods not one with a 
