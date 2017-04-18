@@ -16,7 +16,6 @@ public class RandomNumberTest extends TestCase {
 
         for( int i = 0; i < 1e5; i++){
             BigInteger r = srp6Routines.generatePrivateValue(N, secureRandom);
-            //if( i % 1e4 == 0 ) System.out.println(r);
             if( BigInteger.ZERO.compareTo(r) >= 0 ) fail("bad r<=0:"+r);
             if( r.compareTo(N) >= 0 ) fail("bad r>=N"+r);
         }

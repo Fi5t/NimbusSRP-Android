@@ -73,9 +73,9 @@ public class SRP6ToolsTest extends TestCase {
         }
     }
 
-    public void testRandomInteractionZeroSalt() throws Exception {
+    public void testRandomInteractionManyOnesSalt() throws Exception {
         final SecureRandom notRandomAtAll = new SecureRandom(){
-            byte b = Integer.valueOf(0x0).byteValue();
+            byte b = Integer.valueOf(0x1).byteValue();
 
             @Override
             public synchronized void nextBytes(byte[] bytes) {
@@ -154,7 +154,7 @@ public class SRP6ToolsTest extends TestCase {
 
     public void testOneRoundTripCli() throws Exception {
         final SecureRandom notRandomAtAll = new SecureRandom(){
-            byte b = Integer.valueOf(0x0).byteValue();
+            byte b = Integer.valueOf(0x1).byteValue();
 
             @Override
             public synchronized void nextBytes(byte[] bytes) {
@@ -202,8 +202,64 @@ public class SRP6ToolsTest extends TestCase {
 
         clientVerifier.run();
 
-        assertEquals("0", salt.get());
-        assertEquals("10db2cd8b5546faddb43da3593d65f96cfa6b368faf2c51392805f90b7ae99fc3", verifier.get());
+        assertEquals("1010101010101010101010101010101", salt.get());
+        assertEquals("106bfe2b6d1a1ee611b0ededd8d2a70ca3cb7222c7304aba4cca0688644de7f9d", verifier.get());
+
+        final AtomicReference<String> A = new AtomicReference<>();
+        final AtomicReference<String> M1 = new AtomicReference<>();
+        final AtomicReference<String> SS = new AtomicReference<>();
+        final AtomicReference<String> SShash = new AtomicReference<>();
+
+        SRP6Client client = new TestableSRP6Client() {
+            {
+                // config
+                clientInput.add("2");
+                clientInput.add("tom@arcot.com");
+                clientInput.add("some|complex?password!");
+                clientInput.add("1");
+                clientInput.add("SHA-1");
+                // salt
+                clientInput.add("1010101010101010101010101010101");
+                // B + M2
+                clientInput.add("ed438c1e83dd9a1136118f40d479c2c289488f5d23bef7f7d3d9845def70875d");
+                clientInput.add("3da965a589207c91057ff3ee5e1df0e044e3ce51");
+                random = notRandomAtAll;
+            }
+
+            @Override
+            protected void println(String msg) {
+                // do nothing
+            }
+            @Override
+            protected void print(String msg) {
+                // do nothing
+            }
+
+            @Override
+            void logA(String AA) {
+                A.set(AA);
+            }
+
+            @Override
+            void logM1(String MM1) {
+                M1.set(MM1);
+            }
+
+            @Override
+            void logS(String S) {
+                SS.set(S);
+            }
+
+            @Override
+            void logShash(byte[] sessionKeyHash) {
+                SShash.set(printHexBinary(sessionKeyHash));
+            }
+        };
+
+        client.run();
+        assertEquals("551c146ce655a278e57f8583856795b458591e5a037b8c4758bd6b5351cab975", A.get());
+        assertEquals("96ef9cb9a648e92886e7c904d464f21169dbaab4", M1.get());
+        assertEquals("d61a84d1d442ff620f4a8baf8adc36c348376e92cc290f8981e46e6ead783ae4", SS.get());
 
         final AtomicReference<String> B = new AtomicReference<>();
         final AtomicReference<String> M2 = new AtomicReference<>();
@@ -217,11 +273,11 @@ public class SRP6ToolsTest extends TestCase {
                 serverInput.add("SHA-1");
                 serverInput.add("tom@arcot.com");
                 // salt + veriifer
-                serverInput.add("0");
-                serverInput.add("10db2cd8b5546faddb43da3593d65f96cfa6b368faf2c51392805f90b7ae99fc3");
+                serverInput.add("1010101010101010101010101010101");
+                serverInput.add("106bfe2b6d1a1ee611b0ededd8d2a70ca3cb7222c7304aba4cca0688644de7f9d");
                 // A + M1
-                serverInput.add("11562b389885077484db68260dbeb8ad1e38e55f8390838931f8eca3d7ae565b4");
-                serverInput.add("7604aea9a1eb2547b9a4897893d4db76b2eac5e");
+                serverInput.add("551c146ce655a278e57f8583856795b458591e5a037b8c4758bd6b5351cab975");
+                serverInput.add("96ef9cb9a648e92886e7c904d464f21169dbaab4");
                 random = notRandomAtAll;
             }
 
@@ -257,66 +313,10 @@ public class SRP6ToolsTest extends TestCase {
         };
 
         server.run();
-        assertEquals("a63b9fcdb5604e56c6c49c1134710e8a93af77e36e46605edd7825f9ace6e73", B.get());
-        assertEquals("3cee32cba00296023a9ee820e7f66d49b49f46ec84f7354ad119081c7f88b01f", SC.get());
-        assertEquals("2ddd38d7bd606bcb6986a4be5dd9ba136781af5d", M2.get());
+        assertEquals("ed438c1e83dd9a1136118f40d479c2c289488f5d23bef7f7d3d9845def70875d", B.get());
+        assertEquals("d61a84d1d442ff620f4a8baf8adc36c348376e92cc290f8981e46e6ead783ae4", SC.get());
+        assertEquals("3da965a589207c91057ff3ee5e1df0e044e3ce51", M2.get());
 
-        final AtomicReference<String> A = new AtomicReference<>();
-        final AtomicReference<String> M1 = new AtomicReference<>();
-        final AtomicReference<String> SS = new AtomicReference<>();
-        final AtomicReference<String> SShash = new AtomicReference<>();
-
-        SRP6Client client = new TestableSRP6Client() {
-            {
-                // config
-                clientInput.add("2");
-                clientInput.add("tom@arcot.com");
-                clientInput.add("some|complex?password!");
-                clientInput.add("1");
-                clientInput.add("SHA-1");
-                // salt
-                clientInput.add("0");
-                // B + M2
-                clientInput.add("a63b9fcdb5604e56c6c49c1134710e8a93af77e36e46605edd7825f9ace6e73");
-                clientInput.add("2ddd38d7bd606bcb6986a4be5dd9ba136781af5d");
-                random = notRandomAtAll;
-            }
-
-            @Override
-            protected void println(String msg) {
-               // do nothing
-            }
-            @Override
-            protected void print(String msg) {
-               // do nothing
-            }
-
-            @Override
-            void logA(String AA) {
-                A.set(AA);
-            }
-
-            @Override
-            void logM1(String MM1) {
-                M1.set(MM1);
-            }
-
-            @Override
-            void logS(String S) {
-                SS.set(S);
-            }
-
-            @Override
-            void logShash(byte[] sessionKeyHash) {
-                SShash.set(printHexBinary(sessionKeyHash));
-            }
-        };
-
-        client.run();
-        assertEquals("11562b389885077484db68260dbeb8ad1e38e55f8390838931f8eca3d7ae565b4", A.get());
-        assertEquals("7604aea9a1eb2547b9a4897893d4db76b2eac5e", M1.get());
-        assertEquals("3cee32cba00296023a9ee820e7f66d49b49f46ec84f7354ad119081c7f88b01f", SS.get());
         assertEquals(SChash.get(), SShash.get());
-
     }
 }
