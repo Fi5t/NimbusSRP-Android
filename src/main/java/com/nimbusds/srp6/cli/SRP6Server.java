@@ -26,6 +26,7 @@ public class SRP6Server extends SRP6Tool {
 
 	/**
 	 * Creates a new SRP-6a command-line server.
+	 * @throws IOException On console I/O exception.
 	 */
 	public SRP6Server()
 		throws IOException {

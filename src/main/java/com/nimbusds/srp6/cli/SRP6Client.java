@@ -58,6 +58,7 @@ public class SRP6Client extends SRP6Tool {
 	
 	/**
 	 * Creates a new SRP-6a command-line client and verifier generator.
+	 * @throws IOException On console I/O exception.
 	 */
 	public SRP6Client()
 		throws IOException {

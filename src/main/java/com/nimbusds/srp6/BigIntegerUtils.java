@@ -19,6 +19,8 @@ public class BigIntegerUtils {
 	/**
 	 * Encodes the specified big integer into a hex string.
 	 *
+	 * @param bigint the value to convert to a hexidecimal string
+	 *
 	 * @return The resulting hex encoded string or {@code null} if the
 	 *         input is undefined.
 	 */

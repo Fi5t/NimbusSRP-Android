@@ -207,6 +207,7 @@ public abstract class SRP6Tool {
 	 * Runs the SRP-6a command-line tool.
 	 *
 	 * @throws IOException On missing / bad input or console I/O exception.
+	 * @serialData SRP6Exception If the protocol does not confirm mutual authentication and a shared private session key.
 	 */
 	public abstract void run() throws IOException, SRP6Exception;
 
