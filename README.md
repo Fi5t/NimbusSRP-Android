@@ -4,7 +4,7 @@
 
 # Nimbus SRP: Secure Remote Password (SRP-6a) protocol implementation for Java
 
-Copyright (c) Connect2id Ltd. and others, 2011 - 2016
+Copyright (c) Connect2id Ltd. and others, 2011 - 2017
 
 ## README
 
@@ -120,5 +120,10 @@ src/                      The source code.
   exist and for the case when the user exists but the password is invalid 
   (issue #19).
   
+### version 2.0.2 (2017-04-22)
+* Fixes generation of the random private value to satisfy the length 
+  requirements defined in RFC 5054. The routine efficiency is improved (issue 
+  #20).
+
 
 [EOF]
