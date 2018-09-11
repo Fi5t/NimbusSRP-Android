@@ -1,6 +1,10 @@
 apply plugin: 'java-library'
 apply from: '../gradle/publish.gradle'
 
+jar {
+    baseName 'srp6a-android'
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     testImplementation 'junit:junit:4.12'
