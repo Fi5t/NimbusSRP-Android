@@ -15,7 +15,9 @@ group publishProperties['group_id']
 publishing {
     publications {
         Production(MavenPublication) {
-            artifact("$buildDir/libs/srp6a-android-${version}.jar")
+            from components.java
+            artifact sourcesJar
+            artifact javadocJar
             groupId
             artifactId publishProperties['lib_name']
             version this.version
