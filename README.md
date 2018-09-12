@@ -1,4 +1,8 @@
 # NimbusSRP-Android
+ [ ![Download](https://api.bintray.com/packages/fi5t/security/srp6a-android/images/download.svg) ](https://bintray.com/fi5t/security/srp6a-android/_latestVersion)
+[![GitHub license](https://img.shields.io/github/license/Fi5t/NimbusSRP-Android.svg)](https://github.com/Fi5t/NimbusSRP-Android/blob/master/LICENSE)
+
+
 This is classic NimbusSRP library optimized for Android. If you are looking for Java version of this library refer to the [original repository](https://bitbucket.org/connect2id/nimbus-srp).
 
 ### Why?
