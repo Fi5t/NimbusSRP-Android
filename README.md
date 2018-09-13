@@ -3,11 +3,11 @@
 [![GitHub license](https://img.shields.io/github/license/Fi5t/NimbusSRP-Android.svg)](https://github.com/Fi5t/NimbusSRP-Android/blob/master/LICENSE)
 
 
-This is classic NimbusSRP library optimized for Android. If you are looking for Java version of this library refer to the [original repository](https://bitbucket.org/connect2id/nimbus-srp).
+This is a classic NimbusSRP library optimized for Android. If you are looking for Java version of this library, refer to the [original repository](https://bitbucket.org/connect2id/nimbus-srp).
 
 ### Why?
 
-When you using classical NimbusSRP with Android, you will definitely face java dependencies problem. I had to add `javax.xml.bind:jaxb-api` to my project just to provide normal NimbusSRP work. Moreover, not each version of `jaxb-api` works fine with Android (only 2.2.4 at this moment). Everything was almost fine until I decided to configure ProGuard with all this things. It was a really scary experience =) Finally, I decided to make alter version of NimbusSRP with Android in mind.
+If you try using the original NimbusSRP with Android, you will definitely face Java dependencies problem. I had to add `javax.xml.bind:jaxb-api` to my project just to make NimbusSRP work. Moreover, not each version of `jaxb-api` works fine with Android (only 2.2.4 at this moment). Everything was going almost fine until I decided to configure ProGuard with all these things. It turned out to be a really scary experience =) Finally, I decided to make an altered version of NimbusSRP with Android in mind.
 
 I didn't change the library code at all, just threw away unnecessary components from `cli` package.
 
